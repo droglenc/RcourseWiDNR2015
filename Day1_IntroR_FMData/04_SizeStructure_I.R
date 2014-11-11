@@ -5,7 +5,7 @@ library(dplyr)       # for filter(), select(), mutate(), group_by(), summarize()
 library(FSA)         # for Summarize(), hist()
 library(lubridate)   # for month()
 
-setwd("C:/aaaWork/Web/fishR/Courses/WIStatewide2015/CourseMaterial")
+setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("FMDB_Sawyer.csv",stringsAsFactors=FALSE)
 d <- setDBClasses(d,type="RDNR")
 d <- expandCounts(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len")

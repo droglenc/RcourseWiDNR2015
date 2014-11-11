@@ -12,7 +12,6 @@ geometry: margin=0.6in
 ---
 
 ```{r echo=FALSE, results='hide'}
-fn <- "03_MutateData.Rmd"
 library(knitr)
 source("../knitr_setup.R")
 ```
@@ -26,7 +25,7 @@ library(FSA)         # for capFirst()
 ```
 
 ```{r, cache=TRUE, message=FALSE}
-setwd("C:/aaaWork/Web/fishR/Courses/WIStatewide2015/CourseMaterial")
+setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("FMDB_Sawyer.csv",stringsAsFactors=FALSE)
 d <- setDBClasses(d,type="RDNR")
 d <- expandCounts(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len")
@@ -96,11 +95,6 @@ tmp <- changeDBNames(tmp,from="RDNR",to="DNR")
 write.csv(tmp,"LKS_Barker14.csv",row.names=FALSE)
 ```
 
-
-
-```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE}
-swvCode(fn,moreItems=c("knitr","fn"),topnotes=c(fn))
-```
 
 \newpage
 

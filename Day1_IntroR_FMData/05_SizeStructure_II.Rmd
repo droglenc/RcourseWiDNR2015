@@ -12,7 +12,6 @@ geometry: margin=0.6in
 ---
 
 ```{r echo=FALSE, results='hide'}
-fn <- "05_SizeStructure_II.Rmd"
 library(knitr)
 source("../knitr_setup.R")
 ```
@@ -26,7 +25,7 @@ library(lubridate)   # for month()
 ```
 
 ```{r, cache=TRUE, message=FALSE}
-setwd("C:/aaaWork/Web/fishR/Courses/WIStatewide2015/CourseMaterial")
+setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("FMDB_Sawyer.csv",stringsAsFactors=FALSE)
 d <- setDBClasses(d,type="RDNR")
 d <- expandCounts(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len")
@@ -111,11 +110,6 @@ Spr13 <- group_by(Spr13,Waterbody.Name,Species)
 summarize(Spr13,n=n(),valid_n=length(Len[!is.na(Len)]),
            meanLen=round(mean(Len,na.rm=TRUE),2),sdLen=round(sd(Len,na.rm=TRUE),2)
           )
-```
-
-
-```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE}
-swvCode(fn,moreItems=c("knitr","fn"),topnotes=c(fn))
 ```
 
 \newpage

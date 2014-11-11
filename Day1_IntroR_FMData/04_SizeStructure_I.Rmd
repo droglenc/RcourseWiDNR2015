@@ -1,4 +1,4 @@
-S---
+---
 title: "Size Structure I"
 author: "Derek H. Ogle, Northland College"
 date: "2-Mar-2015"
@@ -26,7 +26,7 @@ library(lubridate)   # for month()
 ```
 
 ```{r, cache=TRUE, message=FALSE}
-setwd("C:/aaaWork/Web/fishR/Courses/WIStatewide2015/CourseMaterial")
+setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("FMDB_Sawyer.csv",stringsAsFactors=FALSE)
 d <- setDBClasses(d,type="RDNR")
 d <- expandCounts(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len")
@@ -63,16 +63,16 @@ Summarize(~Len,data=BGSpr13LC,digits=2)
 
 #Length Frequency Histograms
 
-```{r}
+```{r hist_basic}
 hist(~Len,data=BGSpr13LC)
 ```
 
-```{r}
+```{r hist_options}
 hist(~Len,data=BGSpr13LC,xlab="Total Length (In.)",ylab="Number of Bluegill",
      xlim=c(3,9),ylim=c(0,80),col="salmon")
 ```
 
-```{r}
+```{r hist_breaks}
 hist(~Len,data=BGSpr13LC,xlab="Total Length (In.)",ylab="Number of Bluegill",
      xlim=c(3,9),ylim=c(0,40),breaks=seq(3,9,0.2))
 ```
@@ -111,11 +111,6 @@ Spr13 <- group_by(Spr13,Waterbody.Name,Species)
 summarize(Spr13,n=n(),valid_n=length(Len[!is.na(Len)]),
            meanLen=round(mean(Len,na.rm=TRUE),2),sdLen=round(sd(Len,na.rm=TRUE),2)
           )
-```
-
-
-```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE}
-swvCode(fn,moreItems=c("knitr","fn"),topnotes=c(fn))
 ```
 
 \newpage

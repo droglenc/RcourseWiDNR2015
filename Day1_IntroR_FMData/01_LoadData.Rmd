@@ -12,7 +12,6 @@ geometry: margin=0.5in
 ---
 
 ```{r echo=FALSE, results='hide'}
-fn <- "01_LoadData.Rmd"
 library(knitr)
 source("../knitr_setup.R")
 ```
@@ -24,7 +23,7 @@ library(fishWiDNR)   # for setDBClasses()
 
 #Loading Data and Initial Examination
 ```{r, cache=TRUE}
-setwd("C:/aaaWork/Web/fishR/Courses/WIStatewide2015/CourseMaterial")
+setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("FMDB_Sawyer.csv",stringsAsFactors=FALSE)
 d <- setDBClasses(d,type="RDNR")
 str(d)
@@ -80,11 +79,6 @@ d1$Species
 ```
 ```{r echo=FALSE, R.options=list(width=100)}
 d1$Species[1:120]
-```
-
-```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE}
-library(FSA)
-swvCode(fn,moreItems=c("FSA","knitr","row.names","tmp","1:","fn"),topnotes=c(fn,"Some of the output was suppressed when making the final document.","Thus, running this script will give somewhat different results."))
 ```
 
 \newpage

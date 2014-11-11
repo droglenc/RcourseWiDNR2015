@@ -12,7 +12,6 @@ geometry: margin=0.6in
 ---
 
 ```{r echo=FALSE, results='hide'}
-fn <- "02_FilterData.Rmd"
 library(knitr)
 source("../knitr_setup.R")
 ```
@@ -25,7 +24,7 @@ library(FSA)         # for Summarize()
 ```
 
 ```{r, cache=TRUE}
-setwd("C:/aaaWork/Web/fishR/Courses/WIStatewide2015/CourseMaterial")
+setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("FMDB_Sawyer.csv",stringsAsFactors=FALSE)
 d <- setDBClasses(d,type="RDNR")
 d <- expandCounts(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len")
@@ -116,11 +115,6 @@ Summarize(~Len,data=LCblgPREF)
 ```{r, R.options=list(width=100)}
 sturgWts <- filter(d1,Species=="LAKE STURGEON",!is.na(Weight.Pounds))
 head(sturgWts)
-```
-
-  
-```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE}
-swvCode(fn,moreItems=c("knitr","fn","1:"),topnotes=c(fn))
 ```
 
 \vspace{48pt}
