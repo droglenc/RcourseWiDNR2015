@@ -2,12 +2,7 @@
 title: "Filter Data"
 author: "Derek H. Ogle, Northland College"
 date: "2-Mar-2015"
-output:
-  pdf_document:
-    highlight: null
-  html_document:
-    highlight: null
-    theme: united
+output: pdf_document
 geometry: margin=0.6in
 ---
 
@@ -23,7 +18,7 @@ library(dplyr)       # for select(), filter()
 library(FSA)         # for Summarize()
 ```
 
-```{r, cache=TRUE}
+```{r, cache=TRUE, message=FALSE}
 setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("FMDB_Sawyer.csv",stringsAsFactors=FALSE)
 d <- setDBClasses(d,type="RDNR")
@@ -124,16 +119,16 @@ head(sturgWts)
 Create a script that performs the following tasks:
 
 1. Load and prepare (set classes, expand counts, examine structure) your FM data in R (**HINT:** *use all or some of your script from the first application assignment*).  Call this the *original data.frame*.
-1. Create a data.frame that removes all variables related to the database (e.g., when data was entered, who entered it, error flags, etc.).
+1. Create a data.frame that removes all variables related to the database (e.g., when datum was entered, who entered it, error flags, etc.).
 1. Examine the sample size per water body and gear combination in the original data.frame.
 1. Isolate (from the original data.frame) a water body of your choice and show the number of each species captured (in all gears).
-1. Isolate (from the original data.frame) three water bodies of your choice and make one table that shows the number of each species captured in each water body.
+1. Isolate (from the original data.frame) three water bodies of your choice and make one table that shows the number of each species captured in each water body (regardless of gear).
 1. Isolate (from the original data.frame) one species of fish from one gear used in one waterbody.
     * Construct a table of frequency of each sex.
     * Summarize the length variable.
 1. (*Time Permitting*) Suppose the waterbody and species you chose above has a minimum length limit (make up the minimum length).  Isolate those fish that would be legal.  Show that your filtering was successful.
-1. (*Time Permitting*) Repeat the previous questions but for a protected slot.
-1. (*Time Permitting*) Repeat the previous questions but for a harvest slot.
+1. (*Time Permitting*) Repeat the previous question but for a protected slot.
+1. (*Time Permitting*) Repeat the previous question but for a harvest slot.
 1. (*Time Permitting*) List all water bodies and species for which a weight in pounds was recorded (begin with the original data.frame).
 
 **Save your script!**

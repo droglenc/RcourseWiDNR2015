@@ -2,12 +2,7 @@
 title: "Size Structure II"
 author: "Derek H. Ogle, Northland College"
 date: "2-Mar-2015"
-output:
-  pdf_document:
-    highlight: null
-  html_document:
-    highlight: null
-    theme: united
+output: pdf_document
 geometry: margin=0.6in
 ---
 

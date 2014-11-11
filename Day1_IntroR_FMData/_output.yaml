@@ -1,0 +1,5 @@
+  pdf_document:
+    highlight: haddock
+  html_document:
+    highlight: haddock
+    theme: united

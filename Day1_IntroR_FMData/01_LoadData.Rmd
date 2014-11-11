@@ -2,12 +2,7 @@
 title: "Load Data from CSV"
 author: "Derek H. Ogle, Northland College"
 date: "2-Mar-2015"
-output:
-  pdf_document:
-    highlight: null
-  html_document:
-    highlight: null
-    theme: united
+output: pdf_document
 geometry: margin=0.5in
 ---
 
@@ -55,14 +50,14 @@ print(expandCounts(tmp,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.I
 ```
 
 ```{r, cache=TRUE}
-## without random digits
+# without random digits
 d1 <- expandCounts(d,~Number.of.Fish)
 
-## with random digits
+# with random digits
 d1 <- expandCounts(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len")
 nrow(d1)
 
-## sum of Number.of.Fish variable (note from above that 2 rows had zero fish)
+# sum of Number.of.Fish variable (note from above that 2 rows had zero fish)
 sum(d$Number.of.Fish)
 ```
 

@@ -16,8 +16,8 @@ opts_chunk$set(prompt=TRUE,comment='')
 ## knitr options -- figure handling
 opts_chunk$set(fig.path='Figs/', fig.width=3.5, fig.height=3.5, par1=TRUE)
 ## removes spaces between input and output chunks
-hook1 <- function(x){ gsub("```\n+```\n", "", x) }
-knit_hooks$set(document = hook1)
+#hook1 <- function(x){ gsub("```\n+```\n", "", x) }
+#knit_hooks$set(document = hook1)
 
 ## r options
 options(width=100,show.signif.stars=FALSE,continue=" ")

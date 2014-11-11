@@ -12,11 +12,14 @@ str(d)
 head(d)   # also can use tail(d)
 nrow(d)
 
+# without random digits
 d1 <- expandCounts(d,~Number.of.Fish)
 
+# with random digits
 d1 <- expandCounts(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len")
 nrow(d1)
 
+# sum of Number.of.Fish variable (note from above that 2 rows had zero fish)
 sum(d$Number.of.Fish)
 
 d1$Length.or.Lower.Length.IN
