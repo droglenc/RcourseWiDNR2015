@@ -1,0 +1,104 @@
+---
+title: "Load Data from CSV"
+author: "Derek H. Ogle, Northland College"
+date: "2-Mar-2015"
+output:
+  pdf_document:
+    highlight: null
+  html_document:
+    highlight: null
+    theme: united
+geometry: margin=0.5in
+---
+
+```{r echo=FALSE, results='hide'}
+fn <- "01_LoadData.Rmd"
+library(knitr)
+source("../knitr_setup.R")
+```
+
+#Preliminaries
+```{r results='hide', warning=FALSE, message=FALSE}
+library(fishWiDNR)   # for setDBClasses()
+```
+
+#Loading Data and Initial Examination
+```{r, cache=TRUE}
+setwd("C:/aaaWork/Web/fishR/Courses/WIStatewide2015/CourseMaterial")
+d <- read.csv("FMDB_Sawyer.csv",stringsAsFactors=FALSE)
+d <- setDBClasses(d,type="RDNR")
+str(d)
+```
+
+```{r}
+head(d)   # also can use tail(d)
+nrow(d)
+```
+
+\newpage
+
+#Expanding Counts of Fish to Individual Measurements
+Example portion of the Sawyer Co. FM database with ``tallied'' fish lengths.
+```{r echo=FALSE}
+tmp <- subset(d,Species=="WALLEYE" & Waterbody.Name=="ASHEGON LAKE",select=c("Fish.Data.Seq.No","Species","Number.of.Fish","Length.or.Lower.Length.IN","Length.Upper.IN"))
+tmp <- tmp[c(1,7:9,17:19),]          # tmp was created for demonstration purposes only
+print(tmp,row.names=FALSE)
+```
+
+Example expansion but keeping the length bins.
+```{r echo=FALSE,message=FALSE}
+print(expandCounts(tmp,~Number.of.Fish),row.names=FALSE)
+```
+
+Example expansion but adding random digit from within the length bin.
+```{r echo=FALSE, message=FALSE, R.options=list(width=100)}
+print(expandCounts(tmp,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len"),row.names=FALSE)
+```
+
+```{r, cache=TRUE}
+## without random digits
+d1 <- expandCounts(d,~Number.of.Fish)
+
+## with random digits
+d1 <- expandCounts(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len")
+nrow(d1)
+
+## sum of Number.of.Fish variable (note from above that 2 rows had zero fish)
+sum(d$Number.of.Fish)
+```
+
+
+#Individual Variables
+```{r results='hide', cache=TRUE}
+d1$Length.or.Lower.Length.IN
+```
+```{r echo=FALSE}
+d1$Length.or.Lower.Length.IN[1:304]
+```
+```{r results='hide', cache=TRUE}
+d1$Species
+```
+```{r echo=FALSE, R.options=list(width=100)}
+d1$Species[1:120]
+```
+
+```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+library(FSA)
+swvCode(fn,moreItems=c("FSA","knitr","row.names","tmp","1:","fn"),topnotes=c(fn,"Some of the output was suppressed when making the final document.","Thus, running this script will give somewhat different results."))
+```
+
+\newpage
+
+# Application Assignment
+
+Create a script that performs the following tasks:
+
+1. Load your FM data into R.
+1. Set the classes on your data.frame.
+1. How many total fish in your data.frame?
+1. Expand the counts to individual fish (assign to a new data.frame).
+1. How many variables (columns) and individual fish (rows) in your new data.frame?
+1. Display all expanded length measurements.
+1. Show all "values" for two other variables of your choice.
+
+**Save your script!**

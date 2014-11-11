@@ -1,0 +1,121 @@
+---
+title: "Add and Rename Variables"
+author: "Derek H. Ogle, Northland College"
+date: "2-Mar-2015"
+output:
+  pdf_document:
+    highlight: null
+  html_document:
+    highlight: null
+    theme: united
+geometry: margin=0.6in
+---
+
+```{r echo=FALSE, results='hide'}
+fn <- "03_MutateData.Rmd"
+library(knitr)
+source("../knitr_setup.R")
+```
+
+#Preliminaries
+```{r results='hide', warning=FALSE, message=FALSE}
+library(fishWiDNR)   # for setDBClasses(), changeDBNames(), expandCounts()
+library(dplyr)       # for filter(), select(), mutate(), rename()
+library(lubridate)   # for month()
+library(FSA)         # for capFirst()
+```
+
+```{r, cache=TRUE, message=FALSE}
+setwd("C:/aaaWork/Web/fishR/Courses/WIStatewide2015/CourseMaterial")
+d <- read.csv("FMDB_Sawyer.csv",stringsAsFactors=FALSE)
+d <- setDBClasses(d,type="RDNR")
+d <- expandCounts(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len")
+d1 <- filter(d,Species=="LAKE STURGEON",Waterbody.Name=="BARKER LAKE",!is.na(Weight.Pounds))
+d2 <- select(d1,Species,Survey.Year,Survey.Begin.Date,Len,Weight.Pounds)
+head(d2)
+```
+
+#Variable Additions
+## Simple Mutations
+
+```{r}
+tmp <- mutate(d2,loglen=log(Len),logwt=log(Weight.Pounds))
+head(tmp)
+```
+
+## Simple Special Purpose Mutations
+
+```{r}
+tmp <- mutate(d2,mon1=month(Survey.Begin.Date),
+                  mon2=month(Survey.Begin.Date,label=TRUE))
+head(tmp)
+```
+
+```{r}
+tmp <- mutate(d2,Species1=capFirst(Species),
+                  Species2=capFirst(Species,which="first"))
+head(tmp)
+```
+
+## Length Category Mutations
+
+```{r}
+tmp <- mutate(d2,lcat2=lencat(Len,w=2),
+                  lcat2a=lencat(Len,w=2,as.fact=TRUE),
+                  lcatA=lencat(Len,breaks=c(46,54,56,58,70)),
+                  lcatB=lencat(Len,breaks=c(small=0,medium=50,large=60,very_large=70),use.names=TRUE)
+             )
+head(tmp)
+xtabs(~lcat2,data=tmp)
+xtabs(~lcat2a,data=tmp)
+xtabs(~lcatA,data=tmp)
+xtabs(~lcatB,data=tmp)
+```
+
+\newpage
+
+# Rename Variables
+
+```{r}
+tmp <- rename(d2,year=Survey.Year,wt=Weight.Pounds)
+head(tmp)
+```
+
+```{r}
+tmp <- changeDBNames(d1)
+names(tmp)
+```
+
+```{r}
+tmp <- changeDBNames(tmp,from="R",to="RDNR")
+names(tmp)
+```
+
+```{r}
+tmp <- changeDBNames(tmp,from="RDNR",to="DNR")
+write.csv(tmp,"LKS_Barker14.csv",row.names=FALSE)
+```
+
+
+
+```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+swvCode(fn,moreItems=c("knitr","fn"),topnotes=c(fn))
+```
+
+\newpage
+
+# Application Assignment
+
+Create a script that performs the following tasks:
+
+1. Load and prepare (set classes, expand counts, examine structure) your FM data in R (**HINT:** *use all or some of your scripts from previous application assignments*).
+1. Rename two or more variables that have names that annoy you (or change all names according to the definitions in `changeDBNames()`).
+1. Create a new variable that has the species names with only the first letters capitalized.
+1. Create a new variable that has the water body names with only the first letters capitalized.
+1. Create a new variable that is the length in mm computed from the length in inches (even though this is already in the FM database).
+1. Isolate a game species from a waterbody (and possibly a gear) of interest to you.
+1. Create a new variable that contains evenly-spaced length categories that are appropriate for your species.  Construct a frequency table of that variable.
+1. Create a new variable that contains length categories that could be defined as "not of interest", "marginally interesting", "preferred", and "very interesting" to anglers for your species.  Construct a frequency table of that variable.
+1. (*Time Permitting*) Create a new variable that contains the Gabelhouse length categories ("stock", "quality", etc.) for your species (**HINT**: *use, for example,* `psdVal("Largemouth Bass",units="in")` *to find PSD values for a particular species*).
+
+**Save your script!**

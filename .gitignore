@@ -9,3 +9,14 @@
 
 # RStudio files
 .Rproj.user/
+.Rproj.user
+
+# Cached directories to ignore
+Day1_IntroR_FMData/01_LoadData_cache/
+Day1_IntroR_FMData/02_FilterData_cache/
+Day1_IntroR_FMData/03_MutateData_cache/
+Day1_IntroR_FMData/04_SizeStructure_I_cache/
+Day1_IntroR_FMData/05_SizeStructure_II_cache/
+
+# Old stuff to ignore
+Day1_IntroR_FMData/zzzOldOrOther/

@@ -1,0 +1,145 @@
+---
+title: "Filter Data"
+author: "Derek H. Ogle, Northland College"
+date: "2-Mar-2015"
+output:
+  pdf_document:
+    highlight: null
+  html_document:
+    highlight: null
+    theme: united
+geometry: margin=0.6in
+---
+
+```{r echo=FALSE, results='hide'}
+fn <- "02_FilterData.Rmd"
+library(knitr)
+source("../knitr_setup.R")
+```
+
+#Preliminaries
+```{r results='hide', warning=FALSE, message=FALSE}
+library(fishWiDNR)   # for setDBClasses(), expandCounts()
+library(dplyr)       # for select(), filter()
+library(FSA)         # for Summarize()
+```
+
+```{r, cache=TRUE}
+setwd("C:/aaaWork/Web/fishR/Courses/WIStatewide2015/CourseMaterial")
+d <- read.csv("FMDB_Sawyer.csv",stringsAsFactors=FALSE)
+d <- setDBClasses(d,type="RDNR")
+d <- expandCounts(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len")
+names(d)
+```
+
+\newpage
+
+#Selecting Variables -- select()
+```{r, R.options=list(width=100)}
+d1 <- select(d,Waterbody.Name,Gear,Survey.Year,Species,Len,Weight.Pounds,Gender,Mark.Given)
+head(d1)
+tail(d1)
+```
+
+```{r, R.options=list(width=100)}
+tmp <- select(d,County:Swims.Station.Id)
+head(tmp)
+```
+
+```{r}
+tmp <- select(d,-(Station.Name:Status.Code))
+head(tmp)
+```
+
+```{r}
+tmp <- select(d,starts_with("Length"))   # there is also an ends_with
+names(tmp)
+```
+
+```{r}
+tmp <- select(d,Srvy.Seq.No,Species,Len,contains("Mark"))
+head(tmp)
+```
+
+
+\newpage
+
+#Selecting Individuals -- filter()
+
+```{r}
+levels(d1$Gear)
+xtabs(~Gear,data=d1)
+```
+
+```{r results='hide'}
+xtabs(~Waterbody.Name+Gear,data=d1)      # only partial results shown
+```
+```{r echo=FALSE,R.options=list(width=100)}
+xtabs(~Waterbody.Name+Gear,data=d1)[1:15,1:4]
+```
+
+```{r, results='hide'}
+tmp <- filter(d1,Waterbody.Name=="BARBER LAKE")
+xtabs(~Waterbody.Name,tmp)               # only partial results shown
+```
+
+```{r echo=FALSE,R.options=list(width=100)}
+xtabs(~Waterbody.Name,data=tmp)[1:16]
+```
+
+```{r}
+tmp <- droplevels(tmp)
+xtabs(~Waterbody.Name,tmp)
+```
+
+```{r}
+tmp <- filter(d1,Waterbody.Name %in% c("BARBER LAKE","LAKE CHETAC"))
+tmp <- droplevels(tmp)
+xtabs(~Waterbody.Name,tmp)
+```
+
+```{r}
+LCblg <- filter(d1,Waterbody.Name=="LAKE CHETAC",Species=="BLUEGILL")
+xtabs(~Gear,LCblg)
+```
+
+```{r}
+LCblg <- filter(LCblg,Gear=="BOOM SHOCKER")
+Summarize(~Len,data=LCblg)
+```
+
+```{r}
+LCblgPREF <- filter(LCblg,Len>=7)
+Summarize(~Len,data=LCblgPREF)
+```
+
+```{r, R.options=list(width=100)}
+sturgWts <- filter(d1,Species=="LAKE STURGEON",!is.na(Weight.Pounds))
+head(sturgWts)
+```
+
+  
+```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+swvCode(fn,moreItems=c("knitr","fn","1:"),topnotes=c(fn))
+```
+
+\vspace{48pt}
+
+# Application Assignment
+
+Create a script that performs the following tasks:
+
+1. Load and prepare (set classes, expand counts, examine structure) your FM data in R (**HINT:** *use all or some of your script from the first application assignment*).  Call this the *original data.frame*.
+1. Create a data.frame that removes all variables related to the database (e.g., when data was entered, who entered it, error flags, etc.).
+1. Examine the sample size per water body and gear combination in the original data.frame.
+1. Isolate (from the original data.frame) a water body of your choice and show the number of each species captured (in all gears).
+1. Isolate (from the original data.frame) three water bodies of your choice and make one table that shows the number of each species captured in each water body.
+1. Isolate (from the original data.frame) one species of fish from one gear used in one waterbody.
+    * Construct a table of frequency of each sex.
+    * Summarize the length variable.
+1. (*Time Permitting*) Suppose the waterbody and species you chose above has a minimum length limit (make up the minimum length).  Isolate those fish that would be legal.  Show that your filtering was successful.
+1. (*Time Permitting*) Repeat the previous questions but for a protected slot.
+1. (*Time Permitting*) Repeat the previous questions but for a harvest slot.
+1. (*Time Permitting*) List all water bodies and species for which a weight in pounds was recorded (begin with the original data.frame).
+
+**Save your script!**
