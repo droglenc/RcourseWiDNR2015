@@ -66,63 +66,64 @@ code > span.er { font-weight: bold; }
 
 <div id="preliminaries" class="section level1">
 <h1>Preliminaries</h1>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(fishWiDNR)   <span class="co"># for setDBClasses()</span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(fishWiDNR)   <span class="co"># for setDBClasses()</span>
+&gt;<span class="st"> </span><span class="kw">library</span>(FSA)         <span class="co"># for expandCounts()</span></code></pre>
 </div>
 <div id="loading-data-and-initial-examination" class="section level1">
 <h1>Loading Data and Initial Examination</h1>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">setwd</span>(<span class="st">&quot;C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData&quot;</span>)
-&gt;<span class="st"> </span>d &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;FMDB_Sawyer.csv&quot;</span>,<span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>)
+&gt;<span class="st"> </span>d &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;FMDB_Sawyer_MultiYr_APEX.csv&quot;</span>,<span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>,<span class="dt">na.strings=</span><span class="kw">c</span>(<span class="st">&quot;-&quot;</span>,<span class="st">&quot;NA&quot;</span>,<span class="st">&quot;&quot;</span>))
 &gt;<span class="st"> </span>d &lt;-<span class="st"> </span><span class="kw">setDBClasses</span>(d,<span class="dt">type=</span><span class="st">&quot;RDNR&quot;</span>)
 &gt;<span class="st"> </span><span class="kw">str</span>(d)</code></pre>
-<pre><code>'data.frame':   21358 obs. of  54 variables:
+<pre><code>'data.frame':   108872 obs. of  54 variables:
  $ County                   : Factor w/ 1 level &quot;SAWYER&quot;: 1 1 1 1 1 1 1 1 1 1 ...
- $ Waterbody.Name           : Factor w/ 55 levels &quot;ASHEGON LAKE&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
- $ WBIC                     : int  2448800 2448800 2448800 2448800 2448800 2448800 2448800 2448800 2448800 2448800 ...
- $ Survey.Year              : int  2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
- $ Station.Name             : chr  &quot;ASHEGON LAKE_GENERAL LAKE STATION&quot; &quot;ASHEGON LAKE_GENERAL LAKE STATION&quot; &quot;ASHEGON LAKE_GENERAL LAKE STATION&quot; &quot;ASHEGON LAKE_GENERAL LAKE STATION&quot; ...
- $ Swims.Station.Id         : int  10005674 10005674 10005674 10005674 10005674 10005674 10005674 10005674 10005674 10005674 ...
- $ Site.Seq.No              : int  108967 108967 108967 108967 108967 108967 108967 108967 108967 108967 ...
- $ Srvy.Seq.No              : int  56064296 56064296 56064296 56064296 56064296 56064296 56064296 56064296 56064296 56064296 ...
- $ Survey.Begin.Date        : POSIXct, format: &quot;2010-04-02&quot; &quot;2010-04-02&quot; &quot;2010-04-02&quot; ...
- $ Survey.End.Date          : POSIXct, format: &quot;2010-04-04&quot; &quot;2010-04-04&quot; &quot;2010-04-04&quot; ...
+ $ Waterbody.Name           : Factor w/ 132 levels &quot;ALDER CREEK&quot;,..: 39 39 39 39 39 39 39 39 39 39 ...
+ $ WBIC                     : int  2391200 2391200 2391200 2391200 2391200 2391200 2391200 2391200 2391200 2391200 ...
+ $ Survey.Year              : int  2003 2003 2003 2003 2003 2003 2003 2003 2003 2003 ...
+ $ Station.Name             : chr  &quot;GRINDSTONE LAKE_GENERAL LAKE STATION&quot; &quot;GRINDSTONE LAKE_GENERAL LAKE STATION&quot; &quot;GRINDSTONE LAKE_GENERAL LAKE STATION&quot; &quot;GRINDSTONE LAKE_GENERAL LAKE STATION&quot; ...
+ $ Swims.Station.Id         : int  10005586 10005586 10005586 10005586 10005586 10005586 10005586 10005586 10005586 10005586 ...
+ $ Site.Seq.No              : int  110432 110432 110432 110432 110432 110432 110432 110432 110432 110432 ...
+ $ Survey.Seq.No            : int  51723 51723 51723 51726 51726 51726 51737 51737 51737 51737 ...
+ $ Survey.Begin.Date        : POSIXct, format: &quot;2003-04-23&quot; &quot;2003-04-23&quot; &quot;2003-04-23&quot; ...
+ $ Survey.End.Date          : POSIXct, format: &quot;2003-04-23&quot; &quot;2003-04-23&quot; &quot;2003-04-23&quot; ...
  $ Survey.Status            : Factor w/ 3 levels &quot;DATA ENTRY COMPLETE&quot;,..: 2 2 2 2 2 2 2 2 2 2 ...
  $ Data.Entry.Name          : chr  &quot;warwir&quot; &quot;warwir&quot; &quot;warwir&quot; &quot;warwir&quot; ...
- $ Entry.Date               : POSIXct, format: &quot;2010-07-01&quot; &quot;2010-07-01&quot; &quot;2010-07-01&quot; ...
- $ Visit.Fish.Seq.No        : int  683069 683069 683069 683069 683069 683069 683069 683069 683069 683069 ...
- $ Visit.Type               : Factor w/ 2 levels &quot;ELECTROFISHING&quot;,..: 2 2 2 2 2 2 2 2 2 2 ...
- $ Gear                     : Factor w/ 6 levels &quot;BACKPACK SHOCKER&quot;,..: 4 4 4 4 4 4 4 4 4 4 ...
- $ Sample.Date              : POSIXct, format: &quot;2010-04-03&quot; &quot;2010-04-03&quot; &quot;2010-04-03&quot; ...
- $ Substation.Name          : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
- $ Target.Species           : Factor w/ 12 levels &quot;ALL SPECIES&quot;,..: 6 6 6 6 6 6 6 6 6 6 ...
- $ Fish.Data.Seq.No         : int  8837020 8837021 8837022 8837023 8837030 8837039 8837040 8837041 8837042 8837043 ...
- $ Net.Number               : chr  &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot; ...
- $ Species.Code             : Factor w/ 64 levels &quot;A03&quot;,&quot;A03J&quot;,&quot;A05J&quot;,..: 61 61 61 61 61 61 61 61 61 61 ...
- $ Species                  : Factor w/ 64 levels &quot;AMERICAN BROOK LAMPREY (AMMOCOETE)&quot;,..: 58 58 58 58 58 58 58 58 58 58 ...
- $ Number.of.Fish           : int  1 1 1 1 1 1 1 2 1 1 ...
- $ Length.or.Lower.Length.IN: num  20 21 21.5 23 12 12.5 14.5 15 15.5 16 ...
- $ Length.Upper.IN          : num  20.4 21.4 21.9 23.4 12.4 12.9 14.9 15.4 15.9 16.4 ...
- $ Length.or.Lower.Length.MM: num  508 533 546 584 305 ...
- $ Length.Upper.MM          : num  518 544 556 594 315 ...
+ $ Entry.Date               : POSIXct, format: &quot;2003-06-30&quot; &quot;2003-06-30&quot; &quot;2003-06-30&quot; ...
+ $ Visit.Fish.Seq.No        : int  485573 485573 485573 485616 485616 485616 485595 485595 485595 485595 ...
+ $ Visit.Type               : Factor w/ 3 levels &quot;ELECTROFISHING&quot;,..: 2 2 2 2 2 2 2 2 2 2 ...
+ $ Gear                     : Factor w/ 14 levels &quot;BACKPACK SHOCKER&quot;,..: 6 6 6 6 6 6 6 6 6 6 ...
+ $ Sample.Date              : POSIXct, format: &quot;2003-04-23&quot; &quot;2003-04-23&quot; &quot;2003-04-23&quot; ...
+ $ Substation.Name          : chr  NA NA NA NA ...
+ $ Target.Species           : Factor w/ 18 levels &quot;ALL SPECIES&quot;,..: 18 18 18 18 18 18 18 18 18 18 ...
+ $ Fish.Data.Seq.No         : int  2104922 2104921 2104920 2106938 2106940 2106939 2106189 2106188 2106187 2106186 ...
+ $ Net.Number               : chr  &quot;4&quot; &quot;4&quot; &quot;4&quot; &quot;H4&quot; ...
+ $ Species.Code             : Factor w/ 101 levels &quot;A01&quot;,&quot;A01J&quot;,&quot;A02&quot;,..: 51 93 23 97 97 23 77 79 93 23 ...
+ $ Species                  : Factor w/ 101 levels &quot;ALL SPECIES&quot;,..: 32 101 64 95 95 64 69 10 101 64 ...
+ $ Number.of.Fish           : int  1 12 19 4 1 1 1 2 60 2 ...
+ $ Length.or.Lower.Length.IN: num  NA NA NA NA NA NA NA NA NA NA ...
+ $ Length.Upper.IN          : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ Length.or.Lower.Length.MM: num  NA NA NA NA NA NA NA NA NA NA ...
+ $ Length.Upper.MM          : num  NA NA NA NA NA NA NA NA NA NA ...
  $ Weight.Pounds            : num  NA NA NA NA NA NA NA NA NA NA ...
  $ Weight.Grams             : num  NA NA NA NA NA NA NA NA NA NA ...
- $ Gender                   : Factor w/ 4 levels &quot;&quot;,&quot;F&quot;,&quot;M&quot;,&quot;U&quot;: 2 2 2 2 4 3 3 3 3 3 ...
+ $ Gender                   : Factor w/ 4 levels &quot;F&quot;,&quot;M&quot;,&quot;NS&quot;,&quot;U&quot;: NA NA NA NA NA NA NA NA NA NA ...
  $ Disease                  : Factor w/ 0 levels: NA NA NA NA NA NA NA NA NA NA ...
- $ Injury.Type              : Factor w/ 2 levels &quot;&quot;,&quot;DEAD&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+ $ Injury.Type              : Factor w/ 1 level &quot;DEAD&quot;: NA NA NA NA NA NA NA NA NA NA ...
  $ Age..observed.annuli.    : logi  NA NA NA NA NA NA ...
  $ Edge.Counted.Desc        : Factor w/ 0 levels: NA NA NA NA NA NA NA NA NA NA ...
- $ Age.Structure            : Factor w/ 3 levels &quot;&quot;,&quot;SCALE&quot;,&quot;SPINE&quot;: 1 1 1 1 1 1 1 1 1 1 ...
- $ Mark.Given               : Factor w/ 8 levels &quot;&quot;,&quot;AN&quot;,&quot;LP&quot;,&quot;LV&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
- $ Mark.Found               : Factor w/ 10 levels &quot;&quot;,&quot;AN&quot;,&quot;BC&quot;,&quot;LP&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
- $ Second.Mark.Found        : Factor w/ 2 levels &quot;&quot;,&quot;PIT&quot;: 1 1 1 1 1 1 1 1 1 1 ...
- $ Tag.Number.Given         : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ Age.Structure            : Factor w/ 2 levels &quot;SCALE&quot;,&quot;SPINE&quot;: NA NA NA NA NA NA NA NA NA NA ...
+ $ Mark.Given               : Factor w/ 9 levels &quot;AN&quot;,&quot;BC&quot;,&quot;LP&quot;,..: NA NA NA NA NA NA NA NA NA NA ...
+ $ Mark.Found               : Factor w/ 11 levels &quot;AN&quot;,&quot;BC&quot;,&quot;LP&quot;,..: NA NA NA NA NA NA NA NA NA NA ...
+ $ Second.Mark.Found        : Factor w/ 3 levels &quot;LP&quot;,&quot;PIT&quot;,&quot;RV&quot;: NA NA NA NA NA NA NA NA NA NA ...
+ $ Tag.Number.Given         : chr  NA NA NA NA ...
  $ Second.Tag.Number.Given  : chr  NA NA NA NA ...
- $ Tag.Number.Found         : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ Tag.Number.Found         : chr  NA NA NA NA ...
  $ Second.Tag.Number.Found  : chr  NA NA NA NA ...
- $ YOY                      : Factor w/ 2 levels &quot;&quot;,&quot;Y&quot;: 1 1 1 1 1 1 1 1 1 1 ...
- $ Entry.Date.1             : POSIXct, format: &quot;2010-07-01&quot; &quot;2010-07-01&quot; &quot;2010-07-01&quot; ...
- $ Last.Update.Date         : POSIXct, format: NA NA NA ...
+ $ YOY                      : Factor w/ 2 levels &quot;N&quot;,&quot;Y&quot;: NA NA NA NA NA NA NA NA NA NA ...
+ $ Entry.Date.1             : POSIXct, format: &quot;2003-06-30&quot; &quot;2003-06-30&quot; &quot;2003-06-30&quot; ...
+ $ Last.Update.Date         : POSIXct, format: &quot;2006-05-02&quot; &quot;2006-05-02&quot; &quot;2006-05-02&quot; ...
  $ Data.Ent.Name            : chr  &quot;prattf&quot; &quot;prattf&quot; &quot;prattf&quot; &quot;prattf&quot; ...
- $ Last.Update.Name         : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+ $ Last.Update.Name         : chr  &quot;toberj&quot; &quot;toberj&quot; &quot;toberj&quot; &quot;toberj&quot; ...
  $ Invalid.Species          : chr  NA NA NA NA ...
  $ Non.Standard.Bin         : chr  NA NA NA NA ...
  $ Length.Unit.Error        : chr  NA NA NA NA ...
@@ -130,62 +131,62 @@ code > span.er { font-weight: bold; }
  $ Count.Outside.Range      : chr  NA NA NA NA ...
  $ Status.Code              : chr  NA NA NA NA ...</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">head</span>(d)   <span class="co"># also can use tail(d)</span></code></pre>
-<pre><code>  County Waterbody.Name    WBIC Survey.Year                      Station.Name Swims.Station.Id
-1 SAWYER   ASHEGON LAKE 2448800        2010 ASHEGON LAKE_GENERAL LAKE STATION         10005674
-2 SAWYER   ASHEGON LAKE 2448800        2010 ASHEGON LAKE_GENERAL LAKE STATION         10005674
-3 SAWYER   ASHEGON LAKE 2448800        2010 ASHEGON LAKE_GENERAL LAKE STATION         10005674
-4 SAWYER   ASHEGON LAKE 2448800        2010 ASHEGON LAKE_GENERAL LAKE STATION         10005674
-5 SAWYER   ASHEGON LAKE 2448800        2010 ASHEGON LAKE_GENERAL LAKE STATION         10005674
-6 SAWYER   ASHEGON LAKE 2448800        2010 ASHEGON LAKE_GENERAL LAKE STATION         10005674
-  Site.Seq.No Srvy.Seq.No Survey.Begin.Date Survey.End.Date                   Survey.Status
-1      108967    56064296        2010-04-02      2010-04-04 DATA ENTRY COMPLETE AND PROOFED
-2      108967    56064296        2010-04-02      2010-04-04 DATA ENTRY COMPLETE AND PROOFED
-3      108967    56064296        2010-04-02      2010-04-04 DATA ENTRY COMPLETE AND PROOFED
-4      108967    56064296        2010-04-02      2010-04-04 DATA ENTRY COMPLETE AND PROOFED
-5      108967    56064296        2010-04-02      2010-04-04 DATA ENTRY COMPLETE AND PROOFED
-6      108967    56064296        2010-04-02      2010-04-04 DATA ENTRY COMPLETE AND PROOFED
+<pre><code>  County  Waterbody.Name    WBIC Survey.Year                         Station.Name Swims.Station.Id
+1 SAWYER GRINDSTONE LAKE 2391200        2003 GRINDSTONE LAKE_GENERAL LAKE STATION         10005586
+2 SAWYER GRINDSTONE LAKE 2391200        2003 GRINDSTONE LAKE_GENERAL LAKE STATION         10005586
+3 SAWYER GRINDSTONE LAKE 2391200        2003 GRINDSTONE LAKE_GENERAL LAKE STATION         10005586
+4 SAWYER GRINDSTONE LAKE 2391200        2003 GRINDSTONE LAKE_GENERAL LAKE STATION         10005586
+5 SAWYER GRINDSTONE LAKE 2391200        2003 GRINDSTONE LAKE_GENERAL LAKE STATION         10005586
+6 SAWYER GRINDSTONE LAKE 2391200        2003 GRINDSTONE LAKE_GENERAL LAKE STATION         10005586
+  Site.Seq.No Survey.Seq.No Survey.Begin.Date Survey.End.Date                   Survey.Status
+1      110432         51723        2003-04-23      2003-04-23 DATA ENTRY COMPLETE AND PROOFED
+2      110432         51723        2003-04-23      2003-04-23 DATA ENTRY COMPLETE AND PROOFED
+3      110432         51723        2003-04-23      2003-04-23 DATA ENTRY COMPLETE AND PROOFED
+4      110432         51726        2003-04-24      2003-04-24 DATA ENTRY COMPLETE AND PROOFED
+5      110432         51726        2003-04-24      2003-04-24 DATA ENTRY COMPLETE AND PROOFED
+6      110432         51726        2003-04-24      2003-04-24 DATA ENTRY COMPLETE AND PROOFED
   Data.Entry.Name Entry.Date Visit.Fish.Seq.No Visit.Type     Gear Sample.Date Substation.Name
-1          warwir 2010-07-01            683069    NETTING FYKE NET  2010-04-03                
-2          warwir 2010-07-01            683069    NETTING FYKE NET  2010-04-03                
-3          warwir 2010-07-01            683069    NETTING FYKE NET  2010-04-03                
-4          warwir 2010-07-01            683069    NETTING FYKE NET  2010-04-03                
-5          warwir 2010-07-01            683069    NETTING FYKE NET  2010-04-03                
-6          warwir 2010-07-01            683069    NETTING FYKE NET  2010-04-03                
-    Target.Species Fish.Data.Seq.No Net.Number Species.Code Species Number.of.Fish
-1 GAMEFISH SPECIES          8837020          1          X22 WALLEYE              1
-2 GAMEFISH SPECIES          8837021          1          X22 WALLEYE              1
-3 GAMEFISH SPECIES          8837022          1          X22 WALLEYE              1
-4 GAMEFISH SPECIES          8837023          1          X22 WALLEYE              1
-5 GAMEFISH SPECIES          8837030          1          X22 WALLEYE              1
-6 GAMEFISH SPECIES          8837039          1          X22 WALLEYE              1
+1          warwir 2003-06-30            485573    NETTING FYKE NET  2003-04-23            &lt;NA&gt;
+2          warwir 2003-06-30            485573    NETTING FYKE NET  2003-04-23            &lt;NA&gt;
+3          warwir 2003-06-30            485573    NETTING FYKE NET  2003-04-23            &lt;NA&gt;
+4          warwir 2003-06-30            485616    NETTING FYKE NET  2003-04-24            &lt;NA&gt;
+5          warwir 2003-06-30            485616    NETTING FYKE NET  2003-04-24            &lt;NA&gt;
+6          warwir 2003-06-30            485616    NETTING FYKE NET  2003-04-24            &lt;NA&gt;
+  Target.Species Fish.Data.Seq.No Net.Number Species.Code       Species Number.of.Fish
+1        WALLEYE          2104922          4          M50    CREEK CHUB              1
+2        WALLEYE          2104921          4          X15  YELLOW PERCH             12
+3        WALLEYE          2104920          4          L02 NORTHERN PIKE             19
+4        WALLEYE          2106938         H4          X22       WALLEYE              4
+5        WALLEYE          2106940         H7          X22       WALLEYE              1
+6        WALLEYE          2106939         H7          L02 NORTHERN PIKE              1
   Length.or.Lower.Length.IN Length.Upper.IN Length.or.Lower.Length.MM Length.Upper.MM Weight.Pounds
-1                      20.0            20.4                     508.0           518.2            NA
-2                      21.0            21.4                     533.4           543.6            NA
-3                      21.5            21.9                     546.1           556.3            NA
-4                      23.0            23.4                     584.2           594.4            NA
-5                      12.0            12.4                     304.8           315.0            NA
-6                      12.5            12.9                     317.5           327.7            NA
+1                        NA              NA                        NA              NA            NA
+2                        NA              NA                        NA              NA            NA
+3                        NA              NA                        NA              NA            NA
+4                        NA              NA                        NA              NA            NA
+5                        NA              NA                        NA              NA            NA
+6                        NA              NA                        NA              NA            NA
   Weight.Grams Gender Disease Injury.Type Age..observed.annuli. Edge.Counted.Desc Age.Structure
-1           NA      F    &lt;NA&gt;                                NA              &lt;NA&gt;              
-2           NA      F    &lt;NA&gt;                                NA              &lt;NA&gt;              
-3           NA      F    &lt;NA&gt;                                NA              &lt;NA&gt;              
-4           NA      F    &lt;NA&gt;                                NA              &lt;NA&gt;              
-5           NA      U    &lt;NA&gt;                                NA              &lt;NA&gt;              
-6           NA      M    &lt;NA&gt;                                NA              &lt;NA&gt;              
+1           NA   &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;                    NA              &lt;NA&gt;          &lt;NA&gt;
+2           NA   &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;                    NA              &lt;NA&gt;          &lt;NA&gt;
+3           NA   &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;                    NA              &lt;NA&gt;          &lt;NA&gt;
+4           NA   &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;                    NA              &lt;NA&gt;          &lt;NA&gt;
+5           NA   &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;                    NA              &lt;NA&gt;          &lt;NA&gt;
+6           NA   &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;                    NA              &lt;NA&gt;          &lt;NA&gt;
   Mark.Given Mark.Found Second.Mark.Found Tag.Number.Given Second.Tag.Number.Given Tag.Number.Found
-1                                                                             &lt;NA&gt;                 
-2                                                                             &lt;NA&gt;                 
-3                                                                             &lt;NA&gt;                 
-4                                                                             &lt;NA&gt;                 
-5                                                                             &lt;NA&gt;                 
-6                                                                             &lt;NA&gt;                 
-  Second.Tag.Number.Found YOY Entry.Date.1 Last.Update.Date Data.Ent.Name Last.Update.Name
-1                    &lt;NA&gt;       2010-07-01             &lt;NA&gt;        prattf                 
-2                    &lt;NA&gt;       2010-07-01             &lt;NA&gt;        prattf                 
-3                    &lt;NA&gt;       2010-07-01             &lt;NA&gt;        prattf                 
-4                    &lt;NA&gt;       2010-07-01             &lt;NA&gt;        prattf                 
-5                    &lt;NA&gt;       2010-07-01             &lt;NA&gt;        prattf                 
-6                    &lt;NA&gt;       2010-07-01             &lt;NA&gt;        prattf                 
+1       &lt;NA&gt;       &lt;NA&gt;              &lt;NA&gt;             &lt;NA&gt;                    &lt;NA&gt;             &lt;NA&gt;
+2       &lt;NA&gt;       &lt;NA&gt;              &lt;NA&gt;             &lt;NA&gt;                    &lt;NA&gt;             &lt;NA&gt;
+3       &lt;NA&gt;       &lt;NA&gt;              &lt;NA&gt;             &lt;NA&gt;                    &lt;NA&gt;             &lt;NA&gt;
+4       &lt;NA&gt;       &lt;NA&gt;              &lt;NA&gt;             &lt;NA&gt;                    &lt;NA&gt;             &lt;NA&gt;
+5       &lt;NA&gt;       &lt;NA&gt;              &lt;NA&gt;             &lt;NA&gt;                    &lt;NA&gt;             &lt;NA&gt;
+6       &lt;NA&gt;       &lt;NA&gt;              &lt;NA&gt;             &lt;NA&gt;                    &lt;NA&gt;             &lt;NA&gt;
+  Second.Tag.Number.Found  YOY Entry.Date.1 Last.Update.Date Data.Ent.Name Last.Update.Name
+1                    &lt;NA&gt; &lt;NA&gt;   2003-06-30       2006-05-02        prattf           toberj
+2                    &lt;NA&gt; &lt;NA&gt;   2003-06-30       2006-05-02        prattf           toberj
+3                    &lt;NA&gt; &lt;NA&gt;   2003-06-30       2006-05-02        prattf           toberj
+4                    &lt;NA&gt; &lt;NA&gt;   2003-07-02       2006-05-02        prattf           toberj
+5                    &lt;NA&gt; &lt;NA&gt;   2003-07-02       2006-05-02        prattf           toberj
+6                    &lt;NA&gt; &lt;NA&gt;   2003-07-02       2006-05-02        prattf           toberj
   Invalid.Species Non.Standard.Bin Length.Unit.Error Length.Outside.Range Count.Outside.Range
 1            &lt;NA&gt;             &lt;NA&gt;              &lt;NA&gt;                 &lt;NA&gt;                &lt;NA&gt;
 2            &lt;NA&gt;             &lt;NA&gt;              &lt;NA&gt;                 &lt;NA&gt;                &lt;NA&gt;
@@ -201,109 +202,103 @@ code > span.er { font-weight: bold; }
 5        &lt;NA&gt;
 6        &lt;NA&gt;</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">nrow</span>(d)</code></pre>
-<pre><code>[1] 21358</code></pre>
+<pre><code>[1] 108872</code></pre>
 <p></p>
 </div>
 <div id="expanding-counts-of-fish-to-individual-measurements" class="section level1">
 <h1>Expanding Counts of Fish to Individual Measurements</h1>
 <p>Example portion of the Sawyer Co. FM database with ``tallied’’ fish lengths.</p>
 <pre><code> Fish.Data.Seq.No Species Number.of.Fish Length.or.Lower.Length.IN Length.Upper.IN
-          8837020 WALLEYE              1                      20.0            20.4
-          8837040 WALLEYE              1                      14.5            14.9
-          8837041 WALLEYE              2                      15.0            15.4
+          8837567 WALLEYE              1                      12.5            12.9
           8837042 WALLEYE              1                      15.5            15.9
-          8837562 WALLEYE              2                      14.5            14.9
-          8837563 WALLEYE              1                      15.5            15.9
-          8837564 WALLEYE              1                      17.0            17.4</code></pre>
+          8837041 WALLEYE              2                      15.0            15.4
+          8837040 WALLEYE              1                      14.5            14.9
+          8837637 WALLEYE              1                      19.5            19.9
+          8837636 WALLEYE              2                      15.0            15.4
+          8837635 WALLEYE              1                      13.0            13.4</code></pre>
 <p>Example expansion but keeping the length bins.</p>
 <pre><code> Fish.Data.Seq.No Species Length.or.Lower.Length.IN Length.Upper.IN
-          8837020 WALLEYE                      20.0            20.4
-          8837040 WALLEYE                      14.5            14.9
+          8837567 WALLEYE                      12.5            12.9
           8837042 WALLEYE                      15.5            15.9
-          8837563 WALLEYE                      15.5            15.9
-          8837564 WALLEYE                      17.0            17.4
+          8837040 WALLEYE                      14.5            14.9
+          8837637 WALLEYE                      19.5            19.9
+          8837635 WALLEYE                      13.0            13.4
           8837041 WALLEYE                      15.0            15.4
           8837041 WALLEYE                      15.0            15.4
-          8837562 WALLEYE                      14.5            14.9
-          8837562 WALLEYE                      14.5            14.9</code></pre>
+          8837636 WALLEYE                      15.0            15.4
+          8837636 WALLEYE                      15.0            15.4</code></pre>
 <p>Example expansion but adding random digit from within the length bin.</p>
 <pre><code> Fish.Data.Seq.No Species Length.or.Lower.Length.IN Length.Upper.IN  Len         lennote
-          8837020 WALLEYE                      20.0            20.4 20.0 Expanded length
-          8837040 WALLEYE                      14.5            14.9 14.7 Expanded length
+          8837567 WALLEYE                      12.5            12.9 12.7 Expanded length
           8837042 WALLEYE                      15.5            15.9 15.5 Expanded length
-          8837563 WALLEYE                      15.5            15.9 15.6 Expanded length
-          8837564 WALLEYE                      17.0            17.4 17.3 Expanded length
-          8837041 WALLEYE                      15.0            15.4 15.1 Expanded length
+          8837040 WALLEYE                      14.5            14.9 14.6 Expanded length
+          8837637 WALLEYE                      19.5            19.9 19.8 Expanded length
+          8837635 WALLEYE                      13.0            13.4 13.1 Expanded length
           8837041 WALLEYE                      15.0            15.4 15.4 Expanded length
-          8837562 WALLEYE                      14.5            14.9 14.9 Expanded length
-          8837562 WALLEYE                      14.5            14.9 14.9 Expanded length</code></pre>
+          8837041 WALLEYE                      15.0            15.4 15.4 Expanded length
+          8837636 WALLEYE                      15.0            15.4 15.4 Expanded length
+          8837636 WALLEYE                      15.0            15.4 15.2 Expanded length</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="co"># without random digits</span>
 <span class="er">&gt;</span><span class="st"> </span>d1 &lt;-<span class="st"> </span><span class="kw">expandCounts</span>(d,~Number.of.Fish)</code></pre>
-<pre><code>Some rows (13884, 20543) had zero counts in Number.of.Fish.
-17430 rows had an individual measurement.
-3926 rows with multiple measurements were expanded to 36156 rows of individual measurements.</code></pre>
+<pre><code>33 rows had zero counts in Number.of.Fish.
+73782 rows had an individual measurement.
+35027 rows with multiple measurements were expanded to 374231 rows of individual measurements.</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="co"># with random digits</span>
 <span class="er">&gt;</span><span class="st"> </span>d1 &lt;-<span class="st"> </span><span class="kw">expandCounts</span>(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,<span class="dt">new.name=</span><span class="st">&quot;Len&quot;</span>)</code></pre>
-<pre><code>Some rows (13884, 20543) had zero counts in Number.of.Fish.
-17430 rows had an individual measurement.
-3926 rows with multiple measurements were expanded to 36156 rows of individual measurements.</code></pre>
+<pre><code>33 rows had zero counts in Number.of.Fish.
+73782 rows had an individual measurement.
+35027 rows with multiple measurements were expanded to 374231 rows of individual measurements.</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">nrow</span>(d1)</code></pre>
-<pre><code>[1] 53588</code></pre>
+<pre><code>[1] 448046</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="co"># sum of Number.of.Fish variable (note from above that 2 rows had zero fish)</span>
-<span class="er">&gt;</span><span class="st"> </span><span class="kw">sum</span>(d$Number.of.Fish)</code></pre>
-<pre><code>[1] 53586</code></pre>
+<span class="er">&gt;</span><span class="st"> </span><span class="kw">sum</span>(d$Number.of.Fish,<span class="dt">na.rm=</span><span class="ot">TRUE</span>)</code></pre>
+<pre><code>[1] 448013</code></pre>
 </div>
 <div id="individual-variables" class="section level1">
 <h1>Individual Variables</h1>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>d1$Length.or.Lower.Length.IN</code></pre>
-<pre><code>  [1]  5.0  9.8 10.2 10.3 12.0 12.2 12.5  4.1  4.4  4.6  5.0  5.3  6.2  8.4  9.2 11.8 12.2 12.3  9.0
- [20] 11.7  1.8  2.0  2.2  2.3  2.7  2.8  3.2  3.7  4.0  4.1  4.2  4.9  5.6  5.9  6.4  6.6  7.5  7.6
- [39]  7.9  8.0  8.2  8.8  9.0  3.0  3.2  3.4  3.6  3.8  4.9  5.1  5.4  5.6  5.7  6.0  6.7  7.0  7.3
- [58]  7.4  9.0   NA   NA   NA   NA   NA   NA   NA   NA   NA   NA   NA   NA   NA  3.2  3.4  3.5  3.6
- [77]  3.9  4.0  4.2  6.4  6.5  6.7  5.3  5.7  6.0  6.2  6.3  6.5  6.7  6.8  7.0  8.1  8.3  8.6  8.7
- [96]  9.1  3.0  3.6  4.1  4.5  5.6  4.0  4.5  5.5  6.2  6.7  8.5  5.1  6.0  6.2  2.0  8.3  8.6  8.7
-[115]  8.8  9.0  9.1  9.2  9.5  9.7  9.8  9.8  9.9 10.0 10.1 10.2 10.3 10.3 10.3 10.6 10.9 11.2 11.9
-[134] 12.6 12.7 13.0 13.0 13.0 13.3 13.5 14.0 14.0 14.0 14.0 14.5 14.5 14.5 15.0 15.0 15.0 15.5 15.5
-[153] 16.0 16.0 18.5 15.4 15.0 17.3 58.0 61.5 59.7 62.5 55.7 56.4 55.6 55.0 60.9 58.4 46.8 66.3 66.3
-[172] 55.7 55.1 62.2 54.1 60.5 60.1 21.0  9.0 10.2 11.2 11.7 11.8 12.1 12.4  8.8  9.5  9.8  6.0  5.8
-[191]  6.1  7.3 10.2 10.4  9.5 10.1  6.0  6.3  6.8  7.4  6.6  7.0  8.2  6.5  7.0  7.2  7.3  6.3  6.5
-[210]  5.9  6.4  8.4  6.5  9.2  7.8  6.6  7.0  6.5  6.5  6.8  4.9  7.7  7.0  6.5  6.5  6.9  6.6  4.9
-[229]  7.7  7.2  9.0 15.5  7.1  7.0  6.4  6.9  6.2  4.9  6.1  6.9 15.1 10.5  6.4 12.0  4.9  9.6  7.1
-[248]  7.2  6.6  7.1  7.2  4.6  5.4  6.7 11.1  6.8  6.8  7.0  9.0  8.4  4.1  6.8  6.2  8.7  8.0  7.0
-[267]  6.4 29.0  9.1 23.2 20.4 17.4 21.9 20.0 20.1 19.7 17.2 18.1 20.3 16.6 15.5 10.1 16.5 13.1 13.2
-[286]  8.3  6.7  6.7  6.5  6.5  6.9  4.8  6.0  6.7  6.5  6.9  4.4  4.8  6.3  6.7  7.0  6.8  8.9  6.4</code></pre>
+<pre><code>  [1]   NA   NA   NA   NA   NA   NA   NA   NA  2.0  2.6  2.4  2.3   NA 14.5  2.9  4.5  2.5  2.2   NA
+ [20]   NA   NA   NA 17.0 11.4  4.8  6.6  7.3  4.6  7.0  5.9  7.1  6.2  8.5  8.0  7.0  6.6  6.0  4.9
+ [39]  4.8 10.0  9.7  9.3  9.0  8.8  8.2  7.6  7.2  6.7  6.6  5.3  5.1  5.9  5.5  5.4  7.2  8.2  7.5
+ [58]  6.9  6.6  6.5  6.4  6.3  5.5  5.3  5.0  4.9  4.4  7.3  7.1  6.8 13.9 13.2 13.1 11.2 11.1  8.2
+ [77]  7.9  4.0  5.0  3.2  5.8  3.7  3.5  3.0  3.6  4.2  5.5  2.2  2.2  5.2  4.0  3.9  2.5  3.5  3.4
+ [96]  3.0  4.0  4.0  4.8  6.0  6.0  6.0  7.3  4.3  2.1  5.2  3.6  5.5  5.3  3.0  3.3  3.2  2.7  5.0
+[115]  4.3  4.2  3.9  3.8  3.4  2.8  2.7  2.4  6.0  4.4  4.0  3.5  3.3  3.2  3.0  2.8  2.7  8.3  6.0
+[134]  5.6  5.4  5.2  5.0  4.6  3.8  2.9  2.8  3.5  2.2  4.2  5.0  4.3  2.6  2.2  5.0  3.3  3.2  3.0
+[153] 10.0  3.2  4.8  3.6  5.5  6.2  4.3  6.0  4.0  3.8  3.7  3.4  3.1  5.5  5.3  5.2  5.0  4.5  6.0
+[172]  5.5  5.3  4.6  4.4  4.3  4.1  3.7  2.7  2.6  6.0  5.3  5.0  4.0  2.6  2.3  7.4  5.0  5.7  5.8
+[191]  5.2  4.0  3.5  9.0  8.7  8.5  7.7  7.4  6.4  6.2  6.0  5.6  6.7  6.0  3.8  3.5  6.3  4.8  4.7
+[210]  3.8  3.6  3.3  2.7  2.5 10.8  4.7  6.8  3.2  2.8  8.4  7.8  7.7  7.6  7.4  7.3  6.7  6.4  5.7
+[229]  5.6  5.8  5.7  5.6  5.3  2.5  2.2  2.0  5.0  4.8  4.2  4.0  3.7  5.5  5.0  3.0  2.3  1.8  4.4
+[248]  2.3  2.2  7.2  6.5  6.0  4.5  4.0  3.8  3.7  3.5  3.3  3.5  1.6  2.3  2.2 18.2  4.0  4.3  6.4
+[267]  3.7  4.4  4.0 37.1  4.1 35.0 36.2 15.1  5.2  7.1  3.8  5.0  4.2  3.6  4.7  4.0  4.0  3.9  4.5
+[286]  4.2  3.7  4.0  3.6  7.4  6.5  6.8  6.1 27.1  3.7  3.7  4.1  5.6  5.6  6.8 27.6  7.9  6.5  6.5</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>d1$Species</code></pre>
-<pre><code>  [1] BLACK CRAPPIE          BLACK CRAPPIE          BLACK CRAPPIE          BLACK CRAPPIE         
-  [5] BLACK CRAPPIE          BLACK CRAPPIE          BLACK CRAPPIE          BLACK CRAPPIE         
-  [9] BLACK CRAPPIE          BLACK CRAPPIE          BLACK CRAPPIE          BLACK CRAPPIE         
- [13] BLACK CRAPPIE          BLACK CRAPPIE          BLACK CRAPPIE          BLACK CRAPPIE         
- [17] BLACK CRAPPIE          BLACK CRAPPIE          YELLOW PERCH           BLACK CRAPPIE         
- [21] BROOK TROUT            BROOK TROUT            BROOK TROUT            BROOK TROUT           
- [25] BROOK TROUT            BROOK TROUT            BROOK TROUT            BROOK TROUT           
- [29] BROOK TROUT            BROOK TROUT            BROOK TROUT            BROOK TROUT           
- [33] BROOK TROUT            BROOK TROUT            BROOK TROUT            BROOK TROUT           
- [37] BROOK TROUT            BROOK TROUT            BROOK TROUT            BROOK TROUT           
- [41] BROOK TROUT            BROOK TROUT            BROOK TROUT            BROOK TROUT           
- [45] BROOK TROUT            BROOK TROUT            BROOK TROUT            BROOK TROUT           
- [49] BROOK TROUT            BROOK TROUT            BROOK TROUT            BROOK TROUT           
- [53] BROOK TROUT            BROOK TROUT            BROOK TROUT            BROOK TROUT           
- [57] BROOK TROUT            BROOK TROUT            BROOK TROUT            WHITE SUCKER          
- [61] LARGESCALE STONEROLLER WHITE SUCKER           PUMPKINSEED            GOLDEN SHINER         
- [65] GOLDEN SHINER          GOLDEN SHINER          ROCK BASS              BLACK CRAPPIE         
- [69] WHITE SUCKER           WHITE SUCKER           BLACK CRAPPIE          LARGEMOUTH BASS       
- [73] BLUEGILL               BLUEGILL               BLUEGILL               BLUEGILL              
- [77] BLUEGILL               BLUEGILL               BLUEGILL               BLUEGILL              
- [81] BLUEGILL               BLUEGILL               BLACK CRAPPIE          BLACK CRAPPIE         
- [85] BLACK CRAPPIE          BLACK CRAPPIE          BLACK CRAPPIE          BLACK CRAPPIE         
- [89] BLACK CRAPPIE          BLACK CRAPPIE          BLACK CRAPPIE          BLACK CRAPPIE         
- [93] BLACK CRAPPIE          BLACK CRAPPIE          BLACK CRAPPIE          BLACK CRAPPIE         
- [97] YELLOW PERCH           YELLOW PERCH           YELLOW PERCH           YELLOW PERCH          
-[101] YELLOW PERCH           PUMPKINSEED            PUMPKINSEED            PUMPKINSEED           
-[105] PUMPKINSEED            PUMPKINSEED            YELLOW BULLHEAD        GOLDEN SHINER         
-[109] GOLDEN SHINER          GOLDEN SHINER          TADPOLE MADTOM         WALLEYE               
-[113] WALLEYE                WALLEYE                WALLEYE                WALLEYE               
-[117] WALLEYE                WALLEYE                WALLEYE                WALLEYE               
-64 Levels: AMERICAN BROOK LAMPREY (AMMOCOETE) BLACK BULLHEAD BLACK CRAPPIE ... YELLOW PERCH</code></pre>
+<pre><code>  [1] CREEK CHUB       WALLEYE          NORTHERN PIKE    PUMPKINSEED      ROCK BASS       
+  [6] GOLDEN SHINER    BLACK CRAPPIE    MUSKELLUNGE      LARGEMOUTH BASS  BLUEGILL        
+ [11] BLUEGILL         BLUEGILL         LARGEMOUTH BASS  WALLEYE          BLACK BULLHEAD  
+ [16] BLACK CRAPPIE    BLACK CRAPPIE    YELLOW PERCH     NORTHERN PIKE    BLACK CRAPPIE   
+ [21] BLUEGILL         LARGEMOUTH BASS  BROOK TROUT      BROOK TROUT      PUMPKINSEED     
+ [26] YELLOW PERCH     YELLOW PERCH     PUMPKINSEED      BLACK BULLHEAD   YELLOW PERCH    
+ [31] BLACK CRAPPIE    ROCK BASS        BLACK CRAPPIE    YELLOW PERCH     YELLOW PERCH    
+ [36] YELLOW PERCH     YELLOW PERCH     YELLOW PERCH     YELLOW PERCH     BLACK CRAPPIE   
+ [41] BLACK CRAPPIE    BLACK CRAPPIE    BLACK CRAPPIE    BLACK CRAPPIE    BLACK CRAPPIE   
+ [46] BLACK CRAPPIE    BLACK CRAPPIE    BLACK CRAPPIE    BLACK CRAPPIE    BLACK CRAPPIE   
+ [51] BLACK CRAPPIE    GOLDEN SHINER    GOLDEN SHINER    GOLDEN SHINER    LARGEMOUTH BASS 
+ [56] YELLOW PERCH     ROCK BASS        ROCK BASS        ROCK BASS        ROCK BASS       
+ [61] ROCK BASS        ROCK BASS        ROCK BASS        ROCK BASS        ROCK BASS       
+ [66] ROCK BASS        ROCK BASS        PUMPKINSEED      PUMPKINSEED      PUMPKINSEED     
+ [71] LARGEMOUTH BASS  LARGEMOUTH BASS  LARGEMOUTH BASS  LARGEMOUTH BASS  LARGEMOUTH BASS 
+ [76] LARGEMOUTH BASS  LARGEMOUTH BASS  ROCK BASS        PUMPKINSEED      PUMPKINSEED     
+ [81] BLUEGILL         YELLOW PERCH     YELLOW PERCH     YELLOW PERCH     YELLOW PERCH    
+ [86] YELLOW PERCH     YELLOW PERCH     ROCK BASS        ROCK BASS        ROCK BASS       
+ [91] PUMPKINSEED      PUMPKINSEED      PUMPKINSEED      PUMPKINSEED      PUMPKINSEED     
+ [96] PUMPKINSEED      PUMPKINSEED      PUMPKINSEED      PUMPKINSEED      PUMPKINSEED     
+[101] BLUEGILL         BLUEGILL         BLUEGILL         BLUEGILL         ROCK BASS       
+[106] PUMPKINSEED      PUMPKINSEED      YELLOW PERCH     YELLOW PERCH     BLUNTNOSE MINNOW
+[111] ROCK BASS        ROCK BASS        ROCK BASS        PUMPKINSEED      PUMPKINSEED     
+[116] PUMPKINSEED      PUMPKINSEED      PUMPKINSEED      PUMPKINSEED      PUMPKINSEED     
+101 Levels: ALL SPECIES AMERICAN BROOK LAMPREY ... YELLOW PERCH</code></pre>
 <p></p>
 </div>
 <div id="application-assignment" class="section level1">

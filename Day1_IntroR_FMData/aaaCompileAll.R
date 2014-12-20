@@ -1,3 +1,4 @@
+setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 
 library(rmarkdown)
 

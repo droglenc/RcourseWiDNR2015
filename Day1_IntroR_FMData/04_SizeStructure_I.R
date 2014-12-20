@@ -1,52 +1,50 @@
 # 04_SizeStructure_I.Rmd
 
-library(fishWiDNR)   # for setDBClasses(), expandCounts()
+library(fishWiDNR)   # for setDBClasses()
 library(dplyr)       # for filter(), select(), mutate(), group_by(), summarize()
-library(FSA)         # for Summarize(), hist()
+library(FSA)         # for Summarize(), hist(), expandCounts()
 library(lubridate)   # for month()
 
 setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
-d <- read.csv("FMDB_Sawyer.csv",stringsAsFactors=FALSE)
+d <- read.csv("FMDB_Sawyer_MultiYr_APEX.csv",stringsAsFactors=FALSE,na.strings=c("-","NA",""))
 d <- setDBClasses(d,type="RDNR")
 d <- expandCounts(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len")
 d <- mutate(d,Mon=month(Survey.Begin.Date,label=TRUE))
 d <- select(d,Species,Waterbody.Name,Survey.Year,Gear,Survey.Begin.Date,Mon,Len)
 
-Spr13 <- filter(d,Survey.Year==2013,Mon %in% c("Apr","May","Jun"))
-BGSpr13 <- filter(Spr13,Species=="BLUEGILL")
-BGSpr13LC <- filter(BGSpr13,Waterbody.Name=="LAKE CHETAC",Gear=="BOOM SHOCKER")
+Spr <- filter(d,Survey.Year==2013,Mon %in% c("Apr","May","Jun"))
+Spr <- droplevels(Spr)
+BGSpr <- filter(Spr,Species=="BLUEGILL")
+BGSpr <- droplevels(BGSpr)
+BGSprLC <- filter(BGSpr,Waterbody.Name=="LAKE CHETAC",Gear=="BOOM SHOCKER")
+BGSprLC <- droplevels(BGSprLC)
 
-head(BGSpr13LC)
+head(BGSprLC)
 
-Summarize(~Len,data=BGSpr13LC,digits=2)
+Summarize(~Len,data=BGSprLC,digits=2)
 
-hist(~Len,data=BGSpr13LC)
+hist(~Len,data=BGSprLC)
 
-hist(~Len,data=BGSpr13LC,xlab="Total Length (In.)",ylab="Number of Bluegill",
+hist(~Len,data=BGSprLC,xlab="Total Length (In.)",ylab="Number of Bluegill",
      xlim=c(3,9),ylim=c(0,80),col="salmon")
 
-hist(~Len,data=BGSpr13LC,xlab="Total Length (In.)",ylab="Number of Bluegill",
+hist(~Len,data=BGSprLC,xlab="Total Length (In.)",ylab="Number of Bluegill",
      xlim=c(3,9),ylim=c(0,40),breaks=seq(3,9,0.2))
 
-BGSpr13 <- droplevels(BGSpr13)
-BGSpr13 <- group_by(BGSpr13,Waterbody.Name)
+BGSpr <- group_by(BGSpr,Waterbody.Name)
+summarize(BGSpr,n=n(),meanLen=mean(Len))                    # see use of na.rm=TRUE below
 
-summarize(BGSpr13,n=n(),meanLen=mean(Len))
-
-summarize(BGSpr13,n=n(),valid_n=length(Len[!is.na(Len)]),
+summarize(BGSpr,n=n(),valid_n=sum(!is.na(Len)),
            meanLen=mean(Len,na.rm=TRUE),sdLen=sd(Len,na.rm=TRUE),
-           minLen=min(Len,na.rm=TRUE),maxLen=max(Len,na.rm=TRUE)
-          )
+           minLen=min(Len,na.rm=TRUE),maxLen=max(Len,na.rm=TRUE)  )
 
-BGSpr13 <- filter(BGSpr13,Len>=3)
-summarize(BGSpr13,n=n(),valid_n=length(Len[!is.na(Len)]),
+BGSpr <- filter(BGSpr,Len>=3)
+summarize(BGSpr,n=n(),valid_n=sum(!is.na(Len)),
            meanLen=round(mean(Len,na.rm=TRUE),2),sdLen=round(sd(Len,na.rm=TRUE),2),
            minLen=min(Len,na.rm=TRUE),maxLen=max(Len,na.rm=TRUE),
-           PSDQ=perc(Len,6,digits=0),PSD7=perc(Len,7,digits=0),PSDP=perc(Len,8,digits=0)
-          )
+           PSDQ=perc(Len,6,digits=0),PSD7=perc(Len,7,digits=0),PSDP=perc(Len,8,digits=0)  )
 
-Spr13 <- group_by(Spr13,Waterbody.Name,Species)
-summarize(Spr13,n=n(),valid_n=length(Len[!is.na(Len)]),
-           meanLen=round(mean(Len,na.rm=TRUE),2),sdLen=round(sd(Len,na.rm=TRUE),2)
-          )
+Spr <- group_by(Spr,Waterbody.Name,Species)
+summarize(Spr,n=n(),valid_n=sum(!is.na(Len)),
+           meanLen=round(mean(Len,na.rm=TRUE),2),sdLen=round(sd(Len,na.rm=TRUE),2)  )
 

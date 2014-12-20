@@ -14,12 +14,13 @@ source("../knitr_setup.R")
 #Preliminaries
 ```{r results='hide', warning=FALSE, message=FALSE}
 library(fishWiDNR)   # for setDBClasses()
+library(FSA)         # for expandCounts()
 ```
 
 #Loading Data and Initial Examination
 ```{r, cache=TRUE}
 setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
-d <- read.csv("FMDB_Sawyer.csv",stringsAsFactors=FALSE)
+d <- read.csv("FMDB_Sawyer_MultiYr_APEX.csv",stringsAsFactors=FALSE,na.strings=c("-","NA",""))
 d <- setDBClasses(d,type="RDNR")
 str(d)
 ```
@@ -35,7 +36,7 @@ nrow(d)
 Example portion of the Sawyer Co. FM database with ``tallied'' fish lengths.
 ```{r echo=FALSE}
 tmp <- subset(d,Species=="WALLEYE" & Waterbody.Name=="ASHEGON LAKE",select=c("Fish.Data.Seq.No","Species","Number.of.Fish","Length.or.Lower.Length.IN","Length.Upper.IN"))
-tmp <- tmp[c(1,7:9,17:19),]          # tmp was created for demonstration purposes only
+tmp <- tmp[c(1,9:11,24:26),]          # tmp was created for demonstration purposes only
 print(tmp,row.names=FALSE)
 ```
 
@@ -58,7 +59,7 @@ d1 <- expandCounts(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,
 nrow(d1)
 
 # sum of Number.of.Fish variable (note from above that 2 rows had zero fish)
-sum(d$Number.of.Fish)
+sum(d$Number.of.Fish,na.rm=TRUE)
 ```
 
 

@@ -66,17 +66,17 @@ code > span.er { font-weight: bold; }
 
 <div id="preliminaries" class="section level1">
 <h1>Preliminaries</h1>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(fishWiDNR)   <span class="co"># for setDBClasses(), expandCounts()</span>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(fishWiDNR)   <span class="co"># for setDBClasses()</span>
 &gt;<span class="st"> </span><span class="kw">library</span>(dplyr)       <span class="co"># for select(), filter()</span>
-&gt;<span class="st"> </span><span class="kw">library</span>(FSA)         <span class="co"># for Summarize()</span></code></pre>
+&gt;<span class="st"> </span><span class="kw">library</span>(FSA)         <span class="co"># for Summarize(), expandCounts()</span></code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">setwd</span>(<span class="st">&quot;C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData&quot;</span>)
-&gt;<span class="st"> </span>d &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;FMDB_Sawyer.csv&quot;</span>,<span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>)
+&gt;<span class="st"> </span>d &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;FMDB_Sawyer_MultiYr_APEX.csv&quot;</span>,<span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>,<span class="dt">na.strings=</span><span class="kw">c</span>(<span class="st">&quot;-&quot;</span>,<span class="st">&quot;NA&quot;</span>,<span class="st">&quot;&quot;</span>))
 &gt;<span class="st"> </span>d &lt;-<span class="st"> </span><span class="kw">setDBClasses</span>(d,<span class="dt">type=</span><span class="st">&quot;RDNR&quot;</span>)
 &gt;<span class="st"> </span>d &lt;-<span class="st"> </span><span class="kw">expandCounts</span>(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,<span class="dt">new.name=</span><span class="st">&quot;Len&quot;</span>)
 &gt;<span class="st"> </span><span class="kw">names</span>(d)</code></pre>
 <pre><code> [1] &quot;County&quot;                    &quot;Waterbody.Name&quot;            &quot;WBIC&quot;                     
  [4] &quot;Survey.Year&quot;               &quot;Station.Name&quot;              &quot;Swims.Station.Id&quot;         
- [7] &quot;Site.Seq.No&quot;               &quot;Srvy.Seq.No&quot;               &quot;Survey.Begin.Date&quot;        
+ [7] &quot;Site.Seq.No&quot;               &quot;Survey.Seq.No&quot;             &quot;Survey.Begin.Date&quot;        
 [10] &quot;Survey.End.Date&quot;           &quot;Survey.Status&quot;             &quot;Data.Entry.Name&quot;          
 [13] &quot;Entry.Date&quot;                &quot;Visit.Fish.Seq.No&quot;         &quot;Visit.Type&quot;               
 [16] &quot;Gear&quot;                      &quot;Sample.Date&quot;               &quot;Substation.Name&quot;          
@@ -98,130 +98,150 @@ code > span.er { font-weight: bold; }
 <div id="selecting-variables-select" class="section level1">
 <h1>Selecting Variables – select()</h1>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>d1 &lt;-<span class="st"> </span><span class="kw">select</span>(d,Waterbody.Name,Gear,Survey.Year,Species,Len,Weight.Pounds,Gender,Mark.Given)
-&gt;<span class="st"> </span><span class="kw">head</span>(d1)</code></pre>
-<pre><code>   Waterbody.Name     Gear Survey.Year       Species  Len Weight.Pounds Gender Mark.Given
-11   ASHEGON LAKE FYKE NET        2010 BLACK CRAPPIE  5.0            NA                  
-12   ASHEGON LAKE FYKE NET        2010 BLACK CRAPPIE  9.8            NA                  
-13   ASHEGON LAKE FYKE NET        2010 BLACK CRAPPIE 10.2            NA                  
-14   ASHEGON LAKE FYKE NET        2010 BLACK CRAPPIE 10.3            NA                  
-15   ASHEGON LAKE FYKE NET        2010 BLACK CRAPPIE 12.0            NA                  
-16   ASHEGON LAKE FYKE NET        2010 BLACK CRAPPIE 12.2            NA                  </code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">tail</span>(d1)</code></pre>
-<pre><code>      Waterbody.Name     Gear Survey.Year Species  Len Weight.Pounds Gender Mark.Given
-52724      TEAL LAKE FYKE NET        2010 WALLEYE 15.4            NA      M           
-52725      TEAL LAKE FYKE NET        2010 WALLEYE 15.3            NA      M           
-52726      TEAL LAKE FYKE NET        2010 WALLEYE 17.2            NA      M           
-52727      TEAL LAKE FYKE NET        2010 WALLEYE 17.3            NA      M           
-52728      TEAL LAKE FYKE NET        2010 WALLEYE 17.7            NA      M           
-52729      TEAL LAKE FYKE NET        2010 WALLEYE 17.6            NA      M           </code></pre>
+&gt;<span class="st"> </span><span class="kw">headtail</span>(d1)</code></pre>
+<pre><code>        Waterbody.Name         Gear Survey.Year         Species  Len Weight.Pounds Gender
+1      GRINDSTONE LAKE     FYKE NET        2003      CREEK CHUB   NA            NA   &lt;NA&gt;
+2      GRINDSTONE LAKE     FYKE NET        2003         WALLEYE   NA            NA   &lt;NA&gt;
+3      GRINDSTONE LAKE     FYKE NET        2003   NORTHERN PIKE   NA            NA   &lt;NA&gt;
+448038   LAKE CHIPPEWA BOOM SHOCKER        2002         WALLEYE 13.2            NA   &lt;NA&gt;
+448039     ISLAND LAKE BOOM SHOCKER        2007 LARGEMOUTH BASS  7.4            NA   &lt;NA&gt;
+448043  BLAISDELL LAKE BOOM SHOCKER        2006     MUSKELLUNGE 13.5            NA   &lt;NA&gt;
+       Mark.Given
+1            &lt;NA&gt;
+2            &lt;NA&gt;
+3            &lt;NA&gt;
+448038       &lt;NA&gt;
+448039       &lt;NA&gt;
+448043       &lt;NA&gt;</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">select</span>(d,County:Swims.Station.Id)
-&gt;<span class="st"> </span><span class="kw">head</span>(tmp)</code></pre>
-<pre><code>   County Waterbody.Name    WBIC Survey.Year                      Station.Name Swims.Station.Id
-11 SAWYER   ASHEGON LAKE 2448800        2010 ASHEGON LAKE_GENERAL LAKE STATION         10005674
-12 SAWYER   ASHEGON LAKE 2448800        2010 ASHEGON LAKE_GENERAL LAKE STATION         10005674
-13 SAWYER   ASHEGON LAKE 2448800        2010 ASHEGON LAKE_GENERAL LAKE STATION         10005674
-14 SAWYER   ASHEGON LAKE 2448800        2010 ASHEGON LAKE_GENERAL LAKE STATION         10005674
-15 SAWYER   ASHEGON LAKE 2448800        2010 ASHEGON LAKE_GENERAL LAKE STATION         10005674
-16 SAWYER   ASHEGON LAKE 2448800        2010 ASHEGON LAKE_GENERAL LAKE STATION         10005674</code></pre>
+&gt;<span class="st"> </span><span class="kw">headtail</span>(tmp)</code></pre>
+<pre><code>       County  Waterbody.Name    WBIC Survey.Year                         Station.Name
+1      SAWYER GRINDSTONE LAKE 2391200        2003 GRINDSTONE LAKE_GENERAL LAKE STATION
+2      SAWYER GRINDSTONE LAKE 2391200        2003 GRINDSTONE LAKE_GENERAL LAKE STATION
+3      SAWYER GRINDSTONE LAKE 2391200        2003 GRINDSTONE LAKE_GENERAL LAKE STATION
+448038 SAWYER   LAKE CHIPPEWA 2399700        2002   LAKE CHIPPEWA_GENERAL LAKE STATION
+448039 SAWYER     ISLAND LAKE 2381800        2007     ISLAND LAKE_GENERAL LAKE STATION
+448043 SAWYER  BLAISDELL LAKE 2402200        2006  BLAISDELL LAKE_GENERAL LAKE STATION
+       Swims.Station.Id
+1              10005586
+2              10005586
+3              10005586
+448038         10005605
+448039         10005570
+448043         10005611</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">select</span>(d,-(Station.Name:Status.Code))
-&gt;<span class="st"> </span><span class="kw">head</span>(tmp)</code></pre>
-<pre><code>   County Waterbody.Name    WBIC Survey.Year  Len         lennote
-11 SAWYER   ASHEGON LAKE 2448800        2010  5.0 Observed length
-12 SAWYER   ASHEGON LAKE 2448800        2010  9.8 Observed length
-13 SAWYER   ASHEGON LAKE 2448800        2010 10.2 Observed length
-14 SAWYER   ASHEGON LAKE 2448800        2010 10.3 Observed length
-15 SAWYER   ASHEGON LAKE 2448800        2010 12.0 Observed length
-16 SAWYER   ASHEGON LAKE 2448800        2010 12.2 Observed length</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">select</span>(d,<span class="kw">starts_with</span>(<span class="st">&quot;Length&quot;</span>))   <span class="co"># there is also an ends_with</span>
+&gt;<span class="st"> </span><span class="kw">headtail</span>(tmp)</code></pre>
+<pre><code>       County  Waterbody.Name    WBIC Survey.Year  Len         lennote
+1      SAWYER GRINDSTONE LAKE 2391200        2003   NA Observed length
+2      SAWYER GRINDSTONE LAKE 2391200        2003   NA Observed length
+3      SAWYER GRINDSTONE LAKE 2391200        2003   NA Observed length
+448038 SAWYER   LAKE CHIPPEWA 2399700        2002 13.2 Expanded length
+448039 SAWYER     ISLAND LAKE 2381800        2007  7.4 Expanded length
+448043 SAWYER  BLAISDELL LAKE 2402200        2006 13.5 Expanded length</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">select</span>(d,<span class="kw">starts_with</span>(<span class="st">&quot;Length&quot;</span>))                        <span class="co"># there is also an ends_with</span>
 &gt;<span class="st"> </span><span class="kw">names</span>(tmp)</code></pre>
 <pre><code>[1] &quot;Length.or.Lower.Length.IN&quot; &quot;Length.Upper.IN&quot;           &quot;Length.or.Lower.Length.MM&quot;
 [4] &quot;Length.Upper.MM&quot;           &quot;Length.Unit.Error&quot;         &quot;Length.Outside.Range&quot;     </code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">select</span>(d,Srvy.Seq.No,Species,Len,<span class="kw">contains</span>(<span class="st">&quot;Mark&quot;</span>))
-&gt;<span class="st"> </span><span class="kw">head</span>(tmp)</code></pre>
-<pre><code>   Srvy.Seq.No       Species  Len Mark.Given Mark.Found Second.Mark.Found
-11    56064296 BLACK CRAPPIE  5.0                                        
-12    56064296 BLACK CRAPPIE  9.8                                        
-13    56064296 BLACK CRAPPIE 10.2                                        
-14    56064296 BLACK CRAPPIE 10.3                                        
-15    56064296 BLACK CRAPPIE 12.0                                        
-16    56064296 BLACK CRAPPIE 12.2                                        </code></pre>
 <p></p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">select</span>(d,Survey.Seq.No,Species,Len,<span class="kw">contains</span>(<span class="st">&quot;Mark&quot;</span>))
+&gt;<span class="st"> </span><span class="kw">headtail</span>(tmp)</code></pre>
+<pre><code>       Survey.Seq.No         Species  Len Mark.Given Mark.Found Second.Mark.Found
+1              51723      CREEK CHUB   NA       &lt;NA&gt;       &lt;NA&gt;              &lt;NA&gt;
+2              51726         WALLEYE   NA       &lt;NA&gt;       &lt;NA&gt;              &lt;NA&gt;
+3              51726   NORTHERN PIKE   NA       &lt;NA&gt;       &lt;NA&gt;              &lt;NA&gt;
+448038         51356         WALLEYE 13.2       &lt;NA&gt;       &lt;NA&gt;              &lt;NA&gt;
+448039         97739 LARGEMOUTH BASS  7.4       &lt;NA&gt;       &lt;NA&gt;              &lt;NA&gt;
+448043         94228     MUSKELLUNGE 13.5       &lt;NA&gt;       &lt;NA&gt;              &lt;NA&gt;</code></pre>
 </div>
 <div id="selecting-individuals-filter" class="section level1">
 <h1>Selecting Individuals – filter()</h1>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">levels</span>(d1$Gear)</code></pre>
-<pre><code>[1] &quot;BACKPACK SHOCKER&quot;  &quot;BOOM SHOCKER&quot;      &quot;BOTTOM GILL NET&quot;   &quot;FYKE NET&quot;         
-[5] &quot;MINI BOOM SHOCKER&quot; &quot;STREAM SHOCKER&quot;   </code></pre>
+<pre><code> [1] &quot;BACKPACK SHOCKER&quot;                       &quot;BOOM SHOCKER&quot;                          
+ [3] &quot;BOTTOM GILL NET&quot;                        &quot;DIP NET&quot;                               
+ [5] &quot;FLOATING GILL NET&quot;                      &quot;FYKE NET&quot;                              
+ [7] &quot;HOOK AND LINE&quot;                          &quot;LONG LINE SHOCKER&quot;                     
+ [9] &quot;MINI BOOM SHOCKER&quot;                      &quot;MINI FYKE NET&quot;                         
+[11] &quot;MINI FYKE NET WITH TURTLE EXCLUSION&quot;    &quot;MINI FYKE NET WITHOUT TURTLE EXCLUSION&quot;
+[13] &quot;SEINE&quot;                                  &quot;STREAM SHOCKER&quot;                        </code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">xtabs</span>(~Gear,<span class="dt">data=</span>d1)</code></pre>
 <pre><code>Gear
- BACKPACK SHOCKER      BOOM SHOCKER   BOTTOM GILL NET          FYKE NET MINI BOOM SHOCKER 
-             1049             18944               182             25177               386 
-   STREAM SHOCKER 
-             7850 </code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">xtabs</span>(~Waterbody.Name+Gear,<span class="dt">data=</span>d1)      <span class="co"># only partial results shown</span></code></pre>
-<pre><code>                          Gear
-Waterbody.Name             BACKPACK SHOCKER BOOM SHOCKER BOTTOM GILL NET FYKE NET
-  ASHEGON LAKE                            0            0               0       98
-  BADGER CREEK                          105            0               0        0
-  BARBER LAKE                             0          661               0     2179
-  BARKER LAKE                             0            0              19        0
-  BILLY BOY FLOWAGE                       0            0               0      104
-  BLACK DAN LAKE                          0          554               0      953
-  BLAISDELL LAKE                          0            0               7        0
-  BLUEBERRY LAKE                          0           61               0        0
-  BRUNET RIVER                            0            0               0        0
-  CHIPPANAZIE CREEK                      69            0               0        0
-  CHIPPEWA RIVER                          0            0             140        0
-  CONNORS LAKE                            0          735               0     2126
-  DURPHEE LAKE                            0          693               0      386
-  EAST FORK CHIPPEWA RIVER                0            0               0        0
-  EDDY CREEK                              0            0               0        0</code></pre>
+                      BACKPACK SHOCKER                           BOOM SHOCKER 
+                                  9467                                 131432 
+                       BOTTOM GILL NET                                DIP NET 
+                                   342                                    189 
+                     FLOATING GILL NET                               FYKE NET 
+                                  2883                                 193217 
+                         HOOK AND LINE                      LONG LINE SHOCKER 
+                                  1688                                     72 
+                     MINI BOOM SHOCKER                          MINI FYKE NET 
+                                  4479                                  15525 
+   MINI FYKE NET WITH TURTLE EXCLUSION MINI FYKE NET WITHOUT TURTLE EXCLUSION 
+                                 13873                                  24856 
+                                 SEINE                         STREAM SHOCKER 
+                                  2458                                  47565 </code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">xtabs</span>(~Waterbody.Name+Gear,<span class="dt">data=</span>d1)                           <span class="co"># only partial results shown</span></code></pre>
+<pre><code>                   Gear
+Waterbody.Name      BACKPACK SHOCKER BOOM SHOCKER BOTTOM GILL NET DIP NET
+  ALDER CREEK                    182            0               0       0
+  ASHEGON LAKE                     0           58               0       0
+  BADGER CREEK                   105            0               0       0
+  BARBER CREEK                    90            0               0       0
+  BARBER LAKE                      0          979               0       0
+  BARKER LAKE                      0          381              25       0
+  BEAVER CREEK                     0            0               0       0
+  BENSON CREEK                    74            0               0       0
+  BILLY BOY FLOWAGE                0           92               0       0
+  BLACK DAN LAKE                   0         1732               0       0
+  BLACK LAKE                       0          213               0       0
+  BLAISDELL LAKE                   0          404              41       0
+  BLUEBERRY CREEK                 52            0               0       0
+  BLUEBERRY LAKE                   0          979               0       0
+  BRUNET RIVER                   133            0               0       0</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">filter</span>(d1,Waterbody.Name==<span class="st">&quot;BARBER LAKE&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">xtabs</span>(~Waterbody.Name,tmp)               <span class="co"># only partial results shown</span></code></pre>
+&gt;<span class="st"> </span><span class="kw">xtabs</span>(~Waterbody.Name,<span class="dt">data=</span>tmp)                               <span class="co"># only partial results shown</span></code></pre>
 <pre><code>Waterbody.Name
-            ASHEGON LAKE             BADGER CREEK              BARBER LAKE              BARKER LAKE 
-                       0                        0                     2840                        0 
-       BILLY BOY FLOWAGE           BLACK DAN LAKE           BLAISDELL LAKE           BLUEBERRY LAKE 
-                       0                        0                        0                        0 
-            BRUNET RIVER        CHIPPANAZIE CREEK           CHIPPEWA RIVER             CONNORS LAKE 
-                       0                        0                        0                        0 
-            DURPHEE LAKE EAST FORK CHIPPEWA RIVER               EDDY CREEK           FLAMBEAU RIVER 
-                       0                        0                        0                        0 </code></pre>
+      ALDER CREEK      ASHEGON LAKE      BADGER CREEK      BARBER CREEK       BARBER LAKE 
+                0                 0                 0                 0              3727 
+      BARKER LAKE      BEAVER CREEK      BENSON CREEK BILLY BOY FLOWAGE    BLACK DAN LAKE 
+                0                 0                 0                 0                 0 
+       BLACK LAKE    BLAISDELL LAKE   BLUEBERRY CREEK    BLUEBERRY LAKE      BRUNET RIVER 
+                0                 0                 0                 0                 0 
+    CALLAHAN LAKE 
+                0 </code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">droplevels</span>(tmp)
-&gt;<span class="st"> </span><span class="kw">xtabs</span>(~Waterbody.Name,tmp)</code></pre>
+&gt;<span class="st"> </span><span class="kw">xtabs</span>(~Waterbody.Name,<span class="dt">data=</span>tmp)</code></pre>
 <pre><code>Waterbody.Name
 BARBER LAKE 
-       2840 </code></pre>
+       3727 </code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">filter</span>(d1,Waterbody.Name %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;BARBER LAKE&quot;</span>,<span class="st">&quot;LAKE CHETAC&quot;</span>))
 &gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">droplevels</span>(tmp)
-&gt;<span class="st"> </span><span class="kw">xtabs</span>(~Waterbody.Name,tmp)</code></pre>
+&gt;<span class="st"> </span><span class="kw">xtabs</span>(~Waterbody.Name,<span class="dt">data=</span>tmp)</code></pre>
 <pre><code>Waterbody.Name
 BARBER LAKE LAKE CHETAC 
-       2840        6946 </code></pre>
+       3727       14827 </code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>LCblg &lt;-<span class="st"> </span><span class="kw">filter</span>(d1,Waterbody.Name==<span class="st">&quot;LAKE CHETAC&quot;</span>,Species==<span class="st">&quot;BLUEGILL&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">xtabs</span>(~Gear,LCblg)</code></pre>
+&gt;<span class="st"> </span>LCblg &lt;-<span class="st"> </span><span class="kw">droplevels</span>(LCblg)
+&gt;<span class="st"> </span><span class="kw">xtabs</span>(~Gear,<span class="dt">data=</span>LCblg)</code></pre>
 <pre><code>Gear
- BACKPACK SHOCKER      BOOM SHOCKER   BOTTOM GILL NET          FYKE NET MINI BOOM SHOCKER 
-                0               398                 0               191                 0 
-   STREAM SHOCKER 
-                0 </code></pre>
+ BOOM SHOCKER      FYKE NET MINI FYKE NET 
+         1005           191           327 </code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>LCblg &lt;-<span class="st"> </span><span class="kw">filter</span>(LCblg,Gear==<span class="st">&quot;BOOM SHOCKER&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">Summarize</span>(~Len,<span class="dt">data=</span>LCblg)</code></pre>
+&gt;<span class="st"> </span><span class="kw">Summarize</span>(~Len,<span class="dt">data=</span>LCblg,<span class="dt">digits=</span><span class="dv">2</span>)</code></pre>
 <pre><code>       n     mean       sd      min       Q1   median       Q3      max percZero 
- 398.000    5.984    1.163    3.000    5.000    6.200    6.900    8.900    0.000 </code></pre>
+ 1005.00     6.16     1.08     2.80     5.50     6.20     7.00     9.50     0.00 </code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>LCblgPREF &lt;-<span class="st"> </span><span class="kw">filter</span>(LCblg,Len&gt;=<span class="dv">7</span>)
-&gt;<span class="st"> </span><span class="kw">Summarize</span>(~Len,<span class="dt">data=</span>LCblgPREF)</code></pre>
+&gt;<span class="st"> </span><span class="kw">Summarize</span>(~Len,<span class="dt">data=</span>LCblgPREF,<span class="dt">digits=</span><span class="dv">2</span>)</code></pre>
 <pre><code>       n     mean       sd      min       Q1   median       Q3      max percZero 
- 95.0000   7.3632   0.3461   7.0000   7.1000   7.3000   7.5000   8.9000   0.0000 </code></pre>
+  259.00     7.45     0.43     7.00     7.20     7.30     7.65     9.50     0.00 </code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>sturgWts &lt;-<span class="st"> </span><span class="kw">filter</span>(d1,Species==<span class="st">&quot;LAKE STURGEON&quot;</span>,!<span class="kw">is.na</span>(Weight.Pounds))
-&gt;<span class="st"> </span><span class="kw">head</span>(sturgWts)</code></pre>
-<pre><code>  Waterbody.Name            Gear Survey.Year       Species  Len Weight.Pounds Gender Mark.Given
-1    BARKER LAKE BOTTOM GILL NET        2010 LAKE STURGEON 58.0          43.9      U        PIT
-2    BARKER LAKE BOTTOM GILL NET        2010 LAKE STURGEON 61.5          70.5      U        PIT
-3    BARKER LAKE BOTTOM GILL NET        2010 LAKE STURGEON 59.7          55.6      U        PIT
-4    BARKER LAKE BOTTOM GILL NET        2010 LAKE STURGEON 62.5          66.5      U           
-5    BARKER LAKE BOTTOM GILL NET        2010 LAKE STURGEON 55.7          38.8      U           
-6    BARKER LAKE BOTTOM GILL NET        2010 LAKE STURGEON 56.4          45.7      U        PIT</code></pre>
+&gt;<span class="st"> </span><span class="kw">headtail</span>(sturgWts)</code></pre>
+<pre><code>    Waterbody.Name            Gear Survey.Year       Species  Len Weight.Pounds Gender Mark.Given
+1   CHIPPEWA RIVER         DIP NET        2006 LAKE STURGEON 54.3          32.0      M        PIT
+2   CHIPPEWA RIVER         DIP NET        2006 LAKE STURGEON 59.7          47.0      F        PIT
+3   CHIPPEWA RIVER         DIP NET        2006 LAKE STURGEON 54.8          37.0      M        PIT
+415    BARKER LAKE BOTTOM GILL NET        2012 LAKE STURGEON 58.3          34.2   &lt;NA&gt;        PIT
+416    BARKER LAKE BOTTOM GILL NET        2012 LAKE STURGEON 60.9          50.6   &lt;NA&gt;        PIT
+417    BARKER LAKE BOTTOM GILL NET        2012 LAKE STURGEON 60.9          50.6   &lt;NA&gt;        PIT</code></pre>
 
 </div>
 <div id="application-assignment" class="section level1">

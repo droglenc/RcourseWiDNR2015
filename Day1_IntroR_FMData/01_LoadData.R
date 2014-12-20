@@ -3,9 +3,10 @@
 # Thus, running this script will give somewhat different results.
 
 library(fishWiDNR)   # for setDBClasses()
+library(FSA)         # for expandCounts()
 
 setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
-d <- read.csv("FMDB_Sawyer.csv",stringsAsFactors=FALSE)
+d <- read.csv("FMDB_Sawyer_MultiYr_APEX.csv",stringsAsFactors=FALSE,na.strings=c("-","NA",""))
 d <- setDBClasses(d,type="RDNR")
 str(d)
 
@@ -20,7 +21,7 @@ d1 <- expandCounts(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,
 nrow(d1)
 
 # sum of Number.of.Fish variable (note from above that 2 rows had zero fish)
-sum(d$Number.of.Fish)
+sum(d$Number.of.Fish,na.rm=TRUE)
 
 d1$Length.or.Lower.Length.IN
 
