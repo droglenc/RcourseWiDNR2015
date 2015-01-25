@@ -8,10 +8,10 @@ library(lubridate)   # for month()
 
 setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("FMDB_Sawyer_MultiYr_APEX.csv",stringsAsFactors=FALSE,na.strings=c("-","NA","")) %>%
-     setDBClasses(type="RDNR") %>%
-     expandCounts(~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len") %>%
-     mutate(Mon=month(Survey.Begin.Date,label=TRUE),Species1=capFirst(Species)) %>%
-     select(Species,Species1,Waterbody.Name,Survey.Year,Mon,Gear,Len)
+      setDBClasses(type="RDNR") %>%
+      expandCounts(~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len") %>%
+      mutate(Mon=month(Survey.Begin.Date,label=TRUE),Species1=capFirst(Species)) %>%
+      select(Species,Species1,Waterbody.Name,Survey.Year,Mon,Gear,Len)
 
 Spr <- filter(d,Survey.Year==2013,Mon %in% c("Apr","May","Jun")) %>% droplevels()
 BGSpr <- filter(Spr,Species=="BLUEGILL") %>% droplevels()
@@ -22,8 +22,8 @@ head(BGSprLC)
 
 brks <- psdVal("Bluegill",units="in",addLens=7)
 BGSprLC %<>% mutate(lcat=lencat(Len,breaks=brks),
-                      lcat1=lencat(Len,breaks=brks,use.names=TRUE),
-                      lcat2=lencat(Len,breaks=brks,use.names=TRUE,drop.levels=TRUE))
+                     lcat1=lencat(Len,breaks=brks,use.names=TRUE),
+                     lcat2=lencat(Len,breaks=brks,use.names=TRUE,drop.levels=TRUE))
 head(BGSprLC)
 
 xtabs(~lcat,data=BGSprLC)

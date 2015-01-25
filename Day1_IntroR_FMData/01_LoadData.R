@@ -10,7 +10,7 @@ d <- read.csv("FMDB_Sawyer_MultiYr_APEX.csv",stringsAsFactors=FALSE,na.strings=c
 d <- setDBClasses(d,type="RDNR")
 str(d)
 
-head(d)   # also can use tail(d)
+head(d)   # also can use tail(d) or headtail(d)
 nrow(d)
 
 # without random digits
@@ -20,7 +20,7 @@ d1 <- expandCounts(d,~Number.of.Fish)
 d1 <- expandCounts(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len")
 nrow(d1)
 
-# sum of Number.of.Fish variable (note from above that 2 rows had zero fish)
+# sum of Number.of.Fish variable (note from above the number of rows that had zero fish)
 sum(d$Number.of.Fish,na.rm=TRUE)
 
 d1$Length.or.Lower.Length.IN

@@ -1,7 +1,7 @@
 ---
 title: "Size Structure I"
 author: "Derek H. Ogle, Northland College"
-date: "2-Mar-2015"
+date: "4-Mar-2015"
 output: pdf_document
 geometry: margin=0.6in
 ---
@@ -41,9 +41,9 @@ So ...
 
 * `Spr` has all species sampled from all water bodies in the Spring of 2013.
 * `BGSpr` has only Bluegill sampled from all water bodies in the Spring of 2013.
-* `BGSprLC` has only Bluegill sampled with boom schokers from Lake Chetac in the Spring of 2013.
+* `BGSprLC` has only Bluegill sampled with boom shockers from Lake Chetac in the Spring of 2013.
 
-... and they all look roughly like this ...
+... and they all look similar to this ...
 
 ```{r echo=FALSE}
 head(BGSprLC)

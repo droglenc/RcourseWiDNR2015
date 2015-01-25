@@ -1,7 +1,7 @@
 ---
 title: "Filter Data"
 author: "Derek H. Ogle, Northland College"
-date: "2-Mar-2015"
+date: "4-Mar-2015"
 output: pdf_document
 geometry: margin=0.6in
 ---

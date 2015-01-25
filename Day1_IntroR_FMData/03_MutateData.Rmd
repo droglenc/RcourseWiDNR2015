@@ -1,7 +1,7 @@
 ---
 title: "Add and Rename Variables"
 author: "Derek H. Ogle, Northland College"
-date: "2-Mar-2015"
+date: "4-Mar-2015"
 output: pdf_document
 geometry: margin=0.6in
 ---
@@ -97,7 +97,7 @@ write.csv(tmp,"LKS_Barker.csv",row.names=FALSE)
 Create a script that performs the following tasks:
 
 1. Load and prepare (set classes, expand counts, examine structure) your FM data in R (**HINT:** *use all or some of your scripts from previous application assignments*).
-1. Rename two or more variables that have names that annoy you (or change all names according to the definitions in `changeDBNames()`).
+1. Rename two or more variables to names that better fit your usage (or change all names according to the definitions in `changeDBNames()`).
 1. Create a new variable that has the species names with only the first letters capitalized.
 1. Create a new variable that has the water body names with only the first letters capitalized.
 1. Create a new variable that is the length in mm computed from the length in inches (even though this is already in the FM database).

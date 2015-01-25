@@ -1,7 +1,7 @@
 ---
 title: "Size Structure II"
 author: "Derek H. Ogle, Northland College"
-date: "2-Mar-2015"
+date: "4-Mar-2015"
 output: pdf_document
 geometry: margin=0.6in
 ---
@@ -23,10 +23,10 @@ library(lubridate)   # for month()
 ```{r, cache=TRUE, message=FALSE}
 setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("FMDB_Sawyer_MultiYr_APEX.csv",stringsAsFactors=FALSE,na.strings=c("-","NA","")) %>%
-     setDBClasses(type="RDNR") %>%
-     expandCounts(~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len") %>%
-     mutate(Mon=month(Survey.Begin.Date,label=TRUE),Species1=capFirst(Species)) %>%
-     select(Species,Species1,Waterbody.Name,Survey.Year,Mon,Gear,Len)
+      setDBClasses(type="RDNR") %>%
+      expandCounts(~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len") %>%
+      mutate(Mon=month(Survey.Begin.Date,label=TRUE),Species1=capFirst(Species)) %>%
+      select(Species,Species1,Waterbody.Name,Survey.Year,Mon,Gear,Len)
 ```
 ```{r, cache=TRUE, message=FALSE}
 Spr <- filter(d,Survey.Year==2013,Mon %in% c("Apr","May","Jun")) %>% droplevels()
@@ -41,7 +41,7 @@ So ...
 * `BGSprLC` has only Bluegill sampled with boom shockers from Lake Chetac in the Spring of 2013.
 * `SprLC` has all species sampled from Lake Chetac (in all gears) in the Spring of 2013.
 
-... and they all look roughly like this ...
+... and they all look similar to this ...
 
 ```{r echo=FALSE}
 head(BGSprLC)
@@ -51,12 +51,12 @@ head(BGSprLC)
 
 \newpage
 
-#Single Waterbody and Species PSDs
+#PSDs Single Waterbody and Species
 ```{r}
 brks <- psdVal("Bluegill",units="in",addLens=7)
 BGSprLC %<>% mutate(lcat=lencat(Len,breaks=brks),
-                      lcat1=lencat(Len,breaks=brks,use.names=TRUE),
-                      lcat2=lencat(Len,breaks=brks,use.names=TRUE,drop.levels=TRUE))
+                     lcat1=lencat(Len,breaks=brks,use.names=TRUE),
+                     lcat2=lencat(Len,breaks=brks,use.names=TRUE,drop.levels=TRUE))
 head(BGSprLC)
 ```
 
@@ -77,7 +77,7 @@ rcum/rcum["stock"]*100
 
 \newpage
 
-#Multiple Waterbodies and Single Species PSDs
+#PSDs for Multiple Waterbodies and Single Species 
 
 ```{r}
 BGSpr %<>% mutate(lcat2=lencat(Len,breaks=brks,use.names=TRUE,drop.levels=TRUE))
@@ -89,7 +89,7 @@ rcum/rcum[,"stock"]*100
 ```
 
 
-#Multiple Species in a Single Waterbody PSDs
+#PSDs for Multiple Species in a Single Waterbody
 
 ```{r}
 SprLC %<>% mutate(lcat2=psdAdd(Len,Species1,units="in"))
@@ -102,14 +102,14 @@ rcum/rcum[,"stock"]*100
 ```
 
 
-# Repeat for 2014
-
-
 # Application Assignment
 
 Create a script that performs the following tasks:
 
 1. Load and prepare your FM data in R (**HINT:** *use all or some of your scripts from previous application assignments*).
-1. MORE HERE.
+1. Compute the PSDs for one species in one waterbody in one year.
+1. Compute the PSDs for one species in all waterbodies in one year in your FM data.
+1. Compute the PSDs for all species in one waterbody in one year in your FM data.
+1. (*Time Permitting*) Repeat any of the above for another year.
 
 **Save your script!**
