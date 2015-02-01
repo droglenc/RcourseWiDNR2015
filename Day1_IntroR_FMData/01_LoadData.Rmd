@@ -20,7 +20,7 @@ library(FSA)         # for expandCounts()
 #Loading Data and Initial Examination
 ```{r, cache=TRUE}
 setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
-d <- read.csv("FMDB_Sawyer_MultiYr_APEX.csv",stringsAsFactors=FALSE,na.strings=c("-","NA",""))
+d <- read.csv("SAWYER_fish_raw_data_012915.csv",stringsAsFactors=FALSE,na.strings=c("-","NA",""))
 d <- setDBClasses(d,type="RDNR")
 str(d)
 ```
