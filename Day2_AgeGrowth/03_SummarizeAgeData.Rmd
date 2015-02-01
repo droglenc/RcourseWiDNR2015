@@ -1,0 +1,64 @@
+---
+title: "Summarizing Age Data"
+author: "Derek H. Ogle, Northland College"
+date: "5-Mar-2015"
+output: pdf_document
+geometry: margin=0.5in
+---
+
+```{r echo=FALSE, results='hide'}
+library(knitr)
+source("../knitr_setup.R")
+```
+
+\vspace{-24pt}
+#Preliminaries
+\vspace{-12pt}
+```{r results='hide', fig.show='hide', message=FALSE, warning=FALSE}
+source("02_AgeLengthKey.R")
+```
+
+\vspace{-18pt}
+```{r}
+ls()
+```
+
+\vspace{-18pt}
+```{r}
+hist(~Age..observed.annuli.,data=waeM.fnl,xlab="Age (yrs)",ylab="Male Walleye Captured")
+
+histStack(Length.or.Lower.Length.IN~Age..observed.annuli.,data=waeM.fnl,xlab="Total Length (in.)",
+           col="gray.colors",right=FALSE,legend.pos="topright")
+
+waeM.sumlen <- waeM.fnl %>%
+  group_by(Age..observed.annuli.) %>%
+  summarize(n=n(),mean=mean(Length.or.Lower.Length.IN),sd=sd(Length.or.Lower.Length.IN),
+            min=min(Length.or.Lower.Length.IN),max=max(Length.or.Lower.Length.IN))
+waeM.sumlen
+
+plotH(n~Age..observed.annuli.,data=waeM.sumlen,xlab="Age (yrs)",ylab="Male Walleye Captured",
+       xlim=c(1.5,9.5),width=0.9)
+```
+
+\newpage
+```{r}
+plot(Length.or.Lower.Length.IN~Age..observed.annuli.,data=waeM.fnl,pch=16,col=rgb(0,0,0,1/10),
+      xlab="Age",ylab="Total Length (mm)",ylim=c(10,21))
+lines(mean~Age..observed.annuli.,data=waeM.sumlen,lwd=2,lty=2)
+```
+
+# Construct and Aply an Age-Length Key -- Females
+Copy the code from above and convert the 'M's to 'F's
+
+
+# Application Assignment
+
+Create a script that performs the following tasks:
+
+1. Continue or `source()` your previous script.
+1. Summarize the age distribution from the fish in your sample.
+1. Show the mean length-at-age for all fish in your sample in both tabular and graphical forms.
+1. (*Time Permitting*) Show the length frequency for all fish in your sample.
+1. (*Time Permitting*) Repeat the above for your second sex or species.
+
+**Save your script!**

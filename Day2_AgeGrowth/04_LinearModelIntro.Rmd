@@ -1,0 +1,85 @@
+---
+title: "(Very) Quick Introduction to Linear Models in R"
+author: "Derek H. Ogle, Northland College"
+date: "5-Mar-2015"
+output: pdf_document
+geometry: margin=0.5in
+---
+
+# Preliminaries
+```{r echo=FALSE, results='hide'}
+library(knitr)
+source("../knitr_setup.R")
+```
+
+```{r results='hide', fig.show='hide', message=FALSE, warning=FALSE}
+source("03_SummarizeAgeData.R")
+```
+
+\vspace{-18pt}
+```{r}
+ls()
+```
+
+# Simple Linear Regession
+```{r}
+plot(Length.or.Lower.Length.IN~Age..observed.annuli.,data=waeM.fnl,pch=16,col=rgb(0,0,0,1/6),
+     xlab="Age",ylab="Total Length (mm)",ylim=c(10,21))
+
+lmM <- lm(Length.or.Lower.Length.IN~Age..observed.annuli.,data=waeM.fnl)
+coef(lmM)
+confint(lmM)
+anova(lmM)
+
+ages <- waeM.sumlen$Age..observed.annuli.
+( waeM.sumlen %<>% mutate(predL=predict(lmM,data.frame(Age..observed.annuli.=ages))) )
+```
+
+```{r}
+plot(Length.or.Lower.Length.IN~Age..observed.annuli.,data=waeM.fnl,pch=16,col=rgb(0,0,0,1/6),
+     xlab="Age",ylab="Total Length (mm)",ylim=c(10,21))
+lines(mean~Age..observed.annuli.,data=waeM.sumlen,lwd=2,lty=2)
+lines(predL~Age..observed.annuli.,data=waeM.sumlen,lwd=2,lty=1)
+```
+
+\newpage
+
+# Dummy Variable Regession (aka ANCOVA)
+```{r}
+wae <- rbind(waeF.fnl,waeM.fnl)
+levels(wae$Gender)
+
+lmMF <- lm(Length.or.Lower.Length.IN~Age..observed.annuli.*Gender,data=wae)
+coef(lmMF)
+confint(lmMF)
+anova(lmMF)
+
+ages <- waeF.sumlen$Age..observed.annuli.
+( waeF.sumlen %<>% mutate(predL2=predict(lmMF,data.frame(Age..observed.annuli.=ages,Gender="F"))) )
+ages <- waeM.sumlen$Age..observed.annuli.
+( waeM.sumlen %<>% mutate(predL2=predict(lmMF,data.frame(Age..observed.annuli.=ages,Gender="M"))) )
+```
+
+\newpage
+```{r}
+clr <- c(rgb(0,0,0,1/6),rgb(1,0,0,1/6))
+plot(Length.or.Lower.Length.IN~Age..observed.annuli.,data=wae,pch=16,col=clr[Gender],
+     xlab="Age",ylab="Total Length (mm)",ylim=c(10,21))
+lines(predL2~Age..observed.annuli.,data=waeF.sumlen,lwd=2,lty=2,col="black")
+lines(predL2~Age..observed.annuli.,data=waeM.sumlen,lwd=2,lty=1,col="red")
+```
+
+# 1-way ANOVA
+```{r}
+lm3 <- lm(Age..observed.annuli.~Gender,data=wae)
+anova(lm3)
+```
+
+
+# Application Assignment
+
+Create a script that performs the following tasks:
+
+1. Load your FM data into R.
+
+**Save your script!**

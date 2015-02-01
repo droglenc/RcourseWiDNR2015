@@ -1,0 +1,26 @@
+---
+title: "Load Data from CSV"
+author: "Derek H. Ogle, Northland College"
+date: "4-Mar-2015"
+output: pdf_document
+geometry: margin=0.5in
+---
+
+```{r echo=FALSE, results='hide'}
+library(knitr)
+source("../knitr_setup.R")
+```
+
+#Preliminaries
+```{r results='hide', warning=FALSE, message=FALSE}
+library(fishWiDNR)   # for setDBClasses()
+library(FSA)         # for expandCounts()
+```
+
+#Loading Data and Initial Examination
+THIS HAS JUST AGED FISH IN IT (for the most part).  THAT IS NO GOOD
+```{r, cache=TRUE}
+d <- read.csv("zzzOld/length_weight_age_raw_data.csv",stringsAsFactors=FALSE,na.strings=c("-","NA","")) %>%
+  setDBClasses(type="RDNR")
+fishold <- filter(d,Waterbody.Name=="LAKE CHIPPEWA",Survey.Year==2013)
+```

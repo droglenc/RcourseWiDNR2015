@@ -1,0 +1,9 @@
+base
+knitr
+fishWiDNR
+FSA
+dplyr
+magrittr
+lubridate
+rmarkdown
+nnet
