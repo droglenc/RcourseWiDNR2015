@@ -6,7 +6,6 @@ library(FSA)
 fn <- "01_PrepareData.Rmd"
 render(fn,"all")
 swvCode(fn,moreItems=c("knitr"),topnotes=c(fn),blanks="none")
-swvCode(fn)
 
 fn <- "02_AgeLengthKey.Rmd"
 render(fn,"all")

@@ -1,5 +1,4 @@
-library(knitr)
-source("../knitr_setup.R")
+# 01_PrepareData.Rmd
 library(fishWiDNR)   # for setDBClasses()
 library(FSA)         # for lencat(), filterD()
 library(dplyr)       # for %>%
