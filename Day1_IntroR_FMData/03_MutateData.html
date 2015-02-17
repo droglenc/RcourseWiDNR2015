@@ -66,53 +66,57 @@ code > span.er { font-weight: bold; }
 
 <div id="preliminaries" class="section level1">
 <h1>Preliminaries</h1>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(fishWiDNR)   <span class="co"># for setDBClasses(), changeDBNames()</span>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="co"># clears objects in R workspace</span>
+<span class="er">&gt;</span><span class="st"> </span><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="co"># load needed packages</span>
+<span class="er">&gt;</span><span class="st"> </span><span class="kw">library</span>(fishWiDNR)   <span class="co"># for setDBClasses(), changeDBNames()</span>
 &gt;<span class="st"> </span><span class="kw">library</span>(dplyr)       <span class="co"># for filter(), select(), mutate(), rename()</span>
 &gt;<span class="st"> </span><span class="kw">library</span>(lubridate)   <span class="co"># for month()</span>
-&gt;<span class="st"> </span><span class="kw">library</span>(FSA)         <span class="co"># for capFirst(), expandCounts()</span></code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">setwd</span>(<span class="st">&quot;C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData&quot;</span>)
+&gt;<span class="st"> </span><span class="kw">library</span>(FSA)         <span class="co"># for expandCounts(), capFirst(), filterD()</span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="co"># load FM data and expand lengths ... mostly copied code from first and second handouts</span>
+<span class="er">&gt;</span><span class="st"> </span><span class="kw">setwd</span>(<span class="st">&quot;C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData&quot;</span>)
 &gt;<span class="st"> </span>d &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;SAWYER_fish_raw_data_012915.csv&quot;</span>,<span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>,<span class="dt">na.strings=</span><span class="kw">c</span>(<span class="st">&quot;-&quot;</span>,<span class="st">&quot;NA&quot;</span>,<span class="st">&quot;&quot;</span>))
 &gt;<span class="st"> </span>d &lt;-<span class="st"> </span><span class="kw">setDBClasses</span>(d,<span class="dt">type=</span><span class="st">&quot;RDNR&quot;</span>)
-&gt;<span class="st"> </span>d &lt;-<span class="st"> </span><span class="kw">expandCounts</span>(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,<span class="dt">new.name=</span><span class="st">&quot;Len&quot;</span>)
-&gt;<span class="st"> </span>d1 &lt;-<span class="st"> </span><span class="kw">filter</span>(d,Species==<span class="st">&quot;LAKE STURGEON&quot;</span>,Waterbody.Name==<span class="st">&quot;BARKER LAKE&quot;</span>,!<span class="kw">is.na</span>(Weight.Pounds))
+&gt;<span class="st"> </span>d &lt;-<span class="st"> </span><span class="kw">expandCounts</span>(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,<span class="dt">new.name=</span><span class="st">&quot;Len&quot;</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>d1 &lt;-<span class="st"> </span><span class="kw">filter</span>(d,Species==<span class="st">&quot;LAKE STURGEON&quot;</span>,Waterbody.Name==<span class="st">&quot;BARKER LAKE&quot;</span>,!<span class="kw">is.na</span>(Weight.Pounds))
 &gt;<span class="st"> </span>d1 &lt;-<span class="st"> </span><span class="kw">select</span>(d1,Species,Survey.Year,Survey.Begin.Date,Len,Weight.Pounds)
-&gt;<span class="st"> </span><span class="kw">head</span>(d1,<span class="dt">n=</span><span class="dv">4</span>)
-        Species Survey.Year Survey.Begin.Date  Len Weight.Pounds
-<span class="dv">1</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">58.0</span>          <span class="fl">43.9</span>
-<span class="dv">2</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">61.5</span>          <span class="fl">70.5</span>
-<span class="dv">3</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">59.7</span>          <span class="fl">55.6</span>
-<span class="dv">4</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">62.5</span>          <span class="fl">66.5</span></code></pre>
+&gt;<span class="st"> </span><span class="kw">headtail</span>(d1,<span class="dt">n=</span><span class="dv">2</span>)
+         Species Survey.Year Survey.Begin.Date  Len Weight.Pounds
+<span class="dv">1</span>  LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">58.0</span>          <span class="fl">43.9</span>
+<span class="dv">2</span>  LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">61.5</span>          <span class="fl">70.5</span>
+<span class="dv">24</span> LAKE STURGEON        <span class="dv">2012</span>        <span class="dv">2012-08-02</span> <span class="fl">58.3</span>          <span class="fl">34.2</span>
+<span class="dv">25</span> LAKE STURGEON        <span class="dv">2012</span>        <span class="dv">2012-08-02</span> <span class="fl">58.3</span>          <span class="fl">34.2</span></code></pre>
 </div>
 <div id="variable-additions" class="section level1">
 <h1>Variable Additions</h1>
 <div id="simple-mutations" class="section level2">
 <h2>Simple Mutations</h2>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">mutate</span>(d1,<span class="dt">loglen=</span><span class="kw">log</span>(Len),<span class="dt">logwt=</span><span class="kw">log</span>(Weight.Pounds))
-&gt;<span class="st"> </span><span class="kw">head</span>(tmp,<span class="dt">n=</span><span class="dv">4</span>)
-        Species Survey.Year Survey.Begin.Date  Len Weight.Pounds   loglen    logwt
-<span class="dv">1</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">58.0</span>          <span class="fl">43.9</span> <span class="fl">4.060443</span> <span class="fl">3.781914</span>
-<span class="dv">2</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">61.5</span>          <span class="fl">70.5</span> <span class="fl">4.119037</span> <span class="fl">4.255613</span>
-<span class="dv">3</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">59.7</span>          <span class="fl">55.6</span> <span class="fl">4.089332</span> <span class="fl">4.018183</span>
-<span class="dv">4</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">62.5</span>          <span class="fl">66.5</span> <span class="fl">4.135167</span> <span class="fl">4.197202</span></code></pre>
+&gt;<span class="st"> </span><span class="kw">headtail</span>(tmp,<span class="dt">n=</span><span class="dv">2</span>)
+         Species Survey.Year Survey.Begin.Date  Len Weight.Pounds   loglen    logwt
+<span class="dv">1</span>  LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">58.0</span>          <span class="fl">43.9</span> <span class="fl">4.060443</span> <span class="fl">3.781914</span>
+<span class="dv">2</span>  LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">61.5</span>          <span class="fl">70.5</span> <span class="fl">4.119037</span> <span class="fl">4.255613</span>
+<span class="dv">24</span> LAKE STURGEON        <span class="dv">2012</span>        <span class="dv">2012-08-02</span> <span class="fl">58.3</span>          <span class="fl">34.2</span> <span class="fl">4.065602</span> <span class="fl">3.532226</span>
+<span class="dv">25</span> LAKE STURGEON        <span class="dv">2012</span>        <span class="dv">2012-08-02</span> <span class="fl">58.3</span>          <span class="fl">34.2</span> <span class="fl">4.065602</span> <span class="fl">3.532226</span></code></pre>
 </div>
 <div id="simple-special-purpose-mutations" class="section level2">
 <h2>Simple Special Purpose Mutations</h2>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">mutate</span>(d1,<span class="dt">mon1=</span><span class="kw">month</span>(Survey.Begin.Date),
                    <span class="dt">mon2=</span><span class="kw">month</span>(Survey.Begin.Date,<span class="dt">label=</span><span class="ot">TRUE</span>))
-&gt;<span class="st"> </span><span class="kw">head</span>(tmp,<span class="dt">n=</span><span class="dv">4</span>)
-        Species Survey.Year Survey.Begin.Date  Len Weight.Pounds mon1 mon2
-<span class="dv">1</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">58.0</span>          <span class="fl">43.9</span>    <span class="dv">5</span>  May
-<span class="dv">2</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">61.5</span>          <span class="fl">70.5</span>    <span class="dv">5</span>  May
-<span class="dv">3</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">59.7</span>          <span class="fl">55.6</span>    <span class="dv">5</span>  May
-<span class="dv">4</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">62.5</span>          <span class="fl">66.5</span>    <span class="dv">5</span>  May</code></pre>
+&gt;<span class="st"> </span><span class="kw">headtail</span>(tmp,<span class="dt">n=</span><span class="dv">2</span>)
+         Species Survey.Year Survey.Begin.Date  Len Weight.Pounds mon1 mon2
+<span class="dv">1</span>  LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">58.0</span>          <span class="fl">43.9</span>    <span class="dv">5</span>  May
+<span class="dv">2</span>  LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">61.5</span>          <span class="fl">70.5</span>    <span class="dv">5</span>  May
+<span class="dv">24</span> LAKE STURGEON        <span class="dv">2012</span>        <span class="dv">2012-08-02</span> <span class="fl">58.3</span>          <span class="fl">34.2</span>    <span class="dv">8</span>  Aug
+<span class="dv">25</span> LAKE STURGEON        <span class="dv">2012</span>        <span class="dv">2012-08-02</span> <span class="fl">58.3</span>          <span class="fl">34.2</span>    <span class="dv">8</span>  Aug</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">mutate</span>(d1,<span class="dt">Species1=</span><span class="kw">capFirst</span>(Species),
                    <span class="dt">Species2=</span><span class="kw">capFirst</span>(Species,<span class="dt">which=</span><span class="st">&quot;first&quot;</span>))
-&gt;<span class="st"> </span><span class="kw">head</span>(tmp,<span class="dt">n=</span><span class="dv">4</span>)
-        Species Survey.Year Survey.Begin.Date  Len Weight.Pounds      Species1      Species2
-<span class="dv">1</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">58.0</span>          <span class="fl">43.9</span> Lake Sturgeon Lake sturgeon
-<span class="dv">2</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">61.5</span>          <span class="fl">70.5</span> Lake Sturgeon Lake sturgeon
-<span class="dv">3</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">59.7</span>          <span class="fl">55.6</span> Lake Sturgeon Lake sturgeon
-<span class="dv">4</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">62.5</span>          <span class="fl">66.5</span> Lake Sturgeon Lake sturgeon</code></pre>
+&gt;<span class="st"> </span><span class="kw">headtail</span>(tmp,<span class="dt">n=</span><span class="dv">2</span>)
+         Species Survey.Year Survey.Begin.Date  Len Weight.Pounds      Species1      Species2
+<span class="dv">1</span>  LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">58.0</span>          <span class="fl">43.9</span> Lake Sturgeon Lake sturgeon
+<span class="dv">2</span>  LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">61.5</span>          <span class="fl">70.5</span> Lake Sturgeon Lake sturgeon
+<span class="dv">24</span> LAKE STURGEON        <span class="dv">2012</span>        <span class="dv">2012-08-02</span> <span class="fl">58.3</span>          <span class="fl">34.2</span> Lake Sturgeon Lake sturgeon
+<span class="dv">25</span> LAKE STURGEON        <span class="dv">2012</span>        <span class="dv">2012-08-02</span> <span class="fl">58.3</span>          <span class="fl">34.2</span> Lake Sturgeon Lake sturgeon</code></pre>
 </div>
 <div id="length-category-mutations" class="section level2">
 <h2>Length Category Mutations</h2>
@@ -120,14 +124,14 @@ code > span.er { font-weight: bold; }
                    <span class="dt">lcat2a=</span><span class="kw">lencat</span>(Len,<span class="dt">w=</span><span class="dv">2</span>,<span class="dt">as.fact=</span><span class="ot">TRUE</span>),
                    <span class="dt">lcatA=</span><span class="kw">lencat</span>(Len,<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">46</span>,<span class="dv">54</span>,<span class="dv">56</span>,<span class="dv">58</span>,<span class="dv">70</span>)),
                    <span class="dt">lcatB=</span><span class="kw">lencat</span>(Len,<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dt">small=</span><span class="dv">0</span>,<span class="dt">medium=</span><span class="dv">50</span>,<span class="dt">large=</span><span class="dv">60</span>,<span class="dt">very_large=</span><span class="dv">70</span>),<span class="dt">use.names=</span><span class="ot">TRUE</span>) )
-&gt;<span class="st"> </span><span class="kw">head</span>(tmp)
-        Species Survey.Year Survey.Begin.Date  Len Weight.Pounds lcat2 lcat2a lcatA  lcatB
-<span class="dv">1</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">58.0</span>          <span class="fl">43.9</span>    <span class="dv">58</span>     <span class="dv">58</span>    <span class="dv">58</span> medium
-<span class="dv">2</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">61.5</span>          <span class="fl">70.5</span>    <span class="dv">60</span>     <span class="dv">60</span>    <span class="dv">58</span>  large
-<span class="dv">3</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">59.7</span>          <span class="fl">55.6</span>    <span class="dv">58</span>     <span class="dv">58</span>    <span class="dv">58</span> medium
-<span class="dv">4</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">62.5</span>          <span class="fl">66.5</span>    <span class="dv">62</span>     <span class="dv">62</span>    <span class="dv">58</span>  large
-<span class="dv">5</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">55.7</span>          <span class="fl">38.8</span>    <span class="dv">54</span>     <span class="dv">54</span>    <span class="dv">54</span> medium
-<span class="dv">6</span> LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">56.4</span>          <span class="fl">45.7</span>    <span class="dv">56</span>     <span class="dv">56</span>    <span class="dv">56</span> medium</code></pre>
+&gt;<span class="st"> </span><span class="kw">headtail</span>(tmp)
+         Species Survey.Year Survey.Begin.Date  Len Weight.Pounds lcat2 lcat2a lcatA  lcatB
+<span class="dv">1</span>  LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">58.0</span>          <span class="fl">43.9</span>    <span class="dv">58</span>     <span class="dv">58</span>    <span class="dv">58</span> medium
+<span class="dv">2</span>  LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">61.5</span>          <span class="fl">70.5</span>    <span class="dv">60</span>     <span class="dv">60</span>    <span class="dv">58</span>  large
+<span class="dv">3</span>  LAKE STURGEON        <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">59.7</span>          <span class="fl">55.6</span>    <span class="dv">58</span>     <span class="dv">58</span>    <span class="dv">58</span> medium
+<span class="dv">23</span> LAKE STURGEON        <span class="dv">2012</span>        <span class="dv">2012-08-02</span> <span class="fl">60.9</span>          <span class="fl">50.6</span>    <span class="dv">60</span>     <span class="dv">60</span>    <span class="dv">58</span>  large
+<span class="dv">24</span> LAKE STURGEON        <span class="dv">2012</span>        <span class="dv">2012-08-02</span> <span class="fl">58.3</span>          <span class="fl">34.2</span>    <span class="dv">58</span>     <span class="dv">58</span>    <span class="dv">58</span> medium
+<span class="dv">25</span> LAKE STURGEON        <span class="dv">2012</span>        <span class="dv">2012-08-02</span> <span class="fl">58.3</span>          <span class="fl">34.2</span>    <span class="dv">58</span>     <span class="dv">58</span>    <span class="dv">58</span> medium</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">xtabs</span>(~lcat2,<span class="dt">data=</span>tmp)
 lcat2
 <span class="dv">46</span> <span class="dv">54</span> <span class="dv">56</span> <span class="dv">58</span> <span class="dv">60</span> <span class="dv">62</span> <span class="dv">66</span> 
@@ -150,14 +154,14 @@ lcatB
 <div id="rename-variables" class="section level1">
 <h1>Rename Variables</h1>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">rename</span>(d1,<span class="dt">year=</span>Survey.Year,<span class="dt">wt=</span>Weight.Pounds)
-&gt;<span class="st"> </span><span class="kw">head</span>(tmp)
-        Species year Survey.Begin.Date  Len   wt
-<span class="dv">1</span> LAKE STURGEON <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">58.0</span> <span class="fl">43.9</span>
-<span class="dv">2</span> LAKE STURGEON <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">61.5</span> <span class="fl">70.5</span>
-<span class="dv">3</span> LAKE STURGEON <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">59.7</span> <span class="fl">55.6</span>
-<span class="dv">4</span> LAKE STURGEON <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">62.5</span> <span class="fl">66.5</span>
-<span class="dv">5</span> LAKE STURGEON <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">55.7</span> <span class="fl">38.8</span>
-<span class="dv">6</span> LAKE STURGEON <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">56.4</span> <span class="fl">45.7</span></code></pre>
+&gt;<span class="st"> </span><span class="kw">headtail</span>(tmp)
+         Species year Survey.Begin.Date  Len   wt
+<span class="dv">1</span>  LAKE STURGEON <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">58.0</span> <span class="fl">43.9</span>
+<span class="dv">2</span>  LAKE STURGEON <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">61.5</span> <span class="fl">70.5</span>
+<span class="dv">3</span>  LAKE STURGEON <span class="dv">2010</span>        <span class="dv">2010-05-04</span> <span class="fl">59.7</span> <span class="fl">55.6</span>
+<span class="dv">23</span> LAKE STURGEON <span class="dv">2012</span>        <span class="dv">2012-08-02</span> <span class="fl">60.9</span> <span class="fl">50.6</span>
+<span class="dv">24</span> LAKE STURGEON <span class="dv">2012</span>        <span class="dv">2012-08-02</span> <span class="fl">58.3</span> <span class="fl">34.2</span>
+<span class="dv">25</span> LAKE STURGEON <span class="dv">2012</span>        <span class="dv">2012-08-02</span> <span class="fl">58.3</span> <span class="fl">34.2</span></code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">changeDBNames</span>(d1)
 &gt;<span class="st"> </span><span class="kw">names</span>(tmp)
 [<span class="dv">1</span>] <span class="st">&quot;srvy_begin&quot;</span> <span class="st">&quot;species&quot;</span>    <span class="st">&quot;year&quot;</span>       <span class="st">&quot;Len&quot;</span>        <span class="st">&quot;wt_lbs&quot;</span>    </code></pre>
@@ -166,7 +170,13 @@ lcatB
 [<span class="dv">1</span>] <span class="st">&quot;Species&quot;</span>           <span class="st">&quot;Survey.Year&quot;</span>       <span class="st">&quot;Survey.Begin.Date&quot;</span> <span class="st">&quot;Len&quot;</span>              
 [<span class="dv">5</span>] <span class="st">&quot;Weight.Pounds&quot;</span>    </code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">changeDBNames</span>(tmp,<span class="dt">from=</span><span class="st">&quot;RDNR&quot;</span>,<span class="dt">to=</span><span class="st">&quot;DNR&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">write.csv</span>(tmp,<span class="st">&quot;LKS_Barker.csv&quot;</span>,<span class="dt">row.names=</span><span class="ot">FALSE</span>)</code></pre>
+&gt;<span class="st"> </span><span class="kw">names</span>(tmp)
+[<span class="dv">1</span>] <span class="st">&quot;Survey Begin Date&quot;</span> <span class="st">&quot;Species&quot;</span>           <span class="st">&quot;Survey Year&quot;</span>       <span class="st">&quot;Len&quot;</span>              
+[<span class="dv">5</span>] <span class="st">&quot;Weight Pounds&quot;</span>    </code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>tmp$<span class="st">&quot;Weight Pounds&quot;</span>
+ [<span class="dv">1</span>] <span class="fl">43.90</span> <span class="fl">70.50</span> <span class="fl">55.60</span> <span class="fl">66.50</span> <span class="fl">38.80</span> <span class="fl">45.70</span> <span class="fl">44.60</span> <span class="fl">41.90</span> <span class="fl">60.00</span> <span class="fl">48.00</span> <span class="fl">48.70</span> <span class="fl">24.25</span> <span class="fl">67.24</span> <span class="fl">62.83</span> <span class="fl">44.31</span> <span class="fl">38.47</span>
+[<span class="dv">17</span>] <span class="fl">56.88</span> <span class="fl">41.01</span> <span class="fl">51.59</span> <span class="fl">53.79</span> <span class="fl">50.70</span> <span class="fl">50.60</span> <span class="fl">50.60</span> <span class="fl">34.20</span> <span class="fl">34.20</span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">write.csv</span>(tmp,<span class="st">&quot;LKS_Barker.csv&quot;</span>,<span class="dt">row.names=</span><span class="ot">FALSE</span>)</code></pre>
 <p></p>
 </div>
 <div id="application-assignment" class="section level1">
@@ -180,7 +190,7 @@ lcatB
 <li>Create a new variable that is the length in mm computed from the length in inches (even though this is already in the FM database).</li>
 <li>Isolate a game species from a waterbody (and possibly a gear) of interest to you.</li>
 <li>Create a new variable that contains evenly-spaced length categories that are appropriate for your species. Construct a frequency table of that variable.</li>
-<li>Create a new variable that contains length categories that could be defined as “not of interest”, “marginally interesting”, “preferred”, and “very interesting” to anglers for your species. Construct a frequency table of that variable.</li>
+<li>Create a new variable that contains length categories that could be defined as “not of interest”, “marginally interesting”, “preferred”, and “very interesting” to anglers for your species. Construct a frequency table of that variable. </li>
 <li>(<em>Time Permitting</em>) Create a new variable that contains the Gabelhouse length categories (“stock”, “quality”, etc.) for your species (<strong>HINT</strong>: <em>use, for example,</em> <code>psdVal(&quot;Largemouth Bass&quot;,units=&quot;in&quot;)</code> <em>to find Gablehouse lengths for a particular species</em>).</li>
 </ol>
 <p><strong>Save your script!</strong></p>

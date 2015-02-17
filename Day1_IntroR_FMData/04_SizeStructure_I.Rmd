@@ -13,14 +13,22 @@ source("../knitr_setup.R")
 ```
 
 #Preliminaries
+```{r eval=FALSE}
+# clears objects in R workspace
+rm(list = ls())
+```
+
 ```{r results='hide', warning=FALSE, message=FALSE}
+# load needed packages
 library(fishWiDNR)   # for setDBClasses()
 library(dplyr)       # for filter(), select(), mutate(), group_by(), summarize()
-library(FSA)         # for Summarize(), hist(), expandCounts(), filterD()
+#  options(dplyr.print_max=1e9)
+library(FSA)         # for expandCounts(), filterD(), Summarize(), hist(), 
 library(lubridate)   # for month()
 ```
 
 ```{r, cache=TRUE, message=FALSE}
+# load FM data, expand lengths, select pertintent variables ... mostly copied code from previous
 setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("SAWYER_fish_raw_data_012915.csv",stringsAsFactors=FALSE,na.strings=c("-","NA",""))
 d <- setDBClasses(d,type="RDNR")
@@ -43,7 +51,7 @@ So ...
 ... and they all look similar to this ...
 
 ```{r echo=FALSE}
-head(BGSprLC)
+headtail(BGSprLC)
 ```
 
 \vspace{18pt}
@@ -71,7 +79,7 @@ hist(~Len,data=BGSprLC,xlab="Total Length (In.)",ylab="Number of Bluegill",
 
 ```{r hist_breaks}
 hist(~Len,data=BGSprLC,xlab="Total Length (In.)",ylab="Number of Bluegill",
-     xlim=c(3,9),ylim=c(0,40),breaks=seq(3,9,0.2))
+     xlim=c(3,9),ylim=c(0,40),breaks=seq(3,9,0.2),col="#FA8072")
 ```
 
 #Multiple Summaries at Once
@@ -99,8 +107,10 @@ summarize(BGSpr,n=n(),valid_n=sum(!is.na(Len)),
 
 ```{r}
 Spr <- group_by(Spr,Waterbody.Name,Species)
-summarize(Spr,n=n(),valid_n=sum(!is.na(Len)),
-           meanLen=round(mean(Len,na.rm=TRUE),2),sdLen=round(sd(Len,na.rm=TRUE),2)  )
+tmp <- summarize(Spr,n=n(),valid_n=sum(!is.na(Len)),
+                 meanLen=round(mean(Len,na.rm=TRUE),2),sdLen=round(sd(Len,na.rm=TRUE),2) )
+tmp                                                           # only partial results shown
+write.csv(tmp,"LenSum_Sawyer_Spr13.csv",row.names=FALSE)
 ```
 
 \newpage
@@ -110,15 +120,56 @@ summarize(Spr,n=n(),valid_n=sum(!is.na(Len)),
 Create a script that performs the following tasks:
 
 1. Load and prepare your FM data in R (**HINT:** *use all or some of your scripts from previous application assignments*).
-1. Reduce your data.frame to one year and several (4 or more) fish of interest.  Call this the *original data.frame.*
-1. Reduce the *original data.frame* to one water body and species of interest.
+1. Reduce your data.frame to one year and several (4 or more) species of interest.  Call this the *original data.frame.*
+1. Reduce the *original data.frame* to one water body and one species of interest.
     * Compute summary stastistics for the length variable.
     * Construct a length frequency histogram.
     * Does your description of the length frequency change dramatically with different bin widths?
-1. Reduce the *original data.frame* to only one species.
+1. Reduce the *original data.frame* to only one species (this will include several water bodies).
     * Efficiently construct summary statistics for the length variable for each water body.  Include PSD values that are of interest to you  (**HINT**: *use, for example,* `psdVal("Largemouth Bass",units="in")` *to find Gabelhouse lengths for a particular species*).
-
+\vspace{12pt}
 1. (*Time Permitting*) Re-create the summary statistics for one species in each water body but include calculations of the median and first and third quartiles (**HINT**: *use, for example,* `quantile(x,0.50,na.rm=TRUE)` *to compute the median (i.e., 50% quantile) of the data in* `x`.).
 1. (*Time Permitting*) Compute summary statistics of the length variable for each water body AND each of the several species of interest to you.  Save the summary statistics to an object and write the results to a CSV file.
 
 **Save your script!**
+
+```{r results='hide', echo=FALSE, fig.show='hide', message=FALSE}
+# ############################################################
+# ############################################################
+# # Create a formatted table as a picture that allows results
+# # to be cirectly input into presentations or reports
+# #    largely from Gretchen Hansen
+# ############################################################
+
+# # Load some extra packages
+library(ggplot2)
+library(gridExtra)
+
+# # Get a summarized data.frame (2nd to last example from above)
+tmp <- summarize(BGSpr,n=n(),valid_n=sum(!is.na(Len)),
+                 meanLen=round(mean(Len,na.rm=TRUE),2),sdLen=round(sd(Len,na.rm=TRUE),2),
+                 minLen=min(Len,na.rm=TRUE),maxLen=max(Len,na.rm=TRUE),
+                 PSDQ=perc(Len,6,digits=0),PSD7=perc(Len,7,digits=0),PSDP=perc(Len,8,digits=0)  )
+
+# # Create a title for the table and the outputted file
+ttl <- "Summary Statistics Sawyer Co. Bluegill Spring 2013"
+
+# # This creates the table
+p <- ggplot(tmp,aes(x=1,y=1)) + 
+  annotation_custom(tableGrob(tmp,show.rownames=FALSE)) +
+  ggtitle(ttl) +
+  theme_bw() +
+  theme(panel.border=element_blank(),
+        panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        plot.title=element_text(size=rel(1.2),face="bold",vjust=2),
+        axis.ticks=element_blank(), 
+        axis.text=element_blank(),
+        axis.title=element_blank())
+p
+
+ggsave(paste0(ttl,".png"),p,width=9,height=4)
+# ############################################################
+# ############################################################
+```
+

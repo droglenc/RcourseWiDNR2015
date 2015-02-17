@@ -14,7 +14,7 @@ source("../knitr_setup.R")
 #Preliminaries
 ```{r results='hide', warning=FALSE, message=FALSE}
 library(fishWiDNR)   # for setDBClasses()
-library(FSA)         # for expandCounts()
+library(FSA)         # for headtail(), expandCounts()
 ```
 
 #Loading Data and Initial Examination
@@ -26,7 +26,7 @@ str(d)
 ```
 
 ```{r}
-head(d)   # also can use tail(d) or headtail(d)
+headtail(d)   # also can use tail(d) or head(d)
 nrow(d)
 ```
 
@@ -36,18 +36,23 @@ nrow(d)
 Example portion of the Sawyer Co. FM database with ``tallied'' fish lengths.
 ```{r echo=FALSE}
 tmp <- subset(d,Species=="WALLEYE" & Waterbody.Name=="ASHEGON LAKE",select=c("Fish.Data.Seq.No","Species","Number.of.Fish","Length.or.Lower.Length.IN","Length.Upper.IN"))
-tmp <- tmp[c(1,9:11,24:26),]          # tmp was created for demonstration purposes only
+tmp <- tmp[c(1,16:18,28:30),]
+tmp <- tmp[order(tmp$Fish.Data.Seq.No),]
 print(tmp,row.names=FALSE)
 ```
 
 Example expansion but keeping the length bins.
 ```{r echo=FALSE,message=FALSE}
-print(expandCounts(tmp,~Number.of.Fish),row.names=FALSE)
+tmp2 <- expandCounts(tmp,~Number.of.Fish)
+tmp2 <- tmp2[order(tmp2$Fish.Data.Seq.No),]
+print(tmp2,row.names=FALSE)
 ```
 
 Example expansion but adding random digit from within the length bin.
 ```{r echo=FALSE, message=FALSE, R.options=list(width=100)}
-print(expandCounts(tmp,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len"),row.names=FALSE)
+tmp3 <- expandCounts(tmp,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len")
+tmp3 <- tmp3[order(tmp3$Fish.Data.Seq.No),]
+print(tmp3,row.names=FALSE)
 ```
 
 ```{r, cache=TRUE}
@@ -63,7 +68,7 @@ sum(d$Number.of.Fish,na.rm=TRUE)
 ```
 
 
-#Individual Variables
+# Isolate Individual Variables
 ```{r results='hide', cache=TRUE}
 d1$Length.or.Lower.Length.IN
 ```
@@ -83,12 +88,13 @@ d1$Species[1:120]
 
 Create a script that performs the following tasks:
 
-1. Load your FM data into R.
-1. Set the classes on your data.frame.
-1. How many rows are in your data.frame?
-1. How many total fish are in your data.frame?
-1. Expand the counts to individual fish (assign to a new data.frame).
-1. How many variables (columns) and individual fish (rows) are in your new data.frame?
+1. Load your FM data into a data.frame in R.
+1. Set the classes on the data.frame.
+1. How many rows are in the data.frame?
+1. How many total fish are in the data.frame?
+\vspace{12pt}
+1. Expand the counts of fish to individual fish with random digits for length (assign to a new data.frame).
+1. How many variables (columns) and individual fish (rows) are in the new data.frame?
 1. Display all expanded length measurements.
 1. Show all "values" for two other variables of your choice.
 

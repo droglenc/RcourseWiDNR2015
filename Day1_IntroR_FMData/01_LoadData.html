@@ -67,7 +67,7 @@ code > span.er { font-weight: bold; }
 <div id="preliminaries" class="section level1">
 <h1>Preliminaries</h1>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(fishWiDNR)   <span class="co"># for setDBClasses()</span>
-&gt;<span class="st"> </span><span class="kw">library</span>(FSA)         <span class="co"># for expandCounts()</span></code></pre>
+&gt;<span class="st"> </span><span class="kw">library</span>(FSA)         <span class="co"># for headtail(), expandCounts()</span></code></pre>
 </div>
 <div id="loading-data-and-initial-examination" class="section level1">
 <h1>Loading Data and Initial Examination</h1>
@@ -129,77 +129,84 @@ code > span.er { font-weight: bold; }
  $<span class="st"> </span>Length.Outside.Range     :<span class="st"> </span>chr  <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> ...
  $<span class="st"> </span>Count.Outside.Range      :<span class="st"> </span>chr  <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> ...
  $<span class="st"> </span>Status.Code              :<span class="st"> </span>chr  <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> ...</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">head</span>(d)   <span class="co"># also can use tail(d) or headtail(d)</span>
-  County   Waterbody.Name    WBIC Survey.Year                          Station.Name
-<span class="dv">1</span> SAWYER SISSABAGAMA LAKE <span class="dv">2393500</span>        <span class="dv">2010</span> SISSABAGAMA LAKE_GENERAL LAKE STATION
-<span class="dv">2</span> SAWYER SISSABAGAMA LAKE <span class="dv">2393500</span>        <span class="dv">2010</span> SISSABAGAMA LAKE_GENERAL LAKE STATION
-<span class="dv">3</span> SAWYER SISSABAGAMA LAKE <span class="dv">2393500</span>        <span class="dv">2010</span> SISSABAGAMA LAKE_GENERAL LAKE STATION
-<span class="dv">4</span> SAWYER SISSABAGAMA LAKE <span class="dv">2393500</span>        <span class="dv">2010</span> SISSABAGAMA LAKE_GENERAL LAKE STATION
-<span class="dv">5</span> SAWYER SISSABAGAMA LAKE <span class="dv">2393500</span>        <span class="dv">2010</span> SISSABAGAMA LAKE_GENERAL LAKE STATION
-<span class="dv">6</span> SAWYER SISSABAGAMA LAKE <span class="dv">2393500</span>        <span class="dv">2010</span> SISSABAGAMA LAKE_GENERAL LAKE STATION
-  Swims.Station.Id Site.Seq.No Survey.Seq.No Survey.Begin.Date Survey.End.Date
-<span class="dv">1</span>         <span class="dv">10005590</span>      <span class="dv">113071</span>      <span class="dv">39508941</span>        <span class="dv">2010-03-31</span>      <span class="dv">2010-04-13</span>
-<span class="dv">2</span>         <span class="dv">10005590</span>      <span class="dv">113071</span>      <span class="dv">39508941</span>        <span class="dv">2010-03-31</span>      <span class="dv">2010-04-13</span>
-<span class="dv">3</span>         <span class="dv">10005590</span>      <span class="dv">113071</span>      <span class="dv">39508941</span>        <span class="dv">2010-03-31</span>      <span class="dv">2010-04-13</span>
-<span class="dv">4</span>         <span class="dv">10005590</span>      <span class="dv">113071</span>      <span class="dv">39508941</span>        <span class="dv">2010-03-31</span>      <span class="dv">2010-04-13</span>
-<span class="dv">5</span>         <span class="dv">10005590</span>      <span class="dv">113071</span>      <span class="dv">39508941</span>        <span class="dv">2010-03-31</span>      <span class="dv">2010-04-13</span>
-<span class="dv">6</span>         <span class="dv">10005590</span>      <span class="dv">113071</span>      <span class="dv">39508941</span>        <span class="dv">2010-03-31</span>      <span class="dv">2010-04-13</span>
-                    Survey.Status Data.Entry.Name Visit.Fish.Seq.No Visit.Type     Gear Sample.Date
-<span class="dv">1</span> DATA ENTRY COMPLETE AND PROOFED  spooner_treaty            <span class="dv">624568</span>    NETTING FYKE NET  <span class="dv">2010-04-01</span>
-<span class="dv">2</span> DATA ENTRY COMPLETE AND PROOFED  spooner_treaty            <span class="dv">624568</span>    NETTING FYKE NET  <span class="dv">2010-04-01</span>
-<span class="dv">3</span> DATA ENTRY COMPLETE AND PROOFED  spooner_treaty            <span class="dv">624568</span>    NETTING FYKE NET  <span class="dv">2010-04-01</span>
-<span class="dv">4</span> DATA ENTRY COMPLETE AND PROOFED  spooner_treaty            <span class="dv">624568</span>    NETTING FYKE NET  <span class="dv">2010-04-01</span>
-<span class="dv">5</span> DATA ENTRY COMPLETE AND PROOFED  spooner_treaty            <span class="dv">624568</span>    NETTING FYKE NET  <span class="dv">2010-04-01</span>
-<span class="dv">6</span> DATA ENTRY COMPLETE AND PROOFED  spooner_treaty            <span class="dv">624568</span>    NETTING FYKE NET  <span class="dv">2010-04-01</span>
-  Substation.Name Target.Species Fish.Data.Seq.No    Net.Number Species.Code Species Number.of.Fish
-<span class="dv">1</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">        </span>WALLEYE          <span class="dv">7529172</span> ALL DAILY NET          X22 WALLEYE              <span class="dv">1</span>
-<span class="dv">2</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">        </span>WALLEYE          <span class="dv">7529173</span> ALL DAILY NET          X22 WALLEYE              <span class="dv">2</span>
-<span class="dv">3</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">        </span>WALLEYE          <span class="dv">7529174</span> ALL DAILY NET          X22 WALLEYE              <span class="dv">1</span>
-<span class="dv">4</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">        </span>WALLEYE          <span class="dv">7529175</span> ALL DAILY NET          X22 WALLEYE              <span class="dv">5</span>
-<span class="dv">5</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">        </span>WALLEYE          <span class="dv">7529176</span> ALL DAILY NET          X22 WALLEYE             <span class="dv">11</span>
-<span class="dv">6</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">        </span>WALLEYE          <span class="dv">7529177</span> ALL DAILY NET          X22 WALLEYE             <span class="dv">18</span>
-  Length.or.Lower.Length.IN Length.Upper.IN Length.or.Lower.Length.MM Length.Upper.MM Weight.Pounds
-<span class="dv">1</span>                      <span class="fl">11.0</span>            <span class="fl">11.4</span>                     <span class="fl">279.4</span>          <span class="fl">289.56</span>            <span class="ot">NA</span>
-<span class="dv">2</span>                      <span class="fl">11.5</span>            <span class="fl">11.9</span>                     <span class="fl">292.1</span>          <span class="fl">302.26</span>            <span class="ot">NA</span>
-<span class="dv">3</span>                      <span class="fl">12.0</span>            <span class="fl">12.4</span>                     <span class="fl">304.8</span>          <span class="fl">314.96</span>            <span class="ot">NA</span>
-<span class="dv">4</span>                      <span class="fl">12.5</span>            <span class="fl">12.9</span>                     <span class="fl">317.5</span>          <span class="fl">327.66</span>            <span class="ot">NA</span>
-<span class="dv">5</span>                      <span class="fl">13.0</span>            <span class="fl">13.4</span>                     <span class="fl">330.2</span>          <span class="fl">340.36</span>            <span class="ot">NA</span>
-<span class="dv">6</span>                      <span class="fl">13.5</span>            <span class="fl">13.9</span>                     <span class="fl">342.9</span>          <span class="fl">353.06</span>            <span class="ot">NA</span>
-  Weight.Grams Gender Disease. Injury.Type Age..observed.annuli. Edge.Counted.Desc Age.Structure
-<span class="dv">1</span>           <span class="ot">NA</span>      M     &lt;<span class="ot">NA</span>&gt;<span class="st">        </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="ot">NA</span>              &lt;<span class="ot">NA</span>&gt;<span class="st">          </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="dv">2</span>           <span class="ot">NA</span>      M     &lt;<span class="ot">NA</span>&gt;<span class="st">        </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="ot">NA</span>              &lt;<span class="ot">NA</span>&gt;<span class="st">          </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="dv">3</span>           <span class="ot">NA</span>      M     &lt;<span class="ot">NA</span>&gt;<span class="st">        </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="ot">NA</span>              &lt;<span class="ot">NA</span>&gt;<span class="st">          </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="dv">4</span>           <span class="ot">NA</span>      M     &lt;<span class="ot">NA</span>&gt;<span class="st">        </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="ot">NA</span>              &lt;<span class="ot">NA</span>&gt;<span class="st">          </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="dv">5</span>           <span class="ot">NA</span>      M     &lt;<span class="ot">NA</span>&gt;<span class="st">        </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="ot">NA</span>              &lt;<span class="ot">NA</span>&gt;<span class="st">          </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="dv">6</span>           <span class="ot">NA</span>      M     &lt;<span class="ot">NA</span>&gt;<span class="st">        </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="ot">NA</span>              &lt;<span class="ot">NA</span>&gt;<span class="st">          </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="st">  </span>Mark.Given Mark.Found Second.Mark.Found Tag.Number.Given Second.Tag.Number.Given Tag.Number.Found
-<span class="dv">1</span>         LP       &lt;<span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="dv">2</span>         LP       &lt;<span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="dv">3</span>         LP       &lt;<span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="dv">4</span>         LP       &lt;<span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="dv">5</span>         LP       &lt;<span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="dv">6</span>         LP       &lt;<span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="st">  </span>Second.Tag.Number.Found  YOY Entry.Date Last.Update.Date  Data.Ent.Name Last.Update.Name
-<span class="dv">1</span>                    &lt;<span class="ot">NA</span>&gt;<span class="st"> </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st"> </span><span class="dv">2010-04-06</span>             &lt;<span class="ot">NA</span>&gt;<span class="st"> </span>spooner_treaty             &lt;<span class="ot">NA</span>&gt;
-<span class="dv">2</span>                    &lt;<span class="ot">NA</span>&gt;<span class="st"> </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st"> </span><span class="dv">2010-04-06</span>             &lt;<span class="ot">NA</span>&gt;<span class="st"> </span>spooner_treaty             &lt;<span class="ot">NA</span>&gt;
-<span class="dv">3</span>                    &lt;<span class="ot">NA</span>&gt;<span class="st"> </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st"> </span><span class="dv">2010-04-06</span>             &lt;<span class="ot">NA</span>&gt;<span class="st"> </span>spooner_treaty             &lt;<span class="ot">NA</span>&gt;
-<span class="dv">4</span>                    &lt;<span class="ot">NA</span>&gt;<span class="st"> </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st"> </span><span class="dv">2010-04-06</span>             &lt;<span class="ot">NA</span>&gt;<span class="st"> </span>spooner_treaty             &lt;<span class="ot">NA</span>&gt;
-<span class="dv">5</span>                    &lt;<span class="ot">NA</span>&gt;<span class="st"> </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st"> </span><span class="dv">2010-04-06</span>             &lt;<span class="ot">NA</span>&gt;<span class="st"> </span>spooner_treaty             &lt;<span class="ot">NA</span>&gt;
-<span class="dv">6</span>                    &lt;<span class="ot">NA</span>&gt;<span class="st"> </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st"> </span><span class="dv">2010-04-06</span>             &lt;<span class="ot">NA</span>&gt;<span class="st"> </span>spooner_treaty             &lt;<span class="ot">NA</span>&gt;
-<span class="st">  </span>Invalid.Species Non.Standard.Bin Length.Unit.Error Length.Outside.Range Count.Outside.Range
-<span class="dv">1</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                 </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="dv">2</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                 </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="dv">3</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                 </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="dv">4</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                 </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="dv">5</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                 </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="dv">6</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                 </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
-<span class="st">  </span>Status.Code
-<span class="dv">1</span>        &lt;<span class="ot">NA</span>&gt;
-<span class="dv">2</span>        &lt;<span class="ot">NA</span>&gt;
-<span class="dv">3</span>        &lt;<span class="ot">NA</span>&gt;
-<span class="dv">4</span>        &lt;<span class="ot">NA</span>&gt;
-<span class="dv">5</span>        &lt;<span class="ot">NA</span>&gt;
-<span class="dv">6</span>        &lt;<span class="ot">NA</span>&gt;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">headtail</span>(d)   <span class="co"># also can use tail(d) or head(d)</span>
+      County   Waterbody.Name    WBIC Survey.Year                          Station.Name
+<span class="dv">1</span>     SAWYER SISSABAGAMA LAKE <span class="dv">2393500</span>        <span class="dv">2010</span> SISSABAGAMA LAKE_GENERAL LAKE STATION
+<span class="dv">2</span>     SAWYER SISSABAGAMA LAKE <span class="dv">2393500</span>        <span class="dv">2010</span> SISSABAGAMA LAKE_GENERAL LAKE STATION
+<span class="dv">3</span>     SAWYER SISSABAGAMA LAKE <span class="dv">2393500</span>        <span class="dv">2010</span> SISSABAGAMA LAKE_GENERAL LAKE STATION
+<span class="dv">48681</span> SAWYER     WINDIGO LAKE <span class="dv">2046600</span>        <span class="dv">2014</span>     WINDIGO LAKE_GENERAL LAKE STATION
+<span class="dv">48682</span> SAWYER     WINDIGO LAKE <span class="dv">2046600</span>        <span class="dv">2014</span>     WINDIGO LAKE_GENERAL LAKE STATION
+<span class="dv">48683</span> SAWYER   BLAISDELL LAKE <span class="dv">2402200</span>        <span class="dv">2014</span>   BLAISDELL LAKE_GENERAL LAKE STATION
+      Swims.Station.Id Site.Seq.No Survey.Seq.No Survey.Begin.Date Survey.End.Date
+<span class="dv">1</span>             <span class="dv">10005590</span>      <span class="dv">113071</span>      <span class="dv">39508941</span>        <span class="dv">2010-03-31</span>      <span class="dv">2010-04-13</span>
+<span class="dv">2</span>             <span class="dv">10005590</span>      <span class="dv">113071</span>      <span class="dv">39508941</span>        <span class="dv">2010-03-31</span>      <span class="dv">2010-04-13</span>
+<span class="dv">3</span>             <span class="dv">10005590</span>      <span class="dv">113071</span>      <span class="dv">39508941</span>        <span class="dv">2010-03-31</span>      <span class="dv">2010-04-13</span>
+<span class="dv">48681</span>         <span class="dv">10005544</span>      <span class="dv">121911</span>     <span class="dv">515077184</span>        <span class="dv">2014-10-16</span>      <span class="dv">2014-10-17</span>
+<span class="dv">48682</span>         <span class="dv">10005544</span>      <span class="dv">121911</span>     <span class="dv">515077184</span>        <span class="dv">2014-10-16</span>      <span class="dv">2014-10-17</span>
+<span class="dv">48683</span>         <span class="dv">10005611</span>      <span class="dv">109201</span>     <span class="dv">515076773</span>        <span class="dv">2014-10-21</span>      <span class="dv">2014-10-21</span>
+                        Survey.Status Data.Entry.Name Visit.Fish.Seq.No     Visit.Type
+<span class="dv">1</span>     DATA ENTRY COMPLETE AND PROOFED  spooner_treaty            <span class="dv">624568</span>        NETTING
+<span class="dv">2</span>     DATA ENTRY COMPLETE AND PROOFED  spooner_treaty            <span class="dv">624568</span>        NETTING
+<span class="dv">3</span>     DATA ENTRY COMPLETE AND PROOFED  spooner_treaty            <span class="dv">624568</span>        NETTING
+<span class="dv">48681</span> DATA ENTRY COMPLETE AND PROOFED  spooner_treaty            <span class="dv">723742</span> ELECTROFISHING
+<span class="dv">48682</span> DATA ENTRY COMPLETE AND PROOFED  spooner_treaty            <span class="dv">723742</span> ELECTROFISHING
+<span class="dv">48683</span> DATA ENTRY COMPLETE AND PROOFED          scheij            <span class="dv">722558</span>        NETTING
+                 Gear Sample.Date Substation.Name Target.Species Fish.Data.Seq.No    Net.Number
+<span class="dv">1</span>            FYKE NET  <span class="dv">2010-04-01</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">        </span>WALLEYE          <span class="dv">7529172</span> ALL DAILY NET
+<span class="dv">2</span>            FYKE NET  <span class="dv">2010-04-01</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">        </span>WALLEYE          <span class="dv">7529173</span> ALL DAILY NET
+<span class="dv">3</span>            FYKE NET  <span class="dv">2010-04-01</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">        </span>WALLEYE          <span class="dv">7529174</span> ALL DAILY NET
+<span class="dv">48681</span>    BOOM SHOCKER  <span class="dv">2014-10-17</span>          GLIFWC        WALLEYE         <span class="dv">10711298</span>          &lt;<span class="ot">NA</span>&gt;
+<span class="dv">48682</span>    BOOM SHOCKER  <span class="dv">2014-10-17</span>          GLIFWC        WALLEYE         <span class="dv">10711299</span>          &lt;<span class="ot">NA</span>&gt;
+<span class="dv">48683</span> BOTTOM GILL NET  <span class="dv">2014-10-21</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">  </span>LAKE STURGEON         <span class="dv">10633383</span>      ALL NETS
+      Species.Code          Species Number.of.Fish Length.or.Lower.Length.IN Length.Upper.IN
+<span class="dv">1</span>              X22          WALLEYE              <span class="dv">1</span>                      <span class="fl">11.0</span>            <span class="fl">11.4</span>
+<span class="dv">2</span>              X22          WALLEYE              <span class="dv">2</span>                      <span class="fl">11.5</span>            <span class="fl">11.9</span>
+<span class="dv">3</span>              X22          WALLEYE              <span class="dv">1</span>                      <span class="fl">12.0</span>            <span class="fl">12.4</span>
+<span class="dv">48681</span>          W11  SMALLMOUTH BASS              <span class="dv">1</span>                      <span class="fl">10.5</span>            <span class="fl">10.9</span>
+<span class="dv">48682</span>          W12  LARGEMOUTH BASS              <span class="dv">1</span>                       <span class="fl">7.0</span>             <span class="fl">7.4</span>
+<span class="dv">48683</span>          Z98 NO FISH CAPTURED              <span class="dv">0</span>                        <span class="ot">NA</span>              <span class="ot">NA</span>
+      Length.or.Lower.Length.MM Length.Upper.MM Weight.Pounds Weight.Grams Gender Disease.
+<span class="dv">1</span>                         <span class="fl">279.4</span>          <span class="fl">289.56</span>            <span class="ot">NA</span>           <span class="ot">NA</span>      M     &lt;<span class="ot">NA</span>&gt;
+<span class="dv">2</span>                         <span class="fl">292.1</span>          <span class="fl">302.26</span>            <span class="ot">NA</span>           <span class="ot">NA</span>      M     &lt;<span class="ot">NA</span>&gt;
+<span class="dv">3</span>                         <span class="fl">304.8</span>          <span class="fl">314.96</span>            <span class="ot">NA</span>           <span class="ot">NA</span>      M     &lt;<span class="ot">NA</span>&gt;
+<span class="dv">48681</span>                     <span class="fl">266.7</span>          <span class="fl">276.86</span>            <span class="ot">NA</span>           <span class="ot">NA</span>   &lt;<span class="ot">NA</span>&gt;<span class="st">     </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="dv">48682</span>                     <span class="fl">177.8</span>          <span class="fl">187.96</span>            <span class="ot">NA</span>           <span class="ot">NA</span>   &lt;<span class="ot">NA</span>&gt;<span class="st">     </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="dv">48683</span>                        <span class="ot">NA</span>              <span class="ot">NA</span>            <span class="ot">NA</span>           <span class="ot">NA</span>   &lt;<span class="ot">NA</span>&gt;<span class="st">     </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="st">      </span>Injury.Type Age..observed.annuli. Edge.Counted.Desc Age.Structure Mark.Given Mark.Found
+<span class="dv">1</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">                    </span><span class="ot">NA</span>              &lt;<span class="ot">NA</span>&gt;<span class="st">          </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">         </span>LP       &lt;<span class="ot">NA</span>&gt;
+<span class="dv">2</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">                    </span><span class="ot">NA</span>              &lt;<span class="ot">NA</span>&gt;<span class="st">          </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">         </span>LP       &lt;<span class="ot">NA</span>&gt;
+<span class="dv">3</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">                    </span><span class="ot">NA</span>              &lt;<span class="ot">NA</span>&gt;<span class="st">          </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">         </span>LP       &lt;<span class="ot">NA</span>&gt;
+<span class="dv">48681</span>        &lt;<span class="ot">NA</span>&gt;<span class="st">                    </span><span class="ot">NA</span>              &lt;<span class="ot">NA</span>&gt;<span class="st">          </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">       </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">       </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="dv">48682</span>        &lt;<span class="ot">NA</span>&gt;<span class="st">                    </span><span class="ot">NA</span>              &lt;<span class="ot">NA</span>&gt;<span class="st">          </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">       </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">       </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="dv">48683</span>        &lt;<span class="ot">NA</span>&gt;<span class="st">                    </span><span class="ot">NA</span>              &lt;<span class="ot">NA</span>&gt;<span class="st">          </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">       </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">       </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="st">      </span>Second.Mark.Found Tag.Number.Given Second.Tag.Number.Given Tag.Number.Found
+<span class="dv">1</span>                  &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="dv">2</span>                  &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="dv">3</span>                  &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="dv">48681</span>              &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="dv">48682</span>              &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="dv">48683</span>              &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                    </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="st">      </span>Second.Tag.Number.Found  YOY Entry.Date Last.Update.Date  Data.Ent.Name Last.Update.Name
+<span class="dv">1</span>                        &lt;<span class="ot">NA</span>&gt;<span class="st"> </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st"> </span><span class="dv">2010-04-06</span>             &lt;<span class="ot">NA</span>&gt;<span class="st"> </span>spooner_treaty             &lt;<span class="ot">NA</span>&gt;
+<span class="dv">2</span>                        &lt;<span class="ot">NA</span>&gt;<span class="st"> </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st"> </span><span class="dv">2010-04-06</span>             &lt;<span class="ot">NA</span>&gt;<span class="st"> </span>spooner_treaty             &lt;<span class="ot">NA</span>&gt;
+<span class="dv">3</span>                        &lt;<span class="ot">NA</span>&gt;<span class="st"> </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st"> </span><span class="dv">2010-04-06</span>             &lt;<span class="ot">NA</span>&gt;<span class="st"> </span>spooner_treaty             &lt;<span class="ot">NA</span>&gt;
+<span class="dv">48681</span>                    &lt;<span class="ot">NA</span>&gt;<span class="st"> </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st"> </span><span class="dv">2015-01-21</span>             &lt;<span class="ot">NA</span>&gt;<span class="st"> </span>spooner_treaty             &lt;<span class="ot">NA</span>&gt;
+<span class="dv">48682</span>                    &lt;<span class="ot">NA</span>&gt;<span class="st"> </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st"> </span><span class="dv">2015-01-21</span>             &lt;<span class="ot">NA</span>&gt;<span class="st"> </span>spooner_treaty             &lt;<span class="ot">NA</span>&gt;
+<span class="dv">48683</span>                    &lt;<span class="ot">NA</span>&gt;<span class="st"> </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st"> </span><span class="dv">2014-12-10</span>             &lt;<span class="ot">NA</span>&gt;<span class="st">         </span>scheij             &lt;<span class="ot">NA</span>&gt;
+<span class="st">      </span>Invalid.Species Non.Standard.Bin Length.Unit.Error Length.Outside.Range Count.Outside.Range
+<span class="dv">1</span>                &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                 </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="dv">2</span>                &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                 </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="dv">3</span>                &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                 </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="dv">48681</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                 </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="dv">48682</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                 </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="dv">48683</span>            &lt;<span class="ot">NA</span>&gt;<span class="st">             </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">              </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                 </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;<span class="st">                </span><span class="er">&lt;</span><span class="ot">NA</span>&gt;
+<span class="st">      </span>Status.Code
+<span class="dv">1</span>            &lt;<span class="ot">NA</span>&gt;
+<span class="dv">2</span>            &lt;<span class="ot">NA</span>&gt;
+<span class="dv">3</span>            &lt;<span class="ot">NA</span>&gt;
+<span class="dv">48681</span>        &lt;<span class="ot">NA</span>&gt;
+<span class="dv">48682</span>        &lt;<span class="ot">NA</span>&gt;
+<span class="dv">48683</span>        SC/H</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">nrow</span>(d)
 [<span class="dv">1</span>] <span class="dv">48683</span></code></pre>
 <p></p>
@@ -209,30 +216,34 @@ code > span.er { font-weight: bold; }
 <p>Example portion of the Sawyer Co. FM database with ``tallied’’ fish lengths.</p>
 <pre><code> Fish.Data.Seq.No Species Number.of.Fish Length.or.Lower.Length.IN Length.Upper.IN
           8837020 WALLEYE              1                      20.0            20.4
-          8837042 WALLEYE              1                      15.5            15.9
-          8837043 WALLEYE              1                      16.0            16.4
-          8837044 WALLEYE              1                      18.5            18.9
-          8837601 WALLEYE              1                      15.5            15.9
-          8837602 WALLEYE              1                      19.0            19.4
-          8837608 WALLEYE              1                      12.5            12.9</code></pre>
+          8837525 WALLEYE              1                      18.0            18.4
+          8837562 WALLEYE              2                      14.5            14.9
+          8837563 WALLEYE              1                      15.5            15.9
+          8837635 WALLEYE              1                      13.0            13.4
+          8837636 WALLEYE              2                      15.0            15.4
+          8837637 WALLEYE              1                      19.5            19.9</code></pre>
 <p>Example expansion but keeping the length bins.</p>
 <pre><code> Fish.Data.Seq.No Species Length.or.Lower.Length.IN Length.Upper.IN
           8837020 WALLEYE                      20.0            20.4
-          8837042 WALLEYE                      15.5            15.9
-          8837043 WALLEYE                      16.0            16.4
-          8837044 WALLEYE                      18.5            18.9
-          8837601 WALLEYE                      15.5            15.9
-          8837602 WALLEYE                      19.0            19.4
-          8837608 WALLEYE                      12.5            12.9</code></pre>
+          8837525 WALLEYE                      18.0            18.4
+          8837562 WALLEYE                      14.5            14.9
+          8837562 WALLEYE                      14.5            14.9
+          8837563 WALLEYE                      15.5            15.9
+          8837635 WALLEYE                      13.0            13.4
+          8837636 WALLEYE                      15.0            15.4
+          8837636 WALLEYE                      15.0            15.4
+          8837637 WALLEYE                      19.5            19.9</code></pre>
 <p>Example expansion but adding random digit from within the length bin.</p>
 <pre><code> Fish.Data.Seq.No Species Length.or.Lower.Length.IN Length.Upper.IN  Len         lennote
           8837020 WALLEYE                      20.0            20.4 20.0 Expanded length
-          8837042 WALLEYE                      15.5            15.9 15.7 Expanded length
-          8837043 WALLEYE                      16.0            16.4 16.0 Expanded length
-          8837044 WALLEYE                      18.5            18.9 18.6 Expanded length
-          8837601 WALLEYE                      15.5            15.9 15.8 Expanded length
-          8837602 WALLEYE                      19.0            19.4 19.1 Expanded length
-          8837608 WALLEYE                      12.5            12.9 12.9 Expanded length</code></pre>
+          8837525 WALLEYE                      18.0            18.4 18.2 Expanded length
+          8837562 WALLEYE                      14.5            14.9 14.6 Expanded length
+          8837562 WALLEYE                      14.5            14.9 14.9 Expanded length
+          8837563 WALLEYE                      15.5            15.9 15.5 Expanded length
+          8837635 WALLEYE                      13.0            13.4 13.1 Expanded length
+          8837636 WALLEYE                      15.0            15.4 15.4 Expanded length
+          8837636 WALLEYE                      15.0            15.4 15.4 Expanded length
+          8837637 WALLEYE                      19.5            19.9 19.8 Expanded length</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="co"># without random digits</span>
 <span class="er">&gt;</span><span class="st"> </span>d1 &lt;-<span class="st"> </span><span class="kw">expandCounts</span>(d,~Number.of.Fish)
 <span class="dv">33</span> rows had zero counts in Number.of.Fish.
@@ -249,8 +260,8 @@ code > span.er { font-weight: bold; }
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">sum</span>(d$Number.of.Fish,<span class="dt">na.rm=</span><span class="ot">TRUE</span>)
 [<span class="dv">1</span>] <span class="dv">448013</span></code></pre>
 </div>
-<div id="individual-variables" class="section level1">
-<h1>Individual Variables</h1>
+<div id="isolate-individual-variables" class="section level1">
+<h1>Isolate Individual Variables</h1>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>d1$Length.or.Lower.Length.IN</code></pre>
 <pre><code>  [1]   NA   NA   NA   NA   NA   NA   NA   NA  2.0  2.6  2.4  2.3   NA 14.5  2.9  4.5  2.5  2.2   NA
  [20]   NA   NA   NA 17.0 11.4  4.8  6.6  7.3  4.6  7.0  5.9  7.1  6.2  8.5  8.0  7.0  6.6  6.0  4.9
@@ -300,12 +311,12 @@ code > span.er { font-weight: bold; }
 <h1>Application Assignment</h1>
 <p>Create a script that performs the following tasks:</p>
 <ol style="list-style-type: decimal">
-<li>Load your FM data into R.</li>
-<li>Set the classes on your data.frame.</li>
-<li>How many rows are in your data.frame?</li>
-<li>How many total fish are in your data.frame?</li>
-<li>Expand the counts to individual fish (assign to a new data.frame).</li>
-<li>How many variables (columns) and individual fish (rows) are in your new data.frame?</li>
+<li>Load your FM data into a data.frame in R.</li>
+<li>Set the classes on the data.frame.</li>
+<li>How many rows are in the data.frame?</li>
+<li>How many total fish are in the data.frame? </li>
+<li>Expand the counts of fish to individual fish with random digits for length (assign to a new data.frame).</li>
+<li>How many variables (columns) and individual fish (rows) are in the new data.frame?</li>
 <li>Display all expanded length measurements.</li>
 <li>Show all “values” for two other variables of your choice.</li>
 </ol>

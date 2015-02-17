@@ -66,53 +66,50 @@ code > span.er { font-weight: bold; }
 
 <div id="preliminaries" class="section level1">
 <h1>Preliminaries</h1>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(fishWiDNR)   <span class="co"># for setDBClasses()</span>
-&gt;<span class="st"> </span><span class="kw">library</span>(FSA)         <span class="co"># for Summarize(), hist(), expandCounts()</span>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="co"># clears objects in R workspace</span>
+<span class="er">&gt;</span><span class="st"> </span><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="co"># load needed packages</span>
+<span class="er">&gt;</span><span class="st"> </span><span class="kw">library</span>(fishWiDNR)   <span class="co"># for setDBClasses()</span>
+&gt;<span class="st"> </span><span class="kw">library</span>(FSA)         <span class="co"># for expandCounts(), Summarize(), hist()</span>
 &gt;<span class="st"> </span><span class="kw">library</span>(magrittr)    <span class="co"># for %&lt;&gt;%</span>
 &gt;<span class="st"> </span><span class="kw">library</span>(dplyr)       <span class="co"># for %&gt;%, filter(), select(), mutate(), group_by(), summarize()</span>
-&gt;<span class="st"> </span><span class="kw">library</span>(lubridate)   <span class="co"># for month()</span></code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">setwd</span>(<span class="st">&quot;C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData&quot;</span>)
+&gt;<span class="st"> </span><span class="co">#  options(dplyr.print_max=1e9)</span>
+<span class="er">&gt;</span><span class="st"> </span><span class="kw">library</span>(lubridate)   <span class="co"># for month()</span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="co"># load FM data, expand lengths, add variables, select pertintent variables</span>
+<span class="er">&gt;</span><span class="st"> </span><span class="kw">setwd</span>(<span class="st">&quot;C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData&quot;</span>)
 &gt;<span class="st"> </span>d &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;SAWYER_fish_raw_data_012915.csv&quot;</span>,<span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>,<span class="dt">na.strings=</span><span class="kw">c</span>(<span class="st">&quot;-&quot;</span>,<span class="st">&quot;NA&quot;</span>,<span class="st">&quot;&quot;</span>)) %&gt;%
 <span class="st">       </span><span class="kw">setDBClasses</span>(<span class="dt">type=</span><span class="st">&quot;RDNR&quot;</span>) %&gt;%
 <span class="st">       </span><span class="kw">expandCounts</span>(~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,<span class="dt">new.name=</span><span class="st">&quot;Len&quot;</span>) %&gt;%
 <span class="st">       </span><span class="kw">mutate</span>(<span class="dt">Mon=</span><span class="kw">month</span>(Survey.Begin.Date,<span class="dt">label=</span><span class="ot">TRUE</span>),<span class="dt">Species1=</span><span class="kw">capFirst</span>(Species)) %&gt;%
 <span class="st">       </span><span class="kw">select</span>(Species,Species1,Waterbody.Name,Survey.Year,Mon,Gear,Len)</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>Spr &lt;-<span class="st"> </span><span class="kw">filterD</span>(d,Survey.Year==<span class="dv">2013</span>,Mon %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Apr&quot;</span>,<span class="st">&quot;May&quot;</span>,<span class="st">&quot;Jun&quot;</span>))
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="co"># create some subsets for use below.</span>
+<span class="er">&gt;</span><span class="st"> </span>Spr &lt;-<span class="st"> </span><span class="kw">filterD</span>(d,Survey.Year==<span class="dv">2013</span>,Mon %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Apr&quot;</span>,<span class="st">&quot;May&quot;</span>,<span class="st">&quot;Jun&quot;</span>))
 &gt;<span class="st"> </span>BGSpr &lt;-<span class="st"> </span><span class="kw">filterD</span>(Spr,Species==<span class="st">&quot;BLUEGILL&quot;</span>)
 &gt;<span class="st"> </span>BGSprLC &lt;-<span class="st"> </span><span class="kw">filterD</span>(BGSpr,Waterbody.Name==<span class="st">&quot;LAKE CHETAC&quot;</span>,Gear==<span class="st">&quot;BOOM SHOCKER&quot;</span>)
 &gt;<span class="st"> </span>SprLC &lt;-<span class="st"> </span><span class="kw">filterD</span>(Spr,Waterbody.Name==<span class="st">&quot;LAKE CHETAC&quot;</span>)</code></pre>
-<p>So …</p>
+<p>Quick questions</p>
 <ul>
-<li><code>Spr</code> has all species sampled from all water bodies in the Spring of 2013.</li>
-<li><code>BGSpr</code> has only Bluegill sampled from all water bodies in the Spring of 2013.</li>
-<li><code>BGSprLC</code> has only Bluegill sampled with boom shockers from Lake Chetac in the Spring of 2013.</li>
-<li><code>SprLC</code> has all species sampled from Lake Chetac (in all gears) in the Spring of 2013.</li>
+<li>What variables should be in <code>Spr</code>, <code>BGSpr</code>, <code>BGSprLC</code>, and <code>SprLC</code>.</li>
+<li>What individuals should be in <code>Spr</code>, <code>BGSpr</code>, <code>BGSprLC</code>, and <code>SprLC</code>.</li>
 </ul>
-<p>… and they all look similar to this …</p>
-<pre><code>   Species Species1 Waterbody.Name Survey.Year Mon         Gear Len
-1 BLUEGILL Bluegill    LAKE CHETAC        2013 May BOOM SHOCKER 4.0
-2 BLUEGILL Bluegill    LAKE CHETAC        2013 May BOOM SHOCKER 4.7
-3 BLUEGILL Bluegill    LAKE CHETAC        2013 May BOOM SHOCKER 4.7
-4 BLUEGILL Bluegill    LAKE CHETAC        2013 May BOOM SHOCKER 7.3
-5 BLUEGILL Bluegill    LAKE CHETAC        2013 May BOOM SHOCKER 7.4
-6 BLUEGILL Bluegill    LAKE CHETAC        2013 May BOOM SHOCKER 6.6</code></pre>
-
 <p></p>
 </div>
 <div id="psds-single-waterbody-and-species" class="section level1">
 <h1>PSDs Single Waterbody and Species</h1>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>brks &lt;-<span class="st"> </span><span class="kw">psdVal</span>(<span class="st">&quot;Bluegill&quot;</span>,<span class="dt">units=</span><span class="st">&quot;in&quot;</span>,<span class="dt">addLens=</span><span class="dv">7</span>)
-&gt;<span class="st"> </span>BGSprLC %&lt;&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">lcat=</span><span class="kw">lencat</span>(Len,<span class="dt">breaks=</span>brks),
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>( brks &lt;-<span class="st"> </span><span class="kw">psdVal</span>(<span class="st">&quot;Bluegill&quot;</span>,<span class="dt">units=</span><span class="st">&quot;in&quot;</span>,<span class="dt">addLens=</span><span class="dv">7</span>) )
+ substock     stock   quality         <span class="dv">7</span> preferred memorable    trophy 
+        <span class="dv">0</span>         <span class="dv">3</span>         <span class="dv">6</span>         <span class="dv">7</span>         <span class="dv">8</span>        <span class="dv">10</span>        <span class="dv">12</span> </code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>BGSprLC %&lt;&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">lcat=</span><span class="kw">lencat</span>(Len,<span class="dt">breaks=</span>brks),
                       <span class="dt">lcat1=</span><span class="kw">lencat</span>(Len,<span class="dt">breaks=</span>brks,<span class="dt">use.names=</span><span class="ot">TRUE</span>),
                       <span class="dt">lcat2=</span><span class="kw">lencat</span>(Len,<span class="dt">breaks=</span>brks,<span class="dt">use.names=</span><span class="ot">TRUE</span>,<span class="dt">drop.levels=</span><span class="ot">TRUE</span>))
-&gt;<span class="st"> </span><span class="kw">head</span>(BGSprLC)
-   Species Species1 Waterbody.Name Survey.Year Mon         Gear Len lcat   lcat1   lcat2
-<span class="dv">1</span> BLUEGILL Bluegill    LAKE CHETAC        <span class="dv">2013</span> May BOOM SHOCKER <span class="fl">4.0</span>    <span class="dv">3</span>   stock   stock
-<span class="dv">2</span> BLUEGILL Bluegill    LAKE CHETAC        <span class="dv">2013</span> May BOOM SHOCKER <span class="fl">4.7</span>    <span class="dv">3</span>   stock   stock
-<span class="dv">3</span> BLUEGILL Bluegill    LAKE CHETAC        <span class="dv">2013</span> May BOOM SHOCKER <span class="fl">4.7</span>    <span class="dv">3</span>   stock   stock
-<span class="dv">4</span> BLUEGILL Bluegill    LAKE CHETAC        <span class="dv">2013</span> May BOOM SHOCKER <span class="fl">7.3</span>    <span class="dv">7</span>       <span class="dv">7</span>       <span class="dv">7</span>
-<span class="dv">5</span> BLUEGILL Bluegill    LAKE CHETAC        <span class="dv">2013</span> May BOOM SHOCKER <span class="fl">7.4</span>    <span class="dv">7</span>       <span class="dv">7</span>       <span class="dv">7</span>
-<span class="dv">6</span> BLUEGILL Bluegill    LAKE CHETAC        <span class="dv">2013</span> May BOOM SHOCKER <span class="fl">6.6</span>    <span class="dv">6</span> quality quality</code></pre>
+&gt;<span class="st"> </span><span class="kw">headtail</span>(BGSprLC)
+     Species Species1 Waterbody.Name Survey.Year Mon         Gear Len lcat   lcat1   lcat2
+<span class="dv">1</span>   BLUEGILL Bluegill    LAKE CHETAC        <span class="dv">2013</span> May BOOM SHOCKER <span class="fl">4.0</span>    <span class="dv">3</span>   stock   stock
+<span class="dv">2</span>   BLUEGILL Bluegill    LAKE CHETAC        <span class="dv">2013</span> May BOOM SHOCKER <span class="fl">4.7</span>    <span class="dv">3</span>   stock   stock
+<span class="dv">3</span>   BLUEGILL Bluegill    LAKE CHETAC        <span class="dv">2013</span> May BOOM SHOCKER <span class="fl">4.7</span>    <span class="dv">3</span>   stock   stock
+<span class="dv">396</span> BLUEGILL Bluegill    LAKE CHETAC        <span class="dv">2013</span> May BOOM SHOCKER <span class="fl">5.6</span>    <span class="dv">3</span>   stock   stock
+<span class="dv">397</span> BLUEGILL Bluegill    LAKE CHETAC        <span class="dv">2013</span> May BOOM SHOCKER <span class="fl">6.6</span>    <span class="dv">6</span> quality quality
+<span class="dv">398</span> BLUEGILL Bluegill    LAKE CHETAC        <span class="dv">2013</span> May BOOM SHOCKER <span class="fl">6.6</span>    <span class="dv">6</span> quality quality</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">xtabs</span>(~lcat,<span class="dt">data=</span>BGSprLC)
 lcat
   <span class="dv">3</span>   <span class="dv">6</span>   <span class="dv">7</span>   <span class="dv">8</span> 
@@ -153,21 +150,14 @@ Waterbody.Name      substock stock quality   <span class="dv">7</span> preferred
   MOOSE LAKE               <span class="dv">0</span>     <span class="dv">0</span>       <span class="dv">0</span>   <span class="dv">0</span>         <span class="dv">0</span>
   ROUND LAKE              <span class="dv">13</span>   <span class="dv">221</span>      <span class="dv">49</span>  <span class="dv">20</span>         <span class="dv">6</span>
   WHITEFISH LAKE           <span class="dv">8</span>    <span class="dv">50</span>       <span class="dv">4</span>   <span class="dv">5</span>         <span class="dv">0</span></code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">apply</span>(freq,<span class="dt">MARGIN=</span><span class="dv">1</span>,<span class="dt">FUN=</span>rcumsum)                              <span class="co"># apply result has wrong orientation</span>
-           Waterbody.Name
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">apply</span>(freq,<span class="dt">MARGIN=</span><span class="dv">1</span>,<span class="dt">FUN=</span>rcumsum)     <span class="co"># apply result has wrong orientation, only partial results shown</span></code></pre>
+<pre><code>           Waterbody.Name
             BLACK DAN LAKE CONNORS LAKE DURPHEE LAKE GREEN LAKE LAKE CHETAC LAKE CHIPPEWA
-  substock             <span class="dv">241</span>          <span class="dv">108</span>          <span class="dv">574</span>        <span class="dv">144</span>         <span class="dv">400</span>           <span class="dv">181</span>
-  stock                <span class="dv">236</span>          <span class="dv">102</span>          <span class="dv">573</span>        <span class="dv">142</span>         <span class="dv">399</span>           <span class="dv">181</span>
-  quality                <span class="dv">9</span>           <span class="dv">29</span>          <span class="dv">537</span>        <span class="dv">112</span>         <span class="dv">229</span>            <span class="dv">80</span>
-  <span class="dv">7</span>                      <span class="dv">2</span>            <span class="dv">1</span>          <span class="dv">123</span>         <span class="dv">63</span>          <span class="dv">96</span>            <span class="dv">36</span>
-  preferred              <span class="dv">0</span>            <span class="dv">0</span>            <span class="dv">0</span>          <span class="dv">8</span>           <span class="dv">6</span>             <span class="dv">1</span>
-           Waterbody.Name
-            LAKE OF THE PINES LOWER CLAM LAKE MOOSE LAKE ROUND LAKE WHITEFISH LAKE
-  substock                 <span class="dv">90</span>              <span class="dv">35</span>          <span class="dv">0</span>        <span class="dv">309</span>             <span class="dv">67</span>
-  stock                    <span class="dv">83</span>              <span class="dv">34</span>          <span class="dv">0</span>        <span class="dv">296</span>             <span class="dv">59</span>
-  quality                  <span class="dv">17</span>               <span class="dv">4</span>          <span class="dv">0</span>         <span class="dv">75</span>              <span class="dv">9</span>
-  <span class="dv">7</span>                         <span class="dv">0</span>               <span class="dv">0</span>          <span class="dv">0</span>         <span class="dv">26</span>              <span class="dv">5</span>
-  preferred                 <span class="dv">0</span>               <span class="dv">0</span>          <span class="dv">0</span>          <span class="dv">6</span>              <span class="dv">0</span></code></pre>
+  substock             241          108          574        144         400           181
+  stock                236          102          573        142         399           181
+  quality                9           29          537        112         229            80
+  7                      2            1          123         63          96            36
+  preferred              0            0            0          8           6             1</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>( rcum &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(freq,<span class="dt">MARGIN=</span><span class="dv">1</span>,<span class="dt">FUN=</span>rcumsum)) )
                    
 Waterbody.Name      substock stock quality   <span class="dv">7</span> preferred
@@ -203,14 +193,14 @@ Waterbody.Name      stock   quality          <span class="dv">7</span> preferred
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>SprLC %&lt;&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">lcat2=</span><span class="kw">psdAdd</span>(Len,Species1,<span class="dt">units=</span><span class="st">&quot;in&quot;</span>))
 Warning in <span class="kw">max</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>):<span class="st"> </span>no non-missing arguments to max; returning -<span class="ot">Inf</span>
 Warning in <span class="kw">min</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>):<span class="st"> </span>no non-missing arguments to min; returning <span class="ot">Inf</span></code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">head</span>(SprLC)
-       Species     Species1 Waterbody.Name Survey.Year Mon     Gear Len    lcat2
-<span class="dv">1</span> YELLOW PERCH Yellow Perch    LAKE CHETAC        <span class="dv">2013</span> May FYKE NET <span class="fl">4.7</span> substock
-<span class="dv">2</span> YELLOW PERCH Yellow Perch    LAKE CHETAC        <span class="dv">2013</span> May FYKE NET <span class="fl">5.4</span>    stock
-<span class="dv">3</span> YELLOW PERCH Yellow Perch    LAKE CHETAC        <span class="dv">2013</span> May FYKE NET <span class="fl">5.4</span>    stock
-<span class="dv">4</span> YELLOW PERCH Yellow Perch    LAKE CHETAC        <span class="dv">2013</span> May FYKE NET <span class="fl">5.2</span>    stock
-<span class="dv">5</span> YELLOW PERCH Yellow Perch    LAKE CHETAC        <span class="dv">2013</span> May FYKE NET <span class="fl">4.5</span> substock
-<span class="dv">6</span> YELLOW PERCH Yellow Perch    LAKE CHETAC        <span class="dv">2013</span> May FYKE NET <span class="fl">5.6</span>    stock</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">headtail</span>(SprLC)
+          Species     Species1 Waterbody.Name Survey.Year Mon     Gear Len    lcat2
+<span class="dv">1</span>    YELLOW PERCH Yellow Perch    LAKE CHETAC        <span class="dv">2013</span> May FYKE NET <span class="fl">4.7</span> substock
+<span class="dv">2</span>    YELLOW PERCH Yellow Perch    LAKE CHETAC        <span class="dv">2013</span> May FYKE NET <span class="fl">5.4</span>    stock
+<span class="dv">3</span>    YELLOW PERCH Yellow Perch    LAKE CHETAC        <span class="dv">2013</span> May FYKE NET <span class="fl">5.4</span>    stock
+<span class="dv">6872</span> YELLOW PERCH Yellow Perch    LAKE CHETAC        <span class="dv">2013</span> May FYKE NET  <span class="ot">NA</span>     &lt;<span class="ot">NA</span>&gt;
+<span class="dv">6873</span> YELLOW PERCH Yellow Perch    LAKE CHETAC        <span class="dv">2013</span> May FYKE NET  <span class="ot">NA</span>     &lt;<span class="ot">NA</span>&gt;
+<span class="dv">6874</span> YELLOW PERCH Yellow Perch    LAKE CHETAC        <span class="dv">2013</span> May FYKE NET  <span class="ot">NA</span>     &lt;<span class="ot">NA</span>&gt;</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>( freq &lt;-<span class="st"> </span><span class="kw">xtabs</span>(~Species+lcat2,<span class="dt">data=</span>SprLC) )
                  lcat2
 Species           substock stock quality preferred memorable trophy
@@ -259,7 +249,7 @@ Species           stock  quality  preferred  memorable trophy
 <li>Load and prepare your FM data in R (<strong>HINT:</strong> <em>use all or some of your scripts from previous application assignments</em>).</li>
 <li>Compute the PSDs for one species in one waterbody in one year.</li>
 <li>Compute the PSDs for one species in all waterbodies in one year in your FM data.</li>
-<li>Compute the PSDs for all species in one waterbody in one year in your FM data.</li>
+<li>Compute the PSDs for all species in one waterbody in one year in your FM data. </li>
 <li>(<em>Time Permitting</em>) Repeat any of the above for another year.</li>
 </ol>
 <p><strong>Save your script!</strong></p>

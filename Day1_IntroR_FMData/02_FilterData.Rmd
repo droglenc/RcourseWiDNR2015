@@ -1,5 +1,5 @@
 ---
-title: "Filter Data"
+title: "Filtering Data"
 author: "Derek H. Ogle, Northland College"
 date: "4-Mar-2015"
 output: pdf_document
@@ -11,14 +11,21 @@ library(knitr)
 source("../knitr_setup.R")
 ```
 
-#Preliminaries
+# Preliminaries
+```{r eval=FALSE}
+# clears objects in R workspace
+rm(list = ls())
+```
+
 ```{r results='hide', warning=FALSE, message=FALSE}
+# load needed packages
 library(fishWiDNR)   # for setDBClasses()
 library(dplyr)       # for select(), filter()
-library(FSA)         # for Summarize(), expandCounts(), filterD()
+library(FSA)         # for expandCounts(), Summarize(), filterD()
 ```
 
 ```{r, cache=TRUE, message=FALSE}
+# load FM data and expand lengths ... copied code from first handout
 setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("SAWYER_fish_raw_data_012915.csv",stringsAsFactors=FALSE,na.strings=c("-","NA",""))
 d <- setDBClasses(d,type="RDNR")
@@ -28,14 +35,14 @@ names(d)
 
 \newpage
 
-#Selecting Variables -- select()
+# Selecting Variables -- select()
 ```{r, R.options=list(width=100)}
-d1 <- select(d,Waterbody.Name,Gear,Survey.Year,Species,Len,Weight.Pounds,Gender,Mark.Given)
+d1 <- select(d,Waterbody.Name,Gear,Survey.Year,Species,Len,Weight.Pounds,Gender)
 headtail(d1)
 ```
 
 ```{r, R.options=list(width=100)}
-tmp <- select(d,County:Swims.Station.Id)
+tmp <- select(d,County:Station.Name)
 headtail(tmp)
 ```
 
@@ -49,20 +56,27 @@ tmp <- select(d,starts_with("Length"))                        # there is also an
 names(tmp)
 ```
 
-\newpage
 ```{r}
 tmp <- select(d,Survey.Seq.No,Species,Len,contains("Mark"))
 headtail(tmp)
 ```
 
+\newpage
 
-#Selecting Individuals -- filter()
+# Selecting Individuals -- filter()
 
 ```{r}
-levels(d1$Gear)
-xtabs(~Gear,data=d1)
+levels(d1$Waterbody.Name)
 ```
 
+```{r results='hide'}
+xtabs(~Waterbody.Name,data=d1)                                # only partial results shown
+```
+```{r echo=FALSE,R.options=list(width=100)}
+xtabs(~Waterbody.Name,data=d1)[1:15]
+```
+
+\newpage
 ```{r results='hide'}
 xtabs(~Waterbody.Name+Gear,data=d1)                           # only partial results shown
 ```
@@ -85,18 +99,27 @@ xtabs(~Waterbody.Name,data=tmp)
 ```
 
 ```{r}
+tmp <- filterD(d1,Waterbody.Name=="BARBER LAKE")
+xtabs(~Waterbody.Name,data=tmp)
+```
+
+```{r}
 tmp <- filterD(d1,Waterbody.Name %in% c("BARBER LAKE","LAKE CHETAC"))
 xtabs(~Waterbody.Name,data=tmp)
 ```
 
 ```{r}
-LCblg <- filterD(d1,Waterbody.Name=="LAKE CHETAC",Species=="BLUEGILL")
-xtabs(~Gear,data=LCblg)
+LCblg <- filterD(d1,Waterbody.Name=="LAKE CHETAC",Species=="BLUEGILL",Gear=="BOOM SHOCKER")
+xtabs(~Gear+Species,data=LCblg)
 ```
 
 ```{r}
-LCblg <- filterD(LCblg,Gear=="BOOM SHOCKER")
-Summarize(~Len,data=LCblg,digits=2)
+weird <- filterD(d1,Species=="Iowa Darter" | Weight.Pounds>100)
+weird
+```
+
+```{r}
+( weird <- filterD(d1,Species=="IOWA DARTER" | Weight.Pounds>100) )
 ```
 
 ```{r}
@@ -121,6 +144,7 @@ Create a script that performs the following tasks:
 1. Isolate (from the original data.frame) one species of fish from one gear used in one waterbody.
     * Construct a table of frequency of each sex.
     * Summarize the length variable.
+\vspace{12pt}
 1. (*Time Permitting*) Suppose the waterbody and species you chose above has a minimum length limit (make up the minimum length).  Isolate those fish that would be legal.  Show that your filtering was successful.
 1. (*Time Permitting*) Repeat the previous question but for a protected slot.
 1. (*Time Permitting*) Repeat the previous question but for a harvest slot.

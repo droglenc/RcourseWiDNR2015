@@ -11,16 +11,24 @@ library(knitr)
 source("../knitr_setup.R")
 ```
 
-#Preliminaries
+# Preliminaries
+```{r eval=FALSE}
+# clears objects in R workspace
+rm(list = ls())
+```
+
 ```{r results='hide', warning=FALSE, message=FALSE}
+# load needed packages
 library(fishWiDNR)   # for setDBClasses()
-library(FSA)         # for Summarize(), hist(), expandCounts()
+library(FSA)         # for expandCounts(), Summarize(), hist()
 library(magrittr)    # for %<>%
 library(dplyr)       # for %>%, filter(), select(), mutate(), group_by(), summarize()
+#  options(dplyr.print_max=1e9)
 library(lubridate)   # for month()
 ```
 
 ```{r, cache=TRUE, message=FALSE}
+# load FM data, expand lengths, add variables, select pertintent variables
 setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("SAWYER_fish_raw_data_012915.csv",stringsAsFactors=FALSE,na.strings=c("-","NA","")) %>%
       setDBClasses(type="RDNR") %>%
@@ -29,35 +37,27 @@ d <- read.csv("SAWYER_fish_raw_data_012915.csv",stringsAsFactors=FALSE,na.string
       select(Species,Species1,Waterbody.Name,Survey.Year,Mon,Gear,Len)
 ```
 ```{r, cache=TRUE, message=FALSE}
+# create some subsets for use below.
 Spr <- filterD(d,Survey.Year==2013,Mon %in% c("Apr","May","Jun"))
 BGSpr <- filterD(Spr,Species=="BLUEGILL")
 BGSprLC <- filterD(BGSpr,Waterbody.Name=="LAKE CHETAC",Gear=="BOOM SHOCKER")
 SprLC <- filterD(Spr,Waterbody.Name=="LAKE CHETAC")
 ```
-So ...
 
-* `Spr` has all species sampled from all water bodies in the Spring of 2013.
-* `BGSpr` has only Bluegill sampled from all water bodies in the Spring of 2013.
-* `BGSprLC` has only Bluegill sampled with boom shockers from Lake Chetac in the Spring of 2013.
-* `SprLC` has all species sampled from Lake Chetac (in all gears) in the Spring of 2013.
+Quick questions
 
-... and they all look similar to this ...
-
-```{r echo=FALSE}
-head(BGSprLC)
-```
-
-\vspace{18pt}
+* What variables should be in `Spr`, `BGSpr`, `BGSprLC`, and `SprLC`.
+* What individuals should be in `Spr`, `BGSpr`, `BGSprLC`, and `SprLC`.
 
 \newpage
 
 #PSDs Single Waterbody and Species
 ```{r}
-brks <- psdVal("Bluegill",units="in",addLens=7)
+( brks <- psdVal("Bluegill",units="in",addLens=7) )
 BGSprLC %<>% mutate(lcat=lencat(Len,breaks=brks),
                      lcat1=lencat(Len,breaks=brks,use.names=TRUE),
                      lcat2=lencat(Len,breaks=brks,use.names=TRUE,drop.levels=TRUE))
-head(BGSprLC)
+headtail(BGSprLC)
 ```
 
 ```{r}
@@ -82,7 +82,15 @@ rcum/rcum["stock"]*100
 ```{r}
 BGSpr %<>% mutate(lcat2=lencat(Len,breaks=brks,use.names=TRUE,drop.levels=TRUE))
 ( freq <- xtabs(~Waterbody.Name+lcat2,data=BGSpr) )
-apply(freq,MARGIN=1,FUN=rcumsum)                              # apply result has wrong orientation
+```
+```{r, results='hide'}
+apply(freq,MARGIN=1,FUN=rcumsum)     # apply result has wrong orientation, only partial results shown
+```
+```{r, echo=FALSE}
+apply(freq,MARGIN=1,FUN=rcumsum)[1:5,1:6]
+```
+
+```{r}
 ( rcum <- t(apply(freq,MARGIN=1,FUN=rcumsum)) )
 rcum <- rcum[,-1]                                             # remove "substock" column
 rcum/rcum[,"stock"]*100
@@ -93,7 +101,7 @@ rcum/rcum[,"stock"]*100
 
 ```{r}
 SprLC %<>% mutate(lcat2=psdAdd(Len,Species1,units="in"))
-head(SprLC)
+headtail(SprLC)
 
 ( freq <- xtabs(~Species+lcat2,data=SprLC) )
 ( rcum <- t(apply(freq,MARGIN=1,FUN=rcumsum)) )
@@ -110,6 +118,44 @@ Create a script that performs the following tasks:
 1. Compute the PSDs for one species in one waterbody in one year.
 1. Compute the PSDs for one species in all waterbodies in one year in your FM data.
 1. Compute the PSDs for all species in one waterbody in one year in your FM data.
+\vspace{12pt}
 1. (*Time Permitting*) Repeat any of the above for another year.
 
 **Save your script!**
+
+```{r results='hide', echo=FALSE, fig.show='hide', message=FALSE}
+# ############################################################
+# ############################################################
+# # Create a formatted table as a picture that allows results
+# # to be cirectly input into presentations or reports
+# #    largely from Gretchen Hansen
+# ############################################################
+
+# # Load some extra packages
+library(ggplot2)
+library(gridExtra)
+
+# # Save last result from above, must be coerced to a data.frame
+tmp <- data.frame(round(rcum/rcum[,"stock"]*100,0))
+
+# # Create a title for the table and the outputted file
+ttl <- "PSD Analysis, Lake Chetac, Spring 2013"
+
+# # This creates the table (note the use of show.rownames=TRUE)
+p <- ggplot(tmp,aes(x=1,y=1)) + 
+  annotation_custom(tableGrob(tmp,show.rownames=TRUE)) +
+  ggtitle(ttl) +
+  theme_bw() +
+  theme(panel.border=element_blank(),
+        panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        plot.title=element_text(size=rel(1.2),face="bold",vjust=2),
+        axis.ticks=element_blank(), 
+        axis.text=element_blank(),
+        axis.title=element_blank())
+p
+
+ggsave(paste0(ttl,".png"),p,width=6,height=4)
+# ############################################################
+# ############################################################
+```
