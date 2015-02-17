@@ -1,27 +1,23 @@
 # History files
 .Rhistory
-
 # Example code in package build process
 *-Ex.R
-
 # R data files from past sessions
 .Rdata
-
 # RStudio files
 .Rproj.user/
 .Rproj.user
-
 # Cached directories to ignore
 Day1_IntroR_FMData/01_LoadData_cache/
 Day1_IntroR_FMData/02_FilterData_cache/
 Day1_IntroR_FMData/03_MutateData_cache/
 Day1_IntroR_FMData/04_SizeStructure_I_cache/
 Day1_IntroR_FMData/05_SizeStructure_II_cache/
+Day1_IntroR_FMData/Figs/
 Day2_AgeGrowth/01_PrepareData_cache/
 Day2_AgeGrowth/02_AgeLengthKey_cache/
 Day2_AgeGrowth/03_SummarizeAgeData_cache/
 Day2_AgeGrowth/Figs/
-
 # Old stuff to ignore
 Day1_IntroR_FMData/zzzOldOrOther/
 Day2_AgeGrowth/zzzOld/
