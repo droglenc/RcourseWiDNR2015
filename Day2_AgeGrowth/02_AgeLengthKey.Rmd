@@ -12,18 +12,24 @@ source("../knitr_setup.R")
 ```
 
 #Preliminaries
+```{r eval=FALSE}
+# clears objects in R workspace
+rm(list = ls())
+```
+
 ```{r results='hide', warning=FALSE, message=FALSE}
+# load needed packages
 library(fishWiDNR)   # for setDBClasses()
 library(FSA)         # for lencat(), filterD()
-library(dplyr)       # for %>%
+library(dplyr)       # for select(), mutate(), arrange(),%>%
 library(magrittr)    # for %<>%
 library(lubridate)   # for month()
 library(plotrix)     # for plotH(), histStack()
 ```
 
-#Loading Data and Initial Manipulations
-This first part is a repeat from the previous handout.
+# Loading Data and Initial Manipulations
 ```{r cache=TRUE, results='hide'}
+# Load and prepare data ... copied from previous handout
 setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("SAWYER_fish_raw_data_012915.csv",stringsAsFactors=FALSE,na.strings=c("-","NA","")) %>%
   setDBClasses(type="RDNR") %>%
@@ -34,11 +40,9 @@ d <- read.csv("SAWYER_fish_raw_data_012915.csv",stringsAsFactors=FALSE,na.string
   arrange(Species,Length.or.Lower.Length.IN)
 ```
 
-This part is new.
 ```{r cache=TRUE, results='hide'}
-wae <- filterD(d,Waterbody.Name=="NELSON LAKE",Survey.Year==2014,mon=="May",
-               Species=="WALLEYE",Gender!="U") %>% 
-  filterD(Length.or.Lower.Length.IN>11.5,Length.or.Lower.Length.IN<21)
+wae <- filterD(d,Waterbody.Name=="NELSON LAKE",Survey.Year==2014,mon=="May",Species=="WALLEYE",
+               Gender!="U",Length.or.Lower.Length.IN>11.5,Length.or.Lower.Length.IN<21)
 
 waeF <- filterD(wae,Gender=="F")
 waeM <- filterD(wae,Gender=="M")
@@ -70,7 +74,8 @@ waeM.fnl <- rbind(waeM.aged,waeM.unaged)
 waeM.fnl$Age..observed.annuli.
 ```
 
-# Construct and Aply an Age-Length Key -- Females
+# Construct and Apply an Age-Length Key -- Females
+\vspace{-6pt}
 Code is in the script.  However, it is mostly a copy-and-paste of the code from above with the 'M's changed to 'F's
 ```{r echo=FALSE, results='hide', fig.show='hide', warning=FALSE, cache=TRUE}
 waeF.aged <- filter(waeF,!is.na(Age..observed.annuli.))
@@ -84,22 +89,23 @@ waeF.unaged <- filter(waeF,is.na(Age..observed.annuli.))
 waeF.unaged <- alkIndivAge(alkF1,Age..observed.annuli.~Length.or.Lower.Length.IN,data=waeF.unaged)
 waeF.fnl <- rbind(waeF.aged,waeF.unaged)
 headtail(waeF.fnl)
+```
+
+# Application Assignment
+\vspace{-6pt}
+Create a script that performs the following tasks:
+
+1. Load your FM data into R.  Filter your data to a waterbody, species, year, and sampling date such that some sampled fish were aged and some were not.  Perhaps, also filter by sex.  [Alternatively, use the Sawyer County database and select Walleye in 2014 or 2013 from Lake Chippewa]
+1. Construct an **appropriate** age-length key (ALK) from the aged fish.  Visualize the ALK in both tabular and graphical form.
+1. Apply the ALK to the unaged fish.
+1. Combine the fish aged from a structure and those with ages estimated from the ALK to form a combined data.frame.
+1. Confirm that all fish in the final data.frame have assigned ages.
+\vspace{12pt}
+1. (*Time Permitting*) Repeat the above for the other sex or another species.
+
+**Save your script!**
 
 ```{r echo=FALSE, results='hide'}
 # # remove some objects because this will be sourced for 03_LinearModelIntro
 rm(alkF1,alkM1,d,rawF,rawM,wae,waeF,waeF.aged,waeF.unaged,waeM,waeM.aged,waeM.unaged)
 ```
-
-# Application Assignment
-
-Create a script that performs the following tasks:
-
-1. Load your FM data into R.
-1. Filter your to a waterbody, species, year, and sampling date such that some sampled fish were aged and some were not.  Perhaps, also filter by sex.
-1. Construct an **appropriate** age-length key (ALK) from the aged fish.  Visualize the ALK in both tabular and graphical form.
-1. Apply the ALK to the unaged fish.
-1. Combine the fish aged from a structure and those with ages estimated from the ALK to form a combined data.frame.
-1. Confirm that all fish in the final data.frame have assigned ages.
-1. (*Time Permitting*) Repeat the above for the other sex or another species.
-
-**Save your script!**

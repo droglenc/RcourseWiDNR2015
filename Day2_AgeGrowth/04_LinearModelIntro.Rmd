@@ -6,15 +6,24 @@ output: pdf_document
 geometry: margin=0.5in
 ---
 
+\vspace{-24pt}
+
 # Preliminaries
+\vspace{-12pt}
 ```{r echo=FALSE, results='hide'}
 library(knitr)
 source("../knitr_setup.R")
 ```
 
+```{r eval=FALSE}
+# clears objects in R workspace
+rm(list = ls())
+```
+
 ```{r results='hide', warning=FALSE, message=FALSE}
-library(FSA)         # for filterD(), fitPlot
-library(dplyr)       # for %>%
+# load needed packages
+library(FSA)         # for headtail(), filterD(), fitPlot()
+library(dplyr)       # for mutate(),%>%
 library(multcomp)    # for glht(), mcp()
 ```
 
@@ -25,9 +34,9 @@ headtail(ruf)
 ```
 
 # Simple Linear Regession
+\vspace{-12pt}
 ```{r}
 ruf90 <- filterD(ruf,year==1990)
-
 fit1 <- lm(logW~logL,data=ruf90)
 coef(fit1)
 confint(fit1)
@@ -35,14 +44,18 @@ anova(fit1)
 ```
 
 ```{r}
-tmp <- range(ruf90$logL)
+( tmp <- range(ruf90$logL) )
 xs <- seq(tmp[1],tmp[2],length.out=99)
+xs[1:10]
 ys <- predict(fit1,data.frame(logL=xs))
+ys[1:10]
+```
 
-plot(logW~logL,data=ruf90,pch=19,col=rgb(0,0,0,1/4),ylab="log Weight (g)",xlab="log Total Length (mm)")
+```{r}
+plot(logW~logL,data=ruf90,pch=19,col=rgb(0,0,0,1/6),ylab="log Weight (g)",xlab="log Total Length (mm)")
 lines(ys~xs,lwd=2)
 
-plot(wt~tl,data=ruf90,pch=19,col=rgb(0,0,0,1/4),ylab="Weight (g)",xlab="Total Length (mm)")
+plot(wt~tl,data=ruf90,pch=19,col=rgb(0,0,0,1/6),ylab="Weight (g)",xlab="Total Length (mm)")
 btxs <- 10^xs
 btys <- 10^ys
 lines(btys~btxs,lwd=2)
@@ -53,7 +66,6 @@ lines(btys~btxs,lwd=2)
 # Dummy Variable Regession (aka ANCOVA)
 ```{r}
 ruf9000 <- filterD(ruf,year %in% c(1990,2000))
-
 fit2 <- lm(logW~logL*fYear,data=ruf9000)
 anova(fit2)
 coef(fit2)
@@ -63,7 +75,7 @@ tmp <- ruf9000 %>% group_by(fYear) %>% summarize(min=min(tl,na.rm=TRUE),max=max(
 tmp
 
 # base plot
-clrs <- c(rgb(0,0,0,1/5),rgb(0,0,1,1/5))
+clrs <- c(rgb(0,0,0,1/6),rgb(0,0,1,1/6))
 plot(wt~tl,data=ruf9000,pch=19,col=clrs[ruf9000$fYear],ylab="Weight (g)",xlab="Total Length (mm)")
 
 # plot line for 1990
@@ -84,7 +96,6 @@ legend("topleft",c("1990","2000"),pch=19,col=c("black","blue"),bty="n")
 # 1-way ANOVA
 ```{r}
 ruf2 <- filterD(ruf,year %in% c(1990,1995,2000,2006))
-
 fit3 <- lm(tl~fYear,data=ruf2)
 anova(fit3)
 
@@ -100,7 +111,7 @@ fitPlot(fit3,ylab="Total Length (mm)",xlab="Capture Year")
 
 Create a script that performs the following tasks:
 
-1. Load the `BLGLW.CSV` data into R.
+1. Load the `BLGLW.CSV` data into an R data.frame.
 1. Determine if there is a significant relationship between the weight and length of Bluegill in these data.
 1. Determine if there is a significant difference between sexes in the relationship between the weight and length of Bluegill.
 1. Determine if there is a significant difference among the three lakes in the mean weight of Bluegill.

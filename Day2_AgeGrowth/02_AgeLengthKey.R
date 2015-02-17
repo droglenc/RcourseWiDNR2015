@@ -1,12 +1,16 @@
 # 02_AgeLengthKey.Rmd
 # Some of the output was suppressed when making the final document.
 # Thus, running this script will give somewhat different results.
+# clears objects in R workspace
+rm(list = ls())
+# load needed packages
 library(fishWiDNR)   # for setDBClasses()
 library(FSA)         # for lencat(), filterD()
-library(dplyr)       # for %>%
+library(dplyr)       # for select(), mutate(), arrange(),%>%
 library(magrittr)    # for %<>%
 library(lubridate)   # for month()
 library(plotrix)     # for plotH(), histStack()
+# Load and prepare data ... copied from previous handout
 setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("SAWYER_fish_raw_data_012915.csv",stringsAsFactors=FALSE,na.strings=c("-","NA","")) %>%
   setDBClasses(type="RDNR") %>%
@@ -15,9 +19,8 @@ d <- read.csv("SAWYER_fish_raw_data_012915.csv",stringsAsFactors=FALSE,na.string
   mutate(mon=month(Sample.Date,label=TRUE)) %>%
   mutate(lcat=lencat(Length.or.Lower.Length.IN,w=0.5)) %>%
   arrange(Species,Length.or.Lower.Length.IN)
-wae <- filterD(d,Waterbody.Name=="NELSON LAKE",Survey.Year==2014,mon=="May",
-               Species=="WALLEYE",Gender!="U") %>% 
-  filterD(Length.or.Lower.Length.IN>11.5,Length.or.Lower.Length.IN<21)
+wae <- filterD(d,Waterbody.Name=="NELSON LAKE",Survey.Year==2014,mon=="May",Species=="WALLEYE",
+               Gender!="U",Length.or.Lower.Length.IN>11.5,Length.or.Lower.Length.IN<21)
 
 waeF <- filterD(wae,Gender=="F")
 waeM <- filterD(wae,Gender=="M")
@@ -42,6 +45,5 @@ waeF.unaged <- filter(waeF,is.na(Age..observed.annuli.))
 waeF.unaged <- alkIndivAge(alkF1,Age..observed.annuli.~Length.or.Lower.Length.IN,data=waeF.unaged)
 waeF.fnl <- rbind(waeF.aged,waeF.unaged)
 headtail(waeF.fnl)
-
 # # remove some objects because this will be sourced for 03_LinearModelIntro
 rm(alkF1,alkM1,d,rawF,rawM,wae,waeF,waeF.aged,waeF.unaged,waeM,waeM.aged,waeM.unaged)

@@ -1,8 +1,12 @@
 # 01_PrepareData.Rmd
+# clears objects in R workspace
+rm(list = ls())
+# load needed packages
 library(fishWiDNR)   # for setDBClasses()
 library(FSA)         # for lencat(), filterD()
-library(dplyr)       # for %>%
+library(dplyr)       # for select(), mutate(), arrange(), %>%
 library(lubridate)   # for month()
+# Load and prepare the data
 setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("SAWYER_fish_raw_data_012915.csv",stringsAsFactors=FALSE,na.strings=c("-","NA","")) %>%
   setDBClasses(type="RDNR") %>%

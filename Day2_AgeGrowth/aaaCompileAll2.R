@@ -13,6 +13,7 @@ swvCode(fn,moreItems=c("knitr"),topnotes=c(fn,"Some of the output was suppressed
 
 fn <- "03_SummarizeAgeData.Rmd"
 render(fn,"all")
+fn <- "03_SummarizeAgeData.Rmd"    # needed because the source() has a rm()
 swvCode(fn,moreItems=c("knitr"),topnotes=c(fn),blanks="none")
 
 fn <- "04_LinearModelIntro.Rmd"
