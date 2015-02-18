@@ -1,0 +1,52 @@
+---
+title: "RMarkdown Example"
+author: "Derek H. Ogle"
+date: "Tuesday, February 17, 2015"
+output:
+  word_document:
+    fig_caption: yes
+  pdf_document:
+    fig_caption: yes
+  html_document:
+    fig_caption: yes
+---
+
+```{r setup, echo=FALSE, results='hide', message=FALSE}
+# THIS SECTION CAN BE GENERALLY BE IGNORED IF VIEWED AS AN R SCRIPT ############
+library(knitr)
+source("../knitr_setup.R")
+# A list of required packages -- for reproducibilities purpose
+rqrd <- c("FSA")
+# END OF SECTION TO BE IGNORED #################################################
+library(FSA)      # catchCurve
+```
+
+# Introduction
+Brook trout are important.  Isle Royale is a fun place to sample fish.
+
+# Methods
+We electrofished.  Caught and aged fish.  Used a catch curve analysis to estimate the instantaneous mortality rate.
+
+# Results
+```{r echo=FALSE, results='hide'}
+df <- data.frame(age=0:5,catch=c(47,172,126,104,81,64))
+df$logct <- log(df$catch)
+
+ttl.catch <- sum(df$catch)
+max.catch <- max(df$catch)
+age.at.max.catch <- df$age[which(df$catch==max.catch)]
+
+cc1 <- catchCurve(catch~age,data=df,ages=age.at.max.catch:5)
+sum1 <- summary(cc1)
+ci1 <- confint(cc1)
+```
+
+A total of `r ttl.catch` brook trout were captured.  The maximum catch of `r max.catch` fish occurred at age-`r age.at.max.catch`.  The instantaneous mortality rate computed for ages `r age.at.max.catch` to `r max(df$age)` was `r round(sum1["Z","Estimate"],3)` with a 95\% confidence interval from `r round(ci1["Z",1],3)` to `r round(ci1["Z",2],3)`.
+
+```{r CatchCurve, echo=FALSE, fig.cap='Log catch versus age for Tobin Harbor Brook Trout, with the ages used for estimating Z shown.', fig.pos='h', fig.height=2.5, fig.width=2.5}
+plot(cc1)
+```
+
+# Discussion
+
+We did great work.
