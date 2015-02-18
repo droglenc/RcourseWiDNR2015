@@ -1,6 +1,4 @@
 # 03_SummarizeAgeData.Rmd
-# clears objects in R workspace
-rm(list = ls())
 # sourceing the script that constructed and applied the ALK
 # may need to adjust if you named your script differently
 source("02_AgeLengthKey.R")
@@ -25,6 +23,17 @@ plotH(n~Age..observed.annuli.,data=waeM.sumlen,xlab="Age (yrs)",ylab="Male Walle
 plot(Length.or.Lower.Length.IN~Age..observed.annuli.,data=waeM.fnl,pch=16,col=rgb(0,0,0,1/10),
       xlab="Age",ylab="Total Length (mm)",ylim=c(10,21))
 lines(mean~Age..observed.annuli.,data=waeM.sumlen,lwd=2,lty=2)
+plot(Length.or.Lower.Length.IN~Age..observed.annuli.,data=waeM.fnl,pch=16,col=rgb(0,0,0,1/10),
+      xlab="Age",ylab="Total Length (mm)",ylim=c(10,21))
+lines(mean~Age..observed.annuli.,data=waeM.sumlen,lwd=2,lty=2)
+
+wae.JM <- data.frame(age=1:17,
+                     state=c(6.5,9.8,12.0,14.1,16.1,17.8,19.3,20.7,21.8,
+                             22.9,23.8,24.5,25.1,25.9,25.5,25.8,25.2),
+                     NOR=c(6.4,9.5,11.7,13.8,15.8,17.5,19.1,20.5,21.6,
+                           22.7,23.7,24.4,25.2,25.8,25.6,25.6,NA))
+lines(state~age,data=wae.JM,lwd=2,lty=2,col="red")
+lines(NOR~age,data=wae.JM,lwd=2,lty=2,col="blue")
 # ############################################################
 # ############################################################
 # # Create a formatted table as a picture that allows results
