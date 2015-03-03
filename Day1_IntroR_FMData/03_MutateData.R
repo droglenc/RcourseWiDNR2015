@@ -1,6 +1,4 @@
 # 03_MutateData.Rmd
-# clears objects in R workspace
-rm(list = ls())
 # load needed packages
 library(fishWiDNR)   # for setDBClasses(), changeDBNames()
 library(dplyr)       # for filter(), select(), mutate(), rename()
@@ -11,7 +9,7 @@ setwd("C:/aaaWork/Web/fishR/Courses/WiDNR_Statewide_2015/Day1_IntroR_FMData")
 d <- read.csv("SAWYER_fish_raw_data_012915.csv",stringsAsFactors=FALSE,na.strings=c("-","NA",""))
 d <- setDBClasses(d,type="RDNR")
 d <- expandCounts(d,~Number.of.Fish,~Length.or.Lower.Length.IN+Length.Upper.IN,new.name="Len")
-d1 <- filter(d,Species=="LAKE STURGEON",Waterbody.Name=="BARKER LAKE",!is.na(Weight.Pounds))
+d1 <- filterD(d,Species=="LAKE STURGEON",Waterbody.Name=="BARKER LAKE",!is.na(Weight.Pounds))
 d1 <- select(d1,Species,Survey.Year,Survey.Begin.Date,Len,Weight.Pounds)
 headtail(d1,n=2)
 tmp <- mutate(d1,loglen=log(Len),logwt=log(Weight.Pounds))

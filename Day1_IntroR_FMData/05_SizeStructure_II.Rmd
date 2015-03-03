@@ -44,7 +44,7 @@ BGSprLC <- filterD(BGSpr,Waterbody.Name=="LAKE CHETAC",Gear=="BOOM SHOCKER")
 SprLC <- filterD(Spr,Waterbody.Name=="LAKE CHETAC")
 ```
 
-Quick questions
+# Critical Thinking Interlude
 
 * What variables should be in `Spr`, `BGSpr`, `BGSprLC`, and `SprLC`.
 * What individuals should be in `Spr`, `BGSpr`, `BGSprLC`, and `SprLC`.

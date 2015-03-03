@@ -1,6 +1,4 @@
 # 04_LinearModelIntro.Rmd
-# clears objects in R workspace
-rm(list = ls())
 # load needed packages
 library(FSA)         # for headtail(), filterD(), fitPlot()
 library(dplyr)       # for mutate(),%>%

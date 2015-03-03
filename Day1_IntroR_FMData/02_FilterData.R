@@ -1,6 +1,4 @@
 # 02_FilterData.Rmd
-# clears objects in R workspace
-rm(list = ls())
 # load needed packages
 library(fishWiDNR)   # for setDBClasses()
 library(dplyr)       # for select(), filter()

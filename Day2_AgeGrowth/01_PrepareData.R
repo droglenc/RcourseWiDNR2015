@@ -1,6 +1,4 @@
 # 01_PrepareData.Rmd
-# clears objects in R workspace
-rm(list = ls())
 # load needed packages
 library(fishWiDNR)   # for setDBClasses()
 library(FSA)         # for lencat(), filterD()

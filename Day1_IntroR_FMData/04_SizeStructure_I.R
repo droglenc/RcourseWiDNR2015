@@ -1,6 +1,4 @@
 # 04_SizeStructure_I.Rmd
-# clears objects in R workspace
-rm(list = ls())
 # load needed packages
 library(fishWiDNR)   # for setDBClasses()
 library(dplyr)       # for filter(), select(), mutate(), group_by(), summarize()

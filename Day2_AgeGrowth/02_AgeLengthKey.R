@@ -1,8 +1,6 @@
 # 02_AgeLengthKey.Rmd
 # Some of the output was suppressed when making the final document.
 # Thus, running this script will give somewhat different results.
-# clears objects in R workspace
-rm(list = ls())
 # load needed packages
 library(fishWiDNR)   # for setDBClasses()
 library(FSA)         # for lencat(), filterD()
