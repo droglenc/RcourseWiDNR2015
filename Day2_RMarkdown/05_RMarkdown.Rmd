@@ -29,7 +29,7 @@ We electrofished.  Caught and aged fish.  Used a catch curve analysis to estimat
 
 # Results
 ```{r echo=FALSE, results='hide'}
-df <- data.frame(age=0:5,catch=c(47,172,126,104,81,64))
+df <- data.frame(age=0:5,catch=c(47,72,126,104,81,64))
 df$logct <- log(df$catch)
 
 ttl.catch <- sum(df$catch)
